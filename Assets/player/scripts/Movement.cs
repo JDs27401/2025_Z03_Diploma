@@ -2,16 +2,10 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Movement : Debuggable
+public class Movement : Actor
 {
-    [SerializeField] //max speed stat
-    private float speed = 4f;
     [SerializeField]
     private int maxStamina = 100;
-    [SerializeField] //how fast will player gain speed
-    private float acceleration = 2f;
-    [SerializeField] //how fast will the player slow down (the higher the more friction)
-    private float friction = 0.10f;
     [SerializeField] //true if you want to know all the stuff
     private bool debugInfo = true;
     [SerializeField] //duration between rolls
