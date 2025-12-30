@@ -14,6 +14,8 @@ public class Actor : Debuggable
     [SerializeField]
     protected float currentHealth;
 
+    [SerializeField] protected float damage = 0f;
+
     protected void Start()
     {
         currentHealth = maxHealth;
