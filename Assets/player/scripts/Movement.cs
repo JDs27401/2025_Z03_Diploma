@@ -26,7 +26,7 @@ public class Movement : Actor
     private bool isSprinting = false;
     private int stamina = 100;
     
-    void Start(){
+    new void Start(){
         speed /= 50; //To have nicer vales
         acceleration /= 10;
         friction = 1-friction;
@@ -46,9 +46,10 @@ public class Movement : Actor
         
         Move();
 
+        Debug.Log(currentHealth);
         if (debugInfo)
         {
-            PrintVariables("currentSpeed", "moveInput", "transform.position", "isRolling", "rollCooldown", "stamina");
+            // PrintVariables("currentSpeed", "moveInput", "transform.position", "isRolling", "rollCooldown", "stamina");
         }
     }
     
@@ -148,7 +149,7 @@ public class Movement : Actor
     }
     void ManageSprint()
     {
-        print("Stamina: (" + stamina + "/" + maxStamina + ")");
+        // print("Stamina: (" + stamina + "/" + maxStamina + ")");
         if (isSprinting)
         {
             if (stamina <= 0)

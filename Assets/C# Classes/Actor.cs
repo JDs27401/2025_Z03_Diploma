@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Actor : Debuggable
+public class Actor : MonoBehaviour
 {
     [SerializeField] //max speed stat
     protected float speed = 4f;
@@ -14,7 +14,8 @@ public class Actor : Debuggable
     [SerializeField]
     protected float currentHealth;
 
-    [SerializeField] protected float damage = 0f;
+    [SerializeField] 
+    protected float damage = 0f;
 
     protected void Start()
     {
@@ -57,5 +58,10 @@ public class Actor : Debuggable
     public float GetFriction()
     {
         return friction;
+    }
+
+    public float GetDamage()
+    {
+        return damage;
     }
 }
