@@ -26,6 +26,9 @@ public class Movement : Actor
     private bool isSprinting = false;
     private int stamina = 100;
     
+    //Thing I need for animations - Bartek
+    [SerializeField] private Animator animator;
+    
     void Start(){
         speed /= 50; //To have nicer vales
         acceleration /= 10;
@@ -116,7 +119,19 @@ public class Movement : Actor
     {
         Vector3 newPos = new Vector3(transform.position.x + currentSpeed.x, transform.position.y + currentSpeed.y, 0);
         transform.position = newPos;
+        
+        bool isMoving = Mathf.Abs(currentSpeed.x) > 0.01f || Mathf.Abs(currentSpeed.y) > 0.01f;
+        animator.SetBool("isWalking", isMoving);
+        
+        /*Player animation logic - the if is necessary for the Player's sprite to stay in one direction after not
+        pressing any buttons */
+        if (moveInput != Vector2.zero)
+        {
+            animator.SetFloat("XInput", moveInput.x);
+            animator.SetFloat("YInput", moveInput.y);    
+        }
     }
+    
     void ManageRoll()
     {
         if (DateTime.Now.Ticks - lastRollTime >= rollCoodownSeconds * 10000000)
