@@ -1,4 +1,5 @@
 using System;
+using C__Classes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,8 +46,7 @@ public class Movement : Actor
         }
         
         Move();
-
-        Debug.Log(currentHealth);
+        
         if (debugInfo)
         {
             // PrintVariables("currentSpeed", "moveInput", "transform.position", "isRolling", "rollCooldown", "stamina");

@@ -8,6 +8,9 @@ TagManager:
   - player
   - heal
   - trap
+  - projectile
+  - attack
+  - destructible
   layers:
   - Default
   - TransparentFX

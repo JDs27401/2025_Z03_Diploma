@@ -1,67 +1,103 @@
+using System.Collections;
 using UnityEngine;
 
-public class Actor : MonoBehaviour
+namespace C__Classes
 {
-    [SerializeField] //max speed stat
-    protected float speed = 4f;
-    [SerializeField] //how fast will player gain speed
-    protected float acceleration = 2f;
-    [SerializeField] //how fast will the player slow down (the higher the more friction)
-    protected float friction = 0.10f;
-
-    [SerializeField]
-    protected float maxHealth = 100f;
-    [SerializeField]
-    protected float currentHealth;
-
-    [SerializeField] 
-    protected float damage = 0f;
-
-    protected void Start()
+    public class Actor : MonoBehaviour
     {
-        currentHealth = maxHealth;
-    }
+        [SerializeField] //max speed stat
+        protected float speed = 4f;
+        [SerializeField] //how fast will player gain speed
+        protected float acceleration = 2f;
+        [SerializeField] //how fast will the player slow down (the higher the more friction)
+        protected float friction = 0.10f;
 
-    public void DealDamage(float damage)
-    {
-        currentHealth -= damage;
-    }
+        [SerializeField]
+        protected float maxHealth = 100f;
+        [SerializeField]
+        protected float currentHealth;
 
-    public void Heal(float heal)
-    {
-        if (currentHealth == maxHealth)
-        {
-            return;
-        } 
-        
-        if (currentHealth + heal > maxHealth)
+        [SerializeField] 
+        protected float damage = 0f;
+        protected bool invulnerable = false;
+        [SerializeField] 
+        protected float iFrameTime = 1f;
+        protected bool isDead = false;
+
+        protected void Start()
         {
             currentHealth = maxHealth;
         }
-        else
+
+        public void DealDamage(float damage)
         {
-            currentHealth += heal;
+            currentHealth -= damage;
+
+            if (currentHealth <= 0)
+            {
+                Kill();
+            }
         }
-    }
 
-    // public getters
-    public float GetSpeed()
-    {
-        return speed;
-    }
+        public void Heal(float heal)
+        {
+            if (currentHealth == maxHealth)
+            {
+                return;
+            } 
+        
+            if (currentHealth + heal > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            else
+            {
+                currentHealth += heal;
+            }
+        }
 
-    public float GetAcceleration()
-    {
-        return acceleration;
-    }
+        private IEnumerator iFrame()
+        {
+            invulnerable = true;
+            yield return new WaitForSeconds(iFrameTime);
+            invulnerable = false;
+        }
 
-    public float GetFriction()
-    {
-        return friction;
-    }
+        public void StartInvulnerability()
+        {
+            StartCoroutine("iFrame");
+        }
 
-    public float GetDamage()
-    {
-        return damage;
+        public void Kill()
+        {
+            isDead = true;
+            Destroy(gameObject);
+        }
+
+        public bool GetInvulnerable()
+        {
+            return invulnerable;
+        }
+
+        // public getters
+        public float GetSpeed()
+        {
+            return speed;
+        }
+
+        public float GetAcceleration()
+        {
+            return acceleration;
+        }
+
+        public float GetFriction()
+        {
+            return friction;
+        }
+
+        public float GetDamage()
+        {
+            return damage;
+        }
     }
 }

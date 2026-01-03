@@ -248,6 +248,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   damage: 50
+  iFrameTime: 1
 --- !u!114 &826368719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,7 +588,8 @@ MonoBehaviour:
   friction: 0
   maxHealth: 100
   currentHealth: 0
-  damage: 0
+  damage: 100
+  iFrameTime: 1
 --- !u!114 &994448011
 MonoBehaviour:
   m_ObjectHideFlags: 0
