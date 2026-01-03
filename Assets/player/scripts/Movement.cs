@@ -26,12 +26,13 @@ public class Movement : Actor
     private float playerColorAlpha = 1;
     private bool isSprinting = false;
     private int stamina = 100;
+
+    [SerializeField]
+    private Animator animator;
+    //Thing I need for animations - Bartek
     
     new void Start(){
-    //Thing I need for animations - Bartek
-    [SerializeField] private Animator animator;
-    
-    void Start(){
+        // base.Start();
         speed /= 50; //To have nicer vales
         acceleration /= 10;
         friction = 1-friction;
@@ -51,6 +52,7 @@ public class Movement : Actor
         
         Move();
         
+        // print(currentHealth);
         if (debugInfo)
         {
             // PrintVariables("currentSpeed", "moveInput", "transform.position", "isRolling", "rollCooldown", "stamina");

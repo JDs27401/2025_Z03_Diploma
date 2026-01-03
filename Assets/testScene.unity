@@ -565,7 +565,7 @@ GameObject:
   - component: {fileID: 994448011}
   - component: {fileID: 994448010}
   m_Layer: 0
-  m_Name: Damage TEST
+  m_Name: Heal TEST
   m_TagString: heal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -766,17 +766,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0025283433, y: -0.024019435}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.14, y: 0.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.094846345, y: 0.107488096}
   m_EdgeRadius: 0
 --- !u!1001 &1843957447048688357
 PrefabInstance:
@@ -830,6 +830,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5703000714113738365, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5987078456509161891, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5987078456509161891, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
       propertyPath: m_IncludeLayers.m_Bits
       value: 4294967295
@@ -843,7 +851,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8292680892767096521, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
-      insertIndex: -1
+      insertIndex: 5
       addedObject: {fileID: 1971080645}
   m_SourcePrefab: {fileID: 100100000, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
 --- !u!1001 &7744400652336533988
@@ -913,7 +921,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 860707295}
   - {fileID: 612066180}
-  - {fileID: 1843957447048688357}
   - {fileID: 7744400652336533988}
   - {fileID: 826368722}
   - {fileID: 994448014}
+  - {fileID: 1843957447048688357}
