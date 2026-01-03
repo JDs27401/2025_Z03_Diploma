@@ -1,4 +1,5 @@
 using System;
+using C__Classes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,6 +27,7 @@ public class Movement : Actor
     private bool isSprinting = false;
     private int stamina = 100;
     
+    new void Start(){
     //Thing I need for animations - Bartek
     [SerializeField] private Animator animator;
     
@@ -48,10 +50,10 @@ public class Movement : Actor
         }
         
         Move();
-
+        
         if (debugInfo)
         {
-            PrintVariables("currentSpeed", "moveInput", "transform.position", "isRolling", "rollCooldown", "stamina");
+            // PrintVariables("currentSpeed", "moveInput", "transform.position", "isRolling", "rollCooldown", "stamina");
         }
     }
     
@@ -163,7 +165,7 @@ public class Movement : Actor
     }
     void ManageSprint()
     {
-        print("Stamina: (" + stamina + "/" + maxStamina + ")");
+        // print("Stamina: (" + stamina + "/" + maxStamina + ")");
         if (isSprinting)
         {
             if (stamina <= 0)

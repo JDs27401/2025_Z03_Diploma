@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 8362774847603796004}
   - component: {fileID: 267857309854984112}
   - component: {fileID: 6678964200872021751}
-  - component: {fileID: 5703000714113738365}
-  m_Layer: 5
+  - component: {fileID: 5987078456509161891}
+  m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,7 +110,8 @@ MonoBehaviour:
   acceleration: 1
   friction: 0.1
   maxHealth: 100
-  currentHealth: 0
+  currentHealth: 50
+  damage: 0
   maxStamina: 100
   debugInfo: 0
   rollPower: 10
@@ -211,6 +212,9 @@ MonoBehaviour:
   m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!50 &5987078456509161891
+Rigidbody2D:
+  serializedVersion: 5
 --- !u!95 &5703000714113738365
 Animator:
   serializedVersion: 7
@@ -219,6 +223,25 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8292680892767096521}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: c30b6ac2adf2aba4a85fb4d8804367b3, type: 2}
