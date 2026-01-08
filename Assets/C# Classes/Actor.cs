@@ -31,8 +31,10 @@ namespace C__Classes
 
         public void DealDamage(float damage)
         {
-            currentHealth -= damage;
-
+            if (!invulnerable)
+            {
+                currentHealth -= damage;
+            }
             if (currentHealth <= 0)
             {
                 Kill();
