@@ -15,23 +15,44 @@ public class AI : Actor
     private List<Vector2> subtargets; //Usually a points which AI has to reach to be able to go to target
     private Vector2 currentSpeed = Vector2.zero;
     
-    void Start()
+    //Animation stuff
+    private Animator animator;
+    
+    new void Start()
     {
         base.Start();
         target = new Vector2(transform.position.x, transform.position.y);
         subtargets = PathFinding.Dumb(target);
+        animator = GetComponent<Animator>();
     }
     void Update()
     {
         subtargets = PathFinding.Dumb(target);
         CalculateSpeed();
         Move();
+        
+        UpdateAnimation();
     }
 
     void Move() //changing position
     {
         Vector3 newPos = new Vector3(transform.position.x + currentSpeed.x, transform.position.y + currentSpeed.y, 0);
         transform.position = newPos;
+    }
+
+    void UpdateAnimation()
+    {
+        bool isMoving = Mathf.Abs(currentSpeed.x) > 0.01f || Mathf.Abs(currentSpeed.y) > 0.01f;
+        animator.SetBool("isWalking", isMoving);
+        
+        if (currentSpeed != Vector2.zero)
+        {
+            if(currentSpeed.x < 0)
+                animator.SetFloat("XInput", -1); //Had to add this line because the zombie wouldn't flip on X axis lol
+            else 
+                animator.SetFloat("XInput", currentSpeed.x);
+            animator.SetFloat("YInput", currentSpeed.y);    
+        }
     }
 
     public void Aggrevate(Vector2 source)
@@ -97,12 +118,12 @@ public class AI : Actor
         }
     }
 
-    void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "player")
-        {
-            collision.gameObject.GetComponent<Actor>().DealDamage(10);
-            collision.gameObject.GetComponent<Actor>().StartInvulnerability();
-        }
-    }
+    // void OnTriggerStay2D(Collider2D collision)
+    // {
+    //     if (collision.gameObject.tag == "player")
+    //     {
+    //         collision.gameObject.GetComponent<Actor>().DealDamage(10);
+    //         collision.gameObject.GetComponent<Actor>().StartInvulnerability();
+    //     }
+    // }
 }
