@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 1270452878}
   - component: {fileID: 1270452877}
   - component: {fileID: 1270452876}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,8 +377,8 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1614915945
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -522,10 +522,6 @@ PrefabInstance:
     - target: {fileID: 8292680892767096521, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8292680892767096521, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
-      propertyPath: m_Layer
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
