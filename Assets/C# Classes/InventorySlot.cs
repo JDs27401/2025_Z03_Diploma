@@ -1,32 +1,53 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems; // <--- WAŻNE: To jest potrzebne
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    public Image iconDisplay; // Przeciągniesz tu obrazek "Icon" (dziecko slota)
-    
-    // Zmienna przechowująca Twój plik .asset (dane)
-    // UWAGA: Zmień 'ItemData' na nazwę Twojej klasy ScriptableObject (np. Item, ItemObject itp.)
-    private ScriptableObject currentItem; 
+    public ItemData currentItem;
+    public Image iconDisplay;
 
-    // Funkcja do dodania przedmiotu do tego slota
-    public void AddItem(ScriptableObject newItem, Sprite itemIcon)
+    private void Awake()
     {
-        currentItem = newItem;
-        iconDisplay.sprite = itemIcon;
-        iconDisplay.enabled = true; // Włączamy obrazek
+        // Upewniamy się, że na starcie slot jest czysty
+        if (currentItem == null) ClearSlot();
     }
 
-    // Funkcja do wyczyszczenia slota
     public void ClearSlot()
     {
         currentItem = null;
-        iconDisplay.sprite = null;
-        iconDisplay.enabled = false; // Wyłączamy obrazek, żeby nie było białego kwadratu
+        if (iconDisplay != null)
+        {
+            iconDisplay.sprite = null;
+            iconDisplay.enabled = false;
+        }
     }
-    
-    public bool IsEmpty()
-{
-    return currentItem == null;
-}
+
+    // --- TO JEST NOWA CZĘŚĆ ODPOWIEDZIALNA ZA PRZYJMOWANIE PRZEDMIOTÓW ---
+    public void OnDrop(PointerEventData eventData)
+    {
+        // Sprawdzamy, czy slot jest pusty (żeby nie nałożyć przedmiotu na przedmiot)
+        // Jeśli chcesz pozwalać na zamianę miejscami, logika byłaby trudniejsza,
+        // na razie zróbmy prosto: przyjmij tylko, jak jest pusto.
+        if (transform.childCount > 0 && currentItem != null) 
+        {
+             return; // Slot zajęty, odrzuć
+        }
+
+        GameObject dropped = eventData.pointerDrag;
+        DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
+
+        if (draggableItem != null)
+        {
+            // 1. Mówimy przedmiotowi: "To jest Twój nowy dom" (zapobiega powrotowi)
+            draggableItem.parentAfterDrag = transform;
+
+            // 2. Aktualizujemy dane logiczne w tym slocie
+            currentItem = draggableItem.itemData;
+            
+            // 3. Ustawiamy wizualia (na wszelki wypadek)
+            iconDisplay.sprite = draggableItem.itemData.icon;
+            iconDisplay.enabled = true;
+        }
+    }
 }

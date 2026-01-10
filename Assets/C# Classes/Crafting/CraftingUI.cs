@@ -51,21 +51,29 @@ public class CraftingUI : MonoBehaviour
     }
 
     private void UpdateResultUI()
+{
+    if (currentResultItem != null)
     {
-        if (currentResultItem != null)
-        {
-            // Mamy pasującą recepturę!
-            resultSlotImage.gameObject.SetActive(true);
-            resultSlotImage.sprite = currentResultItem.icon;
-            if(craftButton) craftButton.interactable = true;
-        }
-        else
-        {
-            // Brak receptury
-            resultSlotImage.gameObject.SetActive(false);
-            if(craftButton) craftButton.interactable = false;
-        }
+        resultSlotImage.gameObject.SetActive(true);
+        resultSlotImage.sprite = currentResultItem.icon;
+
+        // 1. Najpierw resetujemy skalę (czasem się psuje przy zmianach rodzica)
+        resultSlotImage.rectTransform.localScale = Vector3.one;
+
+        // 2. WYMUSZAMY ROZMIAR (Zmień 100, 100 na wielkość swojego slota)
+        resultSlotImage.rectTransform.sizeDelta = new Vector2(100, 100);
+
+        // 3. Zachowujemy proporcje (żeby miecz nie był "gruby", tylko zmieścił się w ramce)
+        resultSlotImage.preserveAspect = true;
+
+        if(craftButton) craftButton.interactable = true;
     }
+    else
+    {
+        resultSlotImage.gameObject.SetActive(false);
+        if(craftButton) craftButton.interactable = false;
+    }
+}
     
     // Metoda dla przycisku "Wytwórz"
     public void OnCraftButtonPress()

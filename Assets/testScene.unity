@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1d1b9ef9b764b4d98b4af255f09d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  currentItem: {fileID: 0}
   iconDisplay: {fileID: 265750609}
 --- !u!225 &1614834
 CanvasGroup:
@@ -960,6 +961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1d1b9ef9b764b4d98b4af255f09d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  currentItem: {fileID: 0}
   iconDisplay: {fileID: 169432249}
 --- !u!224 &560166772
 RectTransform:
@@ -1291,6 +1293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1d1b9ef9b764b4d98b4af255f09d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  currentItem: {fileID: 0}
   iconDisplay: {fileID: 1653164178}
 --- !u!225 &613776055
 CanvasGroup:
@@ -1394,6 +1397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1d1b9ef9b764b4d98b4af255f09d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  currentItem: {fileID: 0}
   iconDisplay: {fileID: 1741569334}
 --- !u!225 &665983462
 CanvasGroup:
@@ -2292,6 +2296,7 @@ GameObject:
   - component: {fileID: 1121722613}
   - component: {fileID: 1121722612}
   - component: {fileID: 1121722614}
+  - component: {fileID: 1121722617}
   - component: {fileID: 1121722615}
   - component: {fileID: 1121722616}
   m_Layer: 0
@@ -2446,6 +2451,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1121722617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121722611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e849f0effa6fb45a473b6da679322b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DraggableItem
+  parentAfterDrag: {fileID: 0}
+  itemData: {fileID: 11400000, guid: 43ee387133f84764aa847683a1d3343f, type: 2}
 --- !u!4 &1127193343 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4672375051657317503, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
@@ -2599,7 +2618,9 @@ GameObject:
   - component: {fileID: 1338701068}
   - component: {fileID: 1338701067}
   - component: {fileID: 1338701065}
+  - component: {fileID: 1338701070}
   - component: {fileID: 1338701066}
+  - component: {fileID: 1338701069}
   m_Layer: 0
   m_Name: cloth
   m_TagString: Untagged
@@ -2740,6 +2761,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1960679111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!225 &1338701069
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338701064}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1338701070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338701064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e849f0effa6fb45a473b6da679322b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DraggableItem
+  parentAfterDrag: {fileID: 0}
+  itemData: {fileID: 11400000, guid: 1fc4a0e7dfa9ae14885236c65c4a94ed, type: 2}
 --- !u!1 &1375871823
 GameObject:
   m_ObjectHideFlags: 0
@@ -2769,12 +2816,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7113c904180eaf8438cc840daa1a1f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
-  slots:
+  inventorySlots:
   - {fileID: 1614833}
   - {fileID: 665983461}
   - {fileID: 613776054}
   - {fileID: 560166771}
-  startingItems: []
 --- !u!4 &1375871825
 Transform:
   m_ObjectHideFlags: 0
@@ -2960,7 +3006,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -3180,7 +3226,9 @@ GameObject:
   - component: {fileID: 1673808853}
   - component: {fileID: 1673808852}
   - component: {fileID: 1673808854}
+  - component: {fileID: 1673808857}
   - component: {fileID: 1673808855}
+  - component: {fileID: 1673808856}
   m_Layer: 0
   m_Name: tape
   m_TagString: Untagged
@@ -3321,6 +3369,32 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 12.8, y: 12.8}
   m_EdgeRadius: 0
+--- !u!225 &1673808856
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1673808851}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1673808857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1673808851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e849f0effa6fb45a473b6da679322b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DraggableItem
+  parentAfterDrag: {fileID: 0}
+  itemData: {fileID: 11400000, guid: 44303b3f775619a4cbcea29d2f8d8e88, type: 2}
 --- !u!1 &1741569332
 GameObject:
   m_ObjectHideFlags: 0
@@ -3435,7 +3509,9 @@ GameObject:
   - component: {fileID: 1777178176}
   - component: {fileID: 1777178175}
   - component: {fileID: 1777178177}
+  - component: {fileID: 1777178180}
   - component: {fileID: 1777178178}
+  - component: {fileID: 1777178179}
   m_Layer: 0
   m_Name: nails
   m_TagString: Untagged
@@ -3576,6 +3652,32 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 6, y: 6}
   m_EdgeRadius: 0
+--- !u!225 &1777178179
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777178174}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1777178180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777178174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e849f0effa6fb45a473b6da679322b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DraggableItem
+  parentAfterDrag: {fileID: 0}
+  itemData: {fileID: 11400000, guid: c94cb10fe4fd9e249afdaaba9d5c54c2, type: 2}
 --- !u!1 &1960679110
 GameObject:
   m_ObjectHideFlags: 0
@@ -3714,8 +3816,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
-  m_HorizontalFit: 2
-  m_VerticalFit: 2
+  m_HorizontalFit: 0
+  m_VerticalFit: 0
 --- !u!114 &2090858900
 MonoBehaviour:
   m_ObjectHideFlags: 0

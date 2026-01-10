@@ -42,4 +42,14 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
     {
         craftingUI.UpdateCraftingGrid();
     }
+
+    private void OnTransformChildrenChanged()
+    {
+        if (isCraftingGridSlot && craftingUI != null)
+        {
+            // Jeśli przedmiot zniknął (został zabrany), odświeżamy siatkę
+            // Opóźnienie jest potrzebne, żeby Unity zdążyło zaktualizować hierarchię
+            Invoke(nameof(NotifyUI), 0.1f);
+        }
+    }
 }

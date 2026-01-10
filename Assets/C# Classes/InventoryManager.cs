@@ -1,61 +1,73 @@
 using UnityEngine;
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    // Lista slotów w UI (przypiszemy je w Inspectorze)
-    public InventorySlot[] slots;
+    // Singleton - pozwala odwołać się do managera przez InventoryManager.instance
+    public static InventoryManager instance;
 
-    // Lista Twoich przedmiotów .asset, które chcesz dać graczowi na start
-    // UWAGA: Tutaj też zmień 'ScriptableObject' na nazwę Twojej klasy (np. ItemData)
-    public List<ScriptableObject> startingItems;
+    [Header("Konfiguracja")]
+    // Przeciągnij tu wszystkie swoje sloty z Hierarchy (InventoryPanel -> Slot)
+    public InventorySlot[] inventorySlots;
 
-    void Start()
+    private void Awake()
     {
-        UpdateUI();
-    }
-
-    void UpdateUI()
-    {
-        // Pętla przez wszystkie sloty
-        for (int i = 0; i < slots.Length; i++)
+        // Konfiguracja Singletona
+        if (instance != null && instance != this)
         {
-            if (i < startingItems.Count)
-            {
-                // Mamy przedmiot dla tego slota!
-                // Tutaj musimy pobrać ikonę z Twojego .asset.
-                // Zakładam, że w Twoim skrypcie .asset pole z ikoną nazywa się 'icon'.
-                // Jeśli nie masz dostępu bezpośrednio, musisz rzutować typ:
-                
-                // Przykład (odkomentuj i dopasuj do swojej klasy):
-                // YourItemClass item = (YourItemClass)startingItems[i];
-                // slots[i].AddItem(item, item.icon);
-                
-                // WERSJA TYMCZASOWA (jeśli nie podasz mi nazwy swojej klasy):
-                Debug.Log("Dodano przedmiot do slotu: " + i);
-                // slots[i].AddItem(startingItems[i], null); // Tu potrzebujesz Sprite'a z Twojego assetu
-            }
-            else
-            {
-                // Brak przedmiotu dla tego slota -> wyczyść go
-                slots[i].ClearSlot();
-            }
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
         }
     }
 
-    public bool AddItemToFirstFreeSlot(ScriptableObject item, Sprite icon)
-{
-    // Przejdź przez wszystkie sloty
-    foreach (InventorySlot slot in slots)
+    // Główna metoda dodawania przedmiotu
+    public bool AddItemToFirstFreeSlot(ItemData item, Sprite icon)
     {
-        if (slot.IsEmpty())
+        // Sprawdzamy każdy slot po kolei
+        for (int i = 0; i < inventorySlots.Length; i++)
         {
-            slot.AddItem(item, icon);
-            return true; // Sukces! Przedmiot dodany
+            InventorySlot slot = inventorySlots[i];
+
+            // Zakładam, że w InventorySlot.cs masz zmienną 'currentItem'
+            // Jeśli slot jest pusty (currentItem == null):
+            if (slot.currentItem == null)
+            {
+                // 1. Zapisz dane w slocie (LOGIKA)
+                slot.currentItem = item;
+
+                // 2. Ustaw wygląd (GRAFIKA)
+                // Zakładam, że w InventorySlot.cs masz Image 'iconDisplay'
+                slot.iconDisplay.sprite = icon; // lub item.icon
+                slot.iconDisplay.enabled = true;
+
+                // ============================================================
+                // 3. KLUCZOWA POPRAWKA DLA CRAFTINGU I PRZECIĄGANIA
+                // ============================================================
+                // Musimy znaleźć skrypt DraggableItem na obrazku i dać mu dane
+                DraggableItem draggable = slot.iconDisplay.GetComponent<DraggableItem>();
+
+                if (draggable != null)
+                {
+                    draggable.itemData = item; // <-- To naprawia błąd "Na stole jest [PUSTO]"
+                    
+                    // Resetujemy pozycję ikonki na środek slota (na wypadek gdyby była przesunięta)
+                    draggable.transform.localPosition = Vector3.zero;
+                }
+                else
+                {
+                    Debug.LogWarning($"Slot {slot.name} nie ma komponentu DraggableItem na obrazku!");
+                }
+                // ============================================================
+
+                Debug.Log($"Dodano przedmiot: {item.itemName} do slota nr {i}");
+                return true; // Sukces, przerywamy pętlę
+            }
         }
+
+        Debug.Log("Ekwipunek jest pełny!");
+        return false; // Brak miejsca
     }
-    
-    Debug.Log("Ekwipunek jest pełny!");
-    return false; // Brak miejsca
-}
 }
