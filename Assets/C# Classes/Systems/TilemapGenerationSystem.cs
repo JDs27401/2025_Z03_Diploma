@@ -40,8 +40,7 @@ public class TilemapGenerationSystem : MonoBehaviour
         {
             for (int x = 0; x < tileValues.GetLength(0); x++)
             {
-                var position = tilemap.WorldToCell(new Vector3(x, 0, y));
-                tilemap.SetTile(position, SelectTile(tileValues[x,y]));
+                tilemap.SetTile(new Vector3Int(x, y, 0), SelectTile(tileValues[x,y]));
             }    
         }
     }
