@@ -43,12 +43,7 @@ namespace C__Classes
 
         public void Heal(float heal)
         {
-            if (currentHealth == maxHealth)
-            {
-                return;
-            } 
-        
-            if (currentHealth + heal > maxHealth)
+            if (currentHealth + heal >= maxHealth)
             {
                 currentHealth = maxHealth;
             }
@@ -67,7 +62,7 @@ namespace C__Classes
 
         public void StartInvulnerability()
         {
-            StartCoroutine("iFrame");
+            StartCoroutine(iFrame());
         }
 
         public void Kill()
