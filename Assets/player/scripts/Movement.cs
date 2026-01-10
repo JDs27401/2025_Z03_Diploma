@@ -52,10 +52,10 @@ public class Movement : Actor
         
         Move();
         
-        // print(currentHealth);
+        print(currentHealth);
         if (debugInfo)
         {
-            // PrintVariables("currentSpeed", "moveInput", "transform.position", "isRolling", "rollCooldown", "stamina");
+            //PrintVariables("currentHealth");
         }
     }
     
@@ -167,7 +167,6 @@ public class Movement : Actor
     }
     void ManageSprint()
     {
-        // print("Stamina: (" + stamina + "/" + maxStamina + ")");
         if (isSprinting)
         {
             if (stamina <= 0)

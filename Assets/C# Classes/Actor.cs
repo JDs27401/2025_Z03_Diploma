@@ -31,8 +31,10 @@ namespace C__Classes
 
         public void DealDamage(float damage)
         {
-            currentHealth -= damage;
-
+            if (!invulnerable)
+            {
+                currentHealth -= damage;
+            }
             if (currentHealth <= 0)
             {
                 Kill();
@@ -41,12 +43,7 @@ namespace C__Classes
 
         public void Heal(float heal)
         {
-            if (currentHealth == maxHealth)
-            {
-                return;
-            } 
-        
-            if (currentHealth + heal > maxHealth)
+            if (currentHealth + heal >= maxHealth)
             {
                 currentHealth = maxHealth;
             }
@@ -65,7 +62,7 @@ namespace C__Classes
 
         public void StartInvulnerability()
         {
-            StartCoroutine("iFrame");
+            StartCoroutine(iFrame());
         }
 
         public void Kill()
