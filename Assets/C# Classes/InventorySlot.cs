@@ -1,53 +1,51 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems; // <--- WAŻNE: To jest potrzebne
+using UnityEngine.EventSystems;
+using UnityEngine.UI; 
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    public ItemData currentItem;
+    // --- ZMIENNE PUBLICZNE (Wymagane przez InventoryManager) ---
+    // Przywracamy je, aby InventoryManager przestał wyrzucać błędy.
+    // UWAGA: Jeśli Twoja klasa z danymi przedmiotu nie nazywa się "ItemData", 
+    // zmień typ zmiennej poniżej na właściwy (np. InventoryItemData, Item itp.)
+    public ItemData currentItem; 
     public Image iconDisplay;
 
-    private void Awake()
-    {
-        // Upewniamy się, że na starcie slot jest czysty
-        if (currentItem == null) ClearSlot();
-    }
-
-    public void ClearSlot()
-    {
-        currentItem = null;
-        if (iconDisplay != null)
-        {
-            iconDisplay.sprite = null;
-            iconDisplay.enabled = false;
-        }
-    }
-
-    // --- TO JEST NOWA CZĘŚĆ ODPOWIEDZIALNA ZA PRZYJMOWANIE PRZEDMIOTÓW ---
+    // --- LOGIKA UPUSZCZANIA ---
     public void OnDrop(PointerEventData eventData)
     {
-        // Sprawdzamy, czy slot jest pusty (żeby nie nałożyć przedmiotu na przedmiot)
-        // Jeśli chcesz pozwalać na zamianę miejscami, logika byłaby trudniejsza,
-        // na razie zróbmy prosto: przyjmij tylko, jak jest pusto.
-        if (transform.childCount > 0 && currentItem != null) 
+        // Sprawdź, czy coś jest przeciągane
+        if (eventData.pointerDrag == null) return;
+
+        // 1. CZYSZCZENIE "DUCHÓW" (Fix na błąd po craftingu)
+        // Sprawdzamy, czy w slocie jest obiekt, który stracił ikonę/obrazek
+        if (transform.childCount > 0)
         {
-             return; // Slot zajęty, odrzuć
+            GameObject currentObject = transform.GetChild(0).gameObject;
+            Image objectImage = currentObject.GetComponent<Image>();
+
+            bool isGhost = false;
+
+            if (objectImage == null) isGhost = true;
+            else if (objectImage.sprite == null || objectImage.enabled == false) isGhost = true;
+
+            if (isGhost)
+            {
+                // Usuwamy "niewidzialny" obiekt natychmiast
+                DestroyImmediate(currentObject);
+            }
         }
 
-        GameObject dropped = eventData.pointerDrag;
-        DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
-
-        if (draggableItem != null)
+        // 2. WŁAŚCIWE WKŁADANIE PRZEDMIOTU
+        if (transform.childCount == 0)
         {
-            // 1. Mówimy przedmiotowi: "To jest Twój nowy dom" (zapobiega powrotowi)
-            draggableItem.parentAfterDrag = transform;
-
-            // 2. Aktualizujemy dane logiczne w tym slocie
-            currentItem = draggableItem.itemData;
+            // TUTAJ ZMIANA: Używamy DraggableItem zgodnie z Twoją nazwą klasy
+            DraggableItem draggableItem = eventData.pointerDrag.GetComponent<DraggableItem>();
             
-            // 3. Ustawiamy wizualia (na wszelki wypadek)
-            iconDisplay.sprite = draggableItem.itemData.icon;
-            iconDisplay.enabled = true;
+            if (draggableItem != null)
+            {
+                draggableItem.parentAfterDrag = transform;
+            }
         }
     }
 }

@@ -3,35 +3,51 @@ using UnityEngine.UI;
 
 public class CraftingUI : MonoBehaviour
 {
-    [Header("References")]
-    public CraftingManager craftingManager; // Przypisz Manager z poprzedniego etapu
+    [Header("Główne Referencje")]
+    public CraftingManager craftingManager; // Logika sprawdzania receptur
     
-    // Siatka 2x2 - MUSZĄ BYĆ PRZYPISANE W KOLEJNOŚCI:
-    // 0: Lewy-Góra, 1: Prawy-Góra
-    // 2: Lewy-Dół, 3: Prawy-Dół
+    // Siatka 2x2 - sloty muszą być przypisane w kolejności:
+    // 0: Lewy-Góra, 1: Prawy-Góra, 2: Lewy-Dół, 3: Prawy-Dół
     public CraftingSlot[] gridSlots; 
 
-    // Slot wynikowy (gdzie pojawi się wytworzony przedmiot)
-    public Image resultSlotImage;
-    public Button craftButton; // Opcjonalnie przycisk "Wytwórz"
+    [Header("Ustawienia Wyniku (Result Slot)")]
+    public Image resultSlotImage;        // "Duch" - półprzezroczysty podgląd wyniku
+    public Transform resultSlotContainer; // Fizyczny obiekt ResultSlot (rodzic dla nowego przedmiotu)
+    public Button craftButton;           // Przycisk "Wytwórz"
+    
+    [Header("Prefab")]
+    // Tutaj przeciągnij ten sam prefab, którego używa InventoryManager (Uniwersalny UI Item)
+    public GameObject draggableItemPrefab; 
 
+    // Przechowuje dane przedmiotu, który powstanie z aktualnego ułożenia
     private ItemData currentResultItem;
 
     private void Start()
     {
-        // Na starcie czyścimy wynik
+        // Na starcie ukrywamy podgląd i blokujemy przycisk
         resultSlotImage.gameObject.SetActive(false);
         if(craftButton) craftButton.interactable = false;
     }
 
-    // Ta metoda jest wołana przez sloty, gdy gracz coś położy
+    // Ta metoda jest wołana przez sloty (CraftingSlot), gdy cokolwiek się zmieni
     public void UpdateCraftingGrid()
     {
+        // --- TARCZA OCHRONNA ---
+        // 1. Sprawdzamy, czy w slocie wynikowym leży już wyprodukowany przedmiot.
+        // Jeśli tak, przerywamy sprawdzanie! Nie chcemy, żeby zmiana składników usunęła gotowy przedmiot.
+        if (resultSlotContainer.GetComponentInChildren<DraggableItem>() != null)
+        {
+            // Ukrywamy "ducha" (bo mamy prawdziwy przedmiot) i blokujemy przycisk
+            resultSlotImage.gameObject.SetActive(false);
+            if(craftButton) craftButton.interactable = false;
+            return; 
+        }
+
+        // 2. Zbieramy dane ze wszystkich 4 slotów
         ItemData[] currentItems = new ItemData[4];
 
         for (int i = 0; i < gridSlots.Length; i++)
         {
-            // Sprawdzamy, czy w slocie jest dziecko (DraggableItem)
             DraggableItem itemInSlot = gridSlots[i].GetComponentInChildren<DraggableItem>();
             
             if (itemInSlot != null)
@@ -44,47 +60,66 @@ public class CraftingUI : MonoBehaviour
             }
         }
 
-        // Pytamy CraftingManager o wynik
+        // 3. Pytamy Managera czy to pasuje do jakiegoś przepisu
         currentResultItem = craftingManager.CheckForRecipe(currentItems);
 
+        // 4. Aktualizujemy wygląd (pokazujemy lub ukrywamy "ducha")
         UpdateResultUI();
     }
 
     private void UpdateResultUI()
-{
-    if (currentResultItem != null)
     {
-        resultSlotImage.gameObject.SetActive(true);
-        resultSlotImage.sprite = currentResultItem.icon;
-
-        // 1. Najpierw resetujemy skalę (czasem się psuje przy zmianach rodzica)
-        resultSlotImage.rectTransform.localScale = Vector3.one;
-
-        // 2. WYMUSZAMY ROZMIAR (Zmień 100, 100 na wielkość swojego slota)
-        resultSlotImage.rectTransform.sizeDelta = new Vector2(100, 100);
-
-        // 3. Zachowujemy proporcje (żeby miecz nie był "gruby", tylko zmieścił się w ramce)
-        resultSlotImage.preserveAspect = true;
-
-        if(craftButton) craftButton.interactable = true;
+        if (currentResultItem != null)
+        {
+            // Mamy przepis -> Pokaż "Ducha"
+            resultSlotImage.gameObject.SetActive(true);
+            resultSlotImage.sprite = currentResultItem.icon;
+            resultSlotImage.preserveAspect = true; // Zachowaj proporcje obrazka
+            
+            if(craftButton) craftButton.interactable = true;
+        }
+        else
+        {
+            // Brak przepisu -> Ukryj wszystko
+            resultSlotImage.gameObject.SetActive(false);
+            if(craftButton) craftButton.interactable = false;
+        }
     }
-    else
-    {
-        resultSlotImage.gameObject.SetActive(false);
-        if(craftButton) craftButton.interactable = false;
-    }
-}
     
-    // Metoda dla przycisku "Wytwórz"
+    // Metoda podpięta pod przycisk "Wytwórz"
     public void OnCraftButtonPress()
     {
         if (currentResultItem == null) return;
+        
+        // Zabezpieczenie: czy slot wynikowy na pewno jest pusty?
+        if (resultSlotContainer.GetComponentInChildren<DraggableItem>() != null) return;
 
-        Debug.Log("Wytworzono przedmiot: " + currentResultItem.itemName);
+        // =================================================================
+        // KROK 1: NAJPIERW TWORZYMY NOWY PRZEDMIOT
+        // =================================================================
+        // Tworzymy go zanim zniszczymy składniki, dzięki temu "Tarcza Ochronna"
+        // w UpdateCraftingGrid zadziała i nie wyczyści nam wyniku.
         
-        // TUTAJ: Dodaj kod dodawania przedmiotu do ekwipunku gracza
+        GameObject newItem = Instantiate(draggableItemPrefab, resultSlotContainer);
         
-        // Czyścimy siatkę (niszczymy zużyte przedmioty)
+        DraggableItem draggable = newItem.GetComponent<DraggableItem>();
+        Image itemImage = newItem.GetComponent<Image>();
+
+        if (draggable != null && itemImage != null)
+        {
+            // Wypełniamy uniwersalny prefab danymi z przepisu
+            draggable.itemData = currentResultItem; 
+            itemImage.sprite = currentResultItem.icon; 
+            itemImage.preserveAspect = true;
+            
+            // Resetujemy pozycję i skalę, żeby ładnie leżał w slocie
+            newItem.transform.localPosition = Vector3.zero;
+            newItem.transform.localScale = Vector3.one;
+        }
+
+        // =================================================================
+        // KROK 2: NISZCZYMY SKŁADNIKI
+        // =================================================================
         foreach (var slot in gridSlots)
         {
             DraggableItem item = slot.GetComponentInChildren<DraggableItem>();
@@ -93,7 +128,14 @@ public class CraftingUI : MonoBehaviour
                 Destroy(item.gameObject);
             }
         }
+
+        // =================================================================
+        // KROK 3: SPRZĄTANIE UI
+        // =================================================================
+        resultSlotImage.gameObject.SetActive(false); // Ukrywamy "ducha"
+        if(craftButton) craftButton.interactable = false; // Blokujemy przycisk, bo wynik jest zajęty
         
-        UpdateCraftingGrid(); // Odśwież stan (wynik zniknie)
+        // Czyścimy pamięć o przepisie (przedmiot jest już fizyczny, przepis niepotrzebny)
+        currentResultItem = null;
     }
 }
