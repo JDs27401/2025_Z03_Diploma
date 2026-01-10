@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e07021fff71c4a46b212dafd55eadbe, type: 3}
+  m_Name: ImprovisedClub
+  m_EditorClassIdentifier: Assembly-CSharp::RecipeData
+  recipeName: Improvised club
+  inputs:
+  - {fileID: 11400000, guid: 43ee387133f84764aa847683a1d3343f, type: 2}
+  - {fileID: 11400000, guid: c94cb10fe4fd9e249afdaaba9d5c54c2, type: 2}
+  - {fileID: 11400000, guid: 1fc4a0e7dfa9ae14885236c65c4a94ed, type: 2}
+  - {fileID: 11400000, guid: 44303b3f775619a4cbcea29d2f8d8e88, type: 2}
+  resultItem: {fileID: 11400000, guid: 13fc0967d4a1e154e9250c000e9f77d5, type: 2}
+  resultAmount: 1

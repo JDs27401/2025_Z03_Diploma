@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e07021fff71c4a46b212dafd55eadbe, type: 3}
+  m_Name: 9mmAmmo
+  m_EditorClassIdentifier: Assembly-CSharp::RecipeData
+  recipeName: 9mm ammo
+  inputs:
+  - {fileID: 11400000, guid: c94cb10fe4fd9e249afdaaba9d5c54c2, type: 2}
+  - {fileID: 11400000, guid: 6f998e1a0897081418c4c4f34e50f2a8, type: 2}
+  - {fileID: 11400000, guid: 4b6e1d1aca7dcbc47b5a8f70dde59449, type: 2}
+  - {fileID: 0}
+  resultItem: {fileID: 11400000, guid: 56880beaea0c8de4f97c97296df3a4db, type: 2}
+  resultAmount: 1

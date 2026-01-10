@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e07021fff71c4a46b212dafd55eadbe, type: 3}
+  m_Name: SpikeTrap
+  m_EditorClassIdentifier: Assembly-CSharp::RecipeData
+  recipeName: Spike trap
+  inputs:
+  - {fileID: 11400000, guid: c94cb10fe4fd9e249afdaaba9d5c54c2, type: 2}
+  - {fileID: 11400000, guid: 551337f6318d9624d9385bdb38143c86, type: 2}
+  - {fileID: 11400000, guid: 551337f6318d9624d9385bdb38143c86, type: 2}
+  - {fileID: 11400000, guid: c94cb10fe4fd9e249afdaaba9d5c54c2, type: 2}
+  resultItem: {fileID: 11400000, guid: 48e36216098777a4790750a07ec0d2ec, type: 2}
+  resultAmount: 1

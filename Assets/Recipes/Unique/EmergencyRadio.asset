@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e07021fff71c4a46b212dafd55eadbe, type: 3}
+  m_Name: EmergencyRadio
+  m_EditorClassIdentifier: Assembly-CSharp::RecipeData
+  recipeName: Emergency Radio
+  inputs:
+  - {fileID: 11400000, guid: 5549ebdb1ce06f147b0f1d0c253efb3c, type: 2}
+  - {fileID: 11400000, guid: 09026109eab985c46b0079f460ee0ab2, type: 2}
+  - {fileID: 11400000, guid: ad43958dbd93f8f4f9fc529aa2970760, type: 2}
+  - {fileID: 11400000, guid: 4b6dab5579b0e7145a2931855287f2c8, type: 2}
+  resultItem: {fileID: 11400000, guid: 4b6dab5579b0e7145a2931855287f2c8, type: 2}
+  resultAmount: 1
