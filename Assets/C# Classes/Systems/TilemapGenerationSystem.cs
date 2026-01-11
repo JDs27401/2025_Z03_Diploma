@@ -55,11 +55,15 @@ namespace C__Classes.Systems
 
         private TileBase SelectTile(float value, int x, int y)
         {
-            if (value < 0.2f)
+            if (value < 0.15f)
+            {
+                return waterTile;
+            }
+            if (value < 0.45f)
             {
                 return GenerateRandomTile(groundTilesLight, x, y);
             }
-            if (value < 0.65f)
+            if (value < 0.75f)
             {
                 return GenerateRandomTile(groundTilesMed, x, y);
             }
