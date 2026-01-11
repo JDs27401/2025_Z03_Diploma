@@ -29,11 +29,11 @@ namespace C__Classes
             currentHealth = maxHealth;
         }
 
-        public void DealDamage(float damage)
+        public void DealDamage(float dmg)
         {
             if (!invulnerable)
             {
-                currentHealth -= damage;
+                currentHealth -= dmg;
             }
             if (currentHealth <= 0)
             {
