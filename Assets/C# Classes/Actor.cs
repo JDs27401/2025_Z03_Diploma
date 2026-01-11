@@ -82,6 +82,11 @@ namespace C__Classes
             return speed;
         }
 
+        public float GetCurrentHealth()
+        {
+            return currentHealth;
+        }
+
         public float GetAcceleration()
         {
             return acceleration;
