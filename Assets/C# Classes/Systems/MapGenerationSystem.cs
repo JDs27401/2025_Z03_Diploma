@@ -115,7 +115,7 @@ namespace C__Classes.Systems
         return 6 * t * t * t * t * t - 15 * t * t * t * t + 10 * t * t * t;
     }
         
-    private static int GenerateSeed(String hash)
+    public static int GenerateSeed(String hash)
     {
         var sha1 = System.Security.Cryptography.SHA256.Create();
         var bytes = sha1.ComputeHash(System.Text.Encoding.UTF8.GetBytes(hash));

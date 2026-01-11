@@ -220,6 +220,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 324408597439821563, guid: 77122195b8068d443932c43d256c1ddd, type: 3}
+      propertyPath: CameraDistance
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 819959654217297101, guid: 77122195b8068d443932c43d256c1ddd, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
@@ -234,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1004522292839000671, guid: 77122195b8068d443932c43d256c1ddd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 1004522292839000671, guid: 77122195b8068d443932c43d256c1ddd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -328,7 +332,26 @@ MonoBehaviour:
   hash: "g\xF3wno"
   tilemap: {fileID: 1270452878}
   waterTile: {fileID: 11400000, guid: 0aa1d1ec559b24103a44bfdaf0fc1506, type: 2}
-  groundTile: {fileID: 11400000, guid: be86e6e44003640df9e7b822daa1e9c9, type: 2}
+  groundTilesLight:
+  - {fileID: 11400000, guid: 8866e2b56c8f983408df4493013595ba, type: 2}
+  - {fileID: 11400000, guid: c1a6cf4b1229af0418ff227100a36ef3, type: 2}
+  - {fileID: 11400000, guid: 241177ade226e1444b9c4d50d275ac04, type: 2}
+  - {fileID: 11400000, guid: 1642ea25c4e8c89449abfab308b5aafc, type: 2}
+  groundTilesMed:
+  - {fileID: 11400000, guid: 255b1605afc2e8a42abb11e43adfd323, type: 2}
+  - {fileID: 11400000, guid: 5b7d5644f832a404e8ff473a886bd66e, type: 2}
+  - {fileID: 11400000, guid: c0231b8755228e14b86776f69ad77fac, type: 2}
+  - {fileID: 11400000, guid: 85797756811c76048b0f98ef5ea56f8d, type: 2}
+  groundTilesDark:
+  - {fileID: 11400000, guid: be86e6e44003640df9e7b822daa1e9c9, type: 2}
+  - {fileID: 11400000, guid: 2e467d157daf648beb328c4309bd1aff, type: 2}
+  - {fileID: 11400000, guid: e1c18a3c455134c319f471d782de2703, type: 2}
+  - {fileID: 11400000, guid: c3ab124f808864b42b0380c1d57b2f8b, type: 2}
+  cropTiles:
+  - {fileID: 11400000, guid: 8981b18830aa6484bb6f34135ab65ee1, type: 2}
+  - {fileID: 11400000, guid: f7646b6bb5dd57446bf061d6beb10571, type: 2}
+  - {fileID: 11400000, guid: c84d47f09d3ec5d468e6893619c0b5f2, type: 2}
+  - {fileID: 11400000, guid: ee74fc0cddbfe14439291c6f38985a2a, type: 2}
   highValueTile: {fileID: 11400000, guid: c3ab124f808864b42b0380c1d57b2f8b, type: 2}
   mapSize: 1024
   chunkSize: 128
