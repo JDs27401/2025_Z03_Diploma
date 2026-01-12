@@ -29,9 +29,11 @@ namespace C__Classes.Systems
         [SerializeField]
         private int chunkSize = 128;
         
+        private TileProperties[,] tileProperties;
 
-        private void Start()
+        private void Awake()
         {
+            tileProperties = new TileProperties[mapSize, mapSize];
             RunProceduralGeneration();
         }
         
@@ -57,20 +59,25 @@ namespace C__Classes.Systems
         {
             if (value < 0.15f)
             {
+                tileProperties[x,mapSize - y - 1] = new TileProperties(x, y, TileType.water);
                 return waterTile;
             }
             if (value < 0.45f)
             {
+                tileProperties[x,mapSize - y - 1] = new TileProperties(x, y, TileType.ground);
                 return GenerateRandomTile(groundTilesLight, x, y);
             }
             if (value < 0.75f)
             {
+                tileProperties[x,mapSize - y - 1] = new TileProperties(x, y, TileType.ground);
                 return GenerateRandomTile(groundTilesMed, x, y);
             }
             if (value < 0.95f)
             {
+                tileProperties[x,mapSize - y - 1] = new TileProperties(x, y, TileType.ground);
                 return GenerateRandomTile(groundTilesDark, x, y);
             }
+            tileProperties[x,mapSize - y - 1] = new TileProperties(x, y, TileType.cropField);
             return GenerateRandomTile(cropTiles, x, y);
             
             /*return value switch
@@ -87,6 +94,25 @@ namespace C__Classes.Systems
             int tileHash = x * 73856093 ^ y * 19349663 ^ tileSeed;
             Random.InitState(tileHash);
             return tiles[Random.Range(0, tiles.Length)];
+        }
+        
+        public TileProperties GetTileProperties(int x, int y)
+        {
+            return tileProperties[x, y];    
+        }
+
+        public struct TileProperties
+        {
+            public int x;
+            public int y;
+            public TileType type;
+
+            public TileProperties(int x, int y, TileType tileType)
+            {
+                this.x = x;
+                this.y = y;
+                this.type = tileType;
+            }
         }
     }
 }

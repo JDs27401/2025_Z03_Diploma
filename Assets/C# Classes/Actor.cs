@@ -1,5 +1,7 @@
 using System.Collections;
+using C__Classes.Systems;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace C__Classes
 {
@@ -23,10 +25,52 @@ namespace C__Classes
         [SerializeField] 
         protected float iFrameTime = 1f;
         protected bool isDead = false;
+        
+        // protected Vector3Int worldPosition;
+        [SerializeField]
+        protected Tilemap tilemap;
+        protected TilemapGenerationSystem.TileProperties currentTile;
+        protected TilemapGenerationSystem tilemapGenerationSystem;
 
         protected void Start()
         {
             currentHealth = maxHealth;
+            tilemapGenerationSystem = tilemap.GetComponent<TilemapGenerationSystem>();
+            currentTile = tilemapGenerationSystem
+                .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
+            
+            if (ReferenceEquals(tilemap, null) || ReferenceEquals(tilemapGenerationSystem, null))
+            {
+                print("tilemap albo tilegenerationsystem to null");
+                return;
+            }
+
+        }
+
+        protected void Update()
+        {
+            GetActorTilePosition();
+        }
+
+        public void GetActorTilePosition()
+        {
+            if (ReferenceEquals(tilemap, null))
+            {
+                print("tilemap to null");
+                return;
+            }
+            
+            // worldPosition = tilemap.WorldToCell(transform.position);
+            TilemapGenerationSystem.TileProperties newTile = tilemapGenerationSystem.GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
+            // print(newTile);
+            
+            if (newTile.type == currentTile.type)
+            {
+                return;
+            }
+            
+            currentTile = newTile;
+            //reszta kodu odpowiedzialnego za movement
         }
 
         public void DealDamage(float dmg)
