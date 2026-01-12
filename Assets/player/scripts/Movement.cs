@@ -33,7 +33,7 @@ public class Movement : Actor
     //Thing I need for animations - Bartek
     
     new void Start(){
-        // base.Start();
+        base.Start();
         speed /= 50; //To have nicer vales
         acceleration /= 10;
         friction = 1-friction;
@@ -54,8 +54,8 @@ public class Movement : Actor
         Move();
         
         // print(currentHealth);
-        // print(currentTile.type);
-        print(transform.position);
+        print(currentTile.type);
+        // print(transform.position);
         if (debugInfo)
         {
             //PrintVariables("currentHealth");

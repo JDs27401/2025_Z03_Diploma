@@ -25,7 +25,7 @@ public class AI : Actor
         subtargets = PathFinding.Dumb(target);
         animator = GetComponent<Animator>();
     }
-    void Update()
+    new void Update()
     {
         subtargets = PathFinding.Dumb(target);
         CalculateSpeed();

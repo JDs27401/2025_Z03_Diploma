@@ -38,7 +38,7 @@ namespace C__Classes
             tilemapGenerationSystem = tilemap.GetComponent<TilemapGenerationSystem>();
             currentTile = tilemapGenerationSystem
                 .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
-            
+            // print("???");
             if (ReferenceEquals(tilemap, null) || ReferenceEquals(tilemapGenerationSystem, null))
             {
                 print("tilemap albo tilegenerationsystem to null");
@@ -62,6 +62,7 @@ namespace C__Classes
             
             // worldPosition = tilemap.WorldToCell(transform.position);
             TilemapGenerationSystem.TileProperties newTile = tilemapGenerationSystem.GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
+            // print(tilemapGenerationSystem.GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y));
             // print(newTile);
             
             if (newTile.type == currentTile.type)
