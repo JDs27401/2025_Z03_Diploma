@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Movement : Actor
 {
+    //Wiktor
     [SerializeField]
     private int maxStamina = 100;
     [SerializeField] //true if you want to know all the stuff
@@ -26,19 +27,19 @@ public class Movement : Actor
     private float playerColorAlpha = 1;
     private bool isSprinting = false;
     private int stamina = 100;
-
+    
     [SerializeField]
     private Animator animator;
     //Thing I need for animations - Bartek
     
     new void Start(){
-        // base.Start();
+        base.Start();
         speed /= 50; //To have nicer vales
         acceleration /= 10;
         friction = 1-friction;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
-
+    
     void FixedUpdate()
     {
         ManageSprint();
@@ -52,7 +53,8 @@ public class Movement : Actor
         
         Move();
         
-        print(currentHealth);
+        // print(currentHealth);
+        // print(currentTile.type);
         if (debugInfo)
         {
             //PrintVariables("currentHealth");

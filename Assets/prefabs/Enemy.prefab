@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 177118837479637864}
   - component: {fileID: 7328224769420379187}
   - component: {fileID: 76666702289436638}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy
   m_TagString: hostile
   m_Icon: {fileID: 0}
@@ -83,8 +83,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1137056297
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4653449010644760439, guid: edba9ce032a56c74f996f8abe0db9395, type: 3}
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 8635591622870923186}
   - component: {fileID: 2271546586976332790}
   - component: {fileID: 2783637549058012699}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FOV
   m_TagString: Untagged
   m_Icon: {fileID: 0}
