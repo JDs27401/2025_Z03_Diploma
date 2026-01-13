@@ -11,6 +11,7 @@ TagManager:
   - projectile
   - attack
   - destructible
+  - groundTilemap
   layers:
   - Default
   - TransparentFX

@@ -54,8 +54,7 @@ public class Movement : Actor
         Move();
         
         // print(currentHealth);
-        print(currentTile.type);
-        // print(transform.position);
+        // print(currentTile.type);
         if (debugInfo)
         {
             //PrintVariables("currentHealth");

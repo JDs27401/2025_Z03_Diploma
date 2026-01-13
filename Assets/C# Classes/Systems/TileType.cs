@@ -2,10 +2,12 @@
 {
     public enum TileType
     {
-        water,
-        deepWater,
-        ground,
-        wetGround,
-        cropField,
+        Water,
+        DeepWater,
+        Ground,
+        WetGround,
+        CropField,
+        Road,
+        Interior,
     }
 }

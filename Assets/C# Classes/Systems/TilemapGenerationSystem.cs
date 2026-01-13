@@ -59,38 +59,26 @@ namespace C__Classes.Systems
         {
             if (value < 0.15f)
             {
-                // tileProperties[x,mapSize - y - 1] = new TileProperties(x, y, TileType.water);
-                tileProperties[x,y] = new TileProperties(x, y, TileType.water);
+                tileProperties[x,y] = new TileProperties(x, y, TileType.Water);
                 return waterTile;
             }
             if (value < 0.45f)
             {
-                // tileProperties[x,mapSize - y - 1] = new TileProperties(x, y, TileType.ground);
-                tileProperties[x,y] = new TileProperties(x, y, TileType.ground);
+                tileProperties[x,y] = new TileProperties(x, y, TileType.Ground);
                 return GenerateRandomTile(groundTilesLight, x, y);
             }
             if (value < 0.75f)
             {
-                // tileProperties[x,mapSize - y - 1] = new TileProperties(x, y, TileType.ground);
-                tileProperties[x,y] = new TileProperties(x, y, TileType.ground);
+                tileProperties[x,y] = new TileProperties(x, y, TileType.Ground);
                 return GenerateRandomTile(groundTilesMed, x, y);
             }
             if (value < 0.95f)
             {
-                // tileProperties[x,mapSize - y - 1] = new TileProperties(x, y, TileType.ground);
-                tileProperties[x,y] = new TileProperties(x, y, TileType.ground);
+                tileProperties[x,y] = new TileProperties(x, y, TileType.Ground);
                 return GenerateRandomTile(groundTilesDark, x, y);
             }
-            // tileProperties[x,mapSize - y - 1] = new TileProperties(x, y, TileType.cropField);
-            tileProperties[x,y] = new TileProperties(x, y, TileType.cropField);
+            tileProperties[x,y] = new TileProperties(x, y, TileType.CropField);
             return GenerateRandomTile(cropTiles, x, y);
-            
-            /*return value switch
-            {
-                < 0.2f => waterTile,
-                < 0.9f => groundTile,
-                _      => highValueTile
-            };*/
         }
 
         private TileBase GenerateRandomTile(TileBase[] tiles, int x, int y)

@@ -59,7 +59,6 @@ namespace C__Classes.Systems
         finalInterpolated = Interpolate(interpolatedTop, interpolatedBottom, cellUVy);
 
         return finalInterpolated * 0.5f + 0.5f; //'flattening' the value to be contained between 0 and 1
-        // return finalInterpolated; //'flattening' the value to be contained between 0 and 1
     }
     
     public static float[,] GenerateMap(int size, int chunkSize, string hash)

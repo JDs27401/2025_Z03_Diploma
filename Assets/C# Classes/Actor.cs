@@ -26,44 +26,48 @@ namespace C__Classes
         protected float iFrameTime = 1f;
         protected bool isDead = false;
         
-        // protected Vector3Int worldPosition;
-        [SerializeField]
         protected Tilemap tilemap;
         protected TilemapGenerationSystem.TileProperties currentTile;
         protected TilemapGenerationSystem tilemapGenerationSystem;
+        protected TileType tileType = TileType.Ground;
 
         protected void Start()
         {
             currentHealth = maxHealth;
-            tilemapGenerationSystem = tilemap.GetComponent<TilemapGenerationSystem>();
-            currentTile = tilemapGenerationSystem
-                .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
-            // print("???");
-            if (ReferenceEquals(tilemap, null) || ReferenceEquals(tilemapGenerationSystem, null))
+            
+            tilemap = GameObject.FindWithTag("groundTilemap").GetComponent<Tilemap>();
+            if (ReferenceEquals(tilemap, null))
             {
-                print("tilemap albo tilegenerationsystem to null");
                 return;
             }
 
+            tilemapGenerationSystem = tilemap.GetComponent<TilemapGenerationSystem>();
+            if (ReferenceEquals(tilemapGenerationSystem, null))
+            {
+                return;
+            }
+            
+            currentTile = tilemapGenerationSystem
+                .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
         }
 
         protected void Update()
         {
-            GetActorTilePosition();
+            if (!CompareTag("projectile") || !CompareTag("heal") || CompareTag("trap") || CompareTag("destructible"))
+            {
+                GetActorTileType();
+            }
         }
 
-        public void GetActorTilePosition()
+        public void GetActorTileType()
         {
-            if (ReferenceEquals(tilemap, null))
+            if (ReferenceEquals(tilemap, null) || ReferenceEquals(tilemapGenerationSystem, null))
             {
-                print("tilemap to null");
                 return;
             }
-            
             // worldPosition = tilemap.WorldToCell(transform.position);
-            TilemapGenerationSystem.TileProperties newTile = tilemapGenerationSystem.GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
-            // print(tilemapGenerationSystem.GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y));
-            // print(newTile);
+            TilemapGenerationSystem.TileProperties newTile = tilemapGenerationSystem
+                .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
             
             if (newTile.type == currentTile.type)
             {
@@ -71,7 +75,9 @@ namespace C__Classes
             }
             
             currentTile = newTile;
+            tileType = currentTile.type;
             //reszta kodu odpowiedzialnego za movement
+            // print(tileType); //debug
         }
 
         public void DealDamage(float dmg)
@@ -125,6 +131,11 @@ namespace C__Classes
         public float GetSpeed()
         {
             return speed;
+        }
+
+        public TileType GetTileType()
+        {
+            return tileType;
         }
 
         public float GetCurrentHealth()
