@@ -77,7 +77,7 @@ namespace C__Classes
             currentTile = newTile;
             tileType = currentTile.type;
             //reszta kodu odpowiedzialnego za movement
-            // print(tileType); //debug
+             //print(tileType); //debug
         }
 
         public void DealDamage(float dmg)

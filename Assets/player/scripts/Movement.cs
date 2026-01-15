@@ -28,12 +28,16 @@ public class Movement : Actor
     private bool isSprinting = false;
     private int stamina = 100;
     
+    //Thing I need for animations - Bartek
     [SerializeField]
     private Animator animator;
-    //Thing I need for animations - Bartek
+    private Camera mainCam;
+    private Vector3 mousePos;
+    
     
     new void Start(){
         base.Start();
+        mainCam = GameObject.Find("MainCamera").GetComponent<Camera>();
         speed /= 50; //To have nicer vales
         acceleration /= 10;
         friction = 1-friction;
@@ -52,6 +56,7 @@ public class Movement : Actor
         }
         
         Move();
+        UpdateAnimations();
         
         // print(currentHealth);
         // print(currentTile.type);
@@ -125,17 +130,22 @@ public class Movement : Actor
     {
         Vector3 newPos = new Vector3(transform.position.x + currentSpeed.x, transform.position.y + currentSpeed.y, 0);
         transform.position = newPos;
-        
+    }
+
+    void UpdateAnimations()
+    {
         bool isMoving = Mathf.Abs(currentSpeed.x) > 0.01f || Mathf.Abs(currentSpeed.y) > 0.01f;
         animator.SetBool("isWalking", isMoving);
         
-        /*Player animation logic - the if is necessary for the Player's sprite to stay in one direction after not
-        pressing any buttons */
-        if (moveInput != Vector2.zero)
-        {
-            animator.SetFloat("XInput", moveInput.x);
-            animator.SetFloat("YInput", moveInput.y);    
-        }
+        //Calculating where player is looking based on the mouse position
+        Vector3 mouseScreenPos = (Vector3)Mouse.current.position.ReadValue();
+        mouseScreenPos.z = Mathf.Abs(mainCam.transform.position.z - transform.position.z);
+
+        Vector2 direction = (mainCam.ScreenToWorldPoint(mouseScreenPos) - transform.position).normalized;
+
+        
+        animator.SetFloat("XInput", direction.x);
+        animator.SetFloat("YInput", direction.y);
     }
     
     void ManageRoll()
