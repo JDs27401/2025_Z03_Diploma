@@ -37,9 +37,13 @@ public class Movement : Actor
     
     new void Start(){
         base.Start();
-        mainCam = GameObject.Find("MainCamera").GetComponent<Camera>();
-        speed /= 50; //To have nicer vales
-        acceleration /= 10;
+        mainCam = Camera.main;
+        if (mainCam == null)
+        {
+            mainCam = FindFirstObjectByType<Camera>();    
+        }
+        // speed /= 50; //To have nicer vales
+        // acceleration /= 10;
         friction = 1-friction;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -47,7 +51,7 @@ public class Movement : Actor
     void FixedUpdate()
     {
         ManageSprint();
-        ManageCrouch();
+        // ManageCrouch();
         ManageRoll();
         
         if (!isRolling)
@@ -105,7 +109,7 @@ public class Movement : Actor
     {
         //calculatoration
         currentSpeed *= friction;
-        currentSpeed += moveInput*acceleration;
+        currentSpeed += moveInput * acceleration * Time.fixedDeltaTime; //Added delta
         
         //check for max speed
         if (currentSpeed.x >= speed)
@@ -128,12 +132,18 @@ public class Movement : Actor
     }
     void Move() //changing player position
     {
-        Vector3 newPos = new Vector3(transform.position.x + currentSpeed.x, transform.position.y + currentSpeed.y, 0);
+        //Added delta
+        Vector3 newPos = new Vector3(
+            transform.position.x + currentSpeed.x * Time.fixedDeltaTime,
+            transform.position.y + currentSpeed.y * Time.fixedDeltaTime,
+            0);
         transform.position = newPos;
     }
 
     void UpdateAnimations()
     {
+        if (mainCam == null || Mouse.current == null) return;
+        
         bool isMoving = Mathf.Abs(currentSpeed.x) > 0.01f || Mathf.Abs(currentSpeed.y) > 0.01f;
         animator.SetBool("isWalking", isMoving);
         
@@ -164,19 +174,19 @@ public class Movement : Actor
             currentSpeed *= 0.8f;
         }
     }
-    void ManageCrouch()
-    {
-        if (isCrouching)
-        {
-            if(playerColorAlpha > 0.7) playerColorAlpha -= 0.01f;
-        }
-        else
-        {
-            if(playerColorAlpha < 1) playerColorAlpha += 0.01f;
-        }
-        var newColor = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, playerColorAlpha);
-        spriteRenderer.color = newColor;
-    }
+    // void ManageCrouch()
+    // {
+    //     if (isCrouching)
+    //     {
+    //         if(playerColorAlpha > 0.7) playerColorAlpha -= 0.01f;
+    //     }
+    //     else
+    //     {
+    //         if(playerColorAlpha < 1) playerColorAlpha += 0.01f;
+    //     }
+    //     var newColor = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, playerColorAlpha);
+    //     spriteRenderer.color = newColor;
+    // }
     void ManageSprint()
     {
         if (isSprinting)

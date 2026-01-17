@@ -4,6 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/BartekAnimacja.unity
+    guid: bb2f923989a82034a9de8004abbeb0e5
+  - enabled: 1
+    path: Assets/Scenes/GasStationInside.unity
+    guid: a62bfe69d06be604591abe62c1284b10
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

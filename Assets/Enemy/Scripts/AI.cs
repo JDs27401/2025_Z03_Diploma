@@ -24,9 +24,13 @@ public class AI : Actor
         target = new Vector2(transform.position.x, transform.position.y);
         subtargets = PathFinding.Dumb(target);
         animator = GetComponent<Animator>();
+        
+        // PAMIĘTAJ: Jeśli w base.Start() masz jakieś dzielenie speed /= 50, 
+        // to AI będzie bardzo wolne. Przy delcie operujemy na czystych wartościach.
     }
     new void Update()
     {
+        // Tutaj używamy zwykłego Update, więc delta będzie zmienna (zależna od FPS)
         subtargets = PathFinding.Dumb(target);
         CalculateSpeed();
         Move();
@@ -36,8 +40,9 @@ public class AI : Actor
 
     void Move() //changing position
     {
-        Vector3 newPos = new Vector3(transform.position.x + currentSpeed.x, transform.position.y + currentSpeed.y, 0);
-        transform.position = newPos;
+        // DODANO DELTĘ: Przesunięcie = Prędkość * Czas (Time.deltaTime)
+        Vector3 displacement = new Vector3(currentSpeed.x, currentSpeed.y, 0) * Time.deltaTime;
+        transform.position += displacement;
     }
 
     void UpdateAnimation()
@@ -48,9 +53,9 @@ public class AI : Actor
         if (currentSpeed != Vector2.zero)
         {
             if(currentSpeed.x < 0)
-                animator.SetFloat("XInput", -1); //Had to add this line because the zombie wouldn't flip on X axis lol
+                animator.SetFloat("XInput", -1); 
             else 
-                animator.SetFloat("XInput", currentSpeed.x);
+                animator.SetFloat("XInput", currentSpeed.x); // Tu warto by dać Mathf.Sign lub 1, żeby animacja się nie psuła przy małych prędkościach
             animator.SetFloat("YInput", currentSpeed.y);    
         }
     }
@@ -96,7 +101,9 @@ public class AI : Actor
         //calculatoration
         currentSpeed *= friction;
         
-        currentSpeed += CalculateAngle()*acceleration;
+        // DODANO DELTĘ: Akceleracja musi uwzględniać czas klatki
+        // V = a * t. Używamy Time.deltaTime, bo jesteśmy w Update()
+        currentSpeed += CalculateAngle() * acceleration * Time.deltaTime;
         
         //check for max speed
         if (currentSpeed.x >= speed)
@@ -117,13 +124,4 @@ public class AI : Actor
             currentSpeed.y = -speed;
         }
     }
-
-    // void OnTriggerStay2D(Collider2D collision)
-    // {
-    //     if (collision.gameObject.tag == "player")
-    //     {
-    //         collision.gameObject.GetComponent<Actor>().DealDamage(10);
-    //         collision.gameObject.GetComponent<Actor>().StartInvulnerability();
-    //     }
-    // }
 }
