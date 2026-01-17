@@ -83,9 +83,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1137056297
+  m_SortingLayerID: 123850683
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4653449010644760439, guid: edba9ce032a56c74f996f8abe0db9395, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -96,7 +96,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!61 &8563520833934006872
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -155,8 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3bee33760ab1a42b084efd5ffbe0b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AI
-  speed: 0.05
-  acceleration: 0.1
+  speed: 425
+  acceleration: 125
   friction: 0.9
   maxHealth: 100
   currentHealth: 0
