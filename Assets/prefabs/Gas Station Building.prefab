@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9032991249537876248}
   - component: {fileID: 3359983483801892391}
-  - component: {fileID: 1388928647461443151}
+  - component: {fileID: 7365283573738809165}
   m_Layer: 0
-  m_Name: DoorTrigger
+  m_Name: GasStationDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.1795412, y: 0.05662231}
   m_EdgeRadius: 0
---- !u!114 &1388928647461443151
+--- !u!114 &7365283573738809165
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GasStationDoorInteraction
   sceneToLoad: GasStationInside
+  targetSpawnID: SpawnPoint
 --- !u!1 &8344336692475606003
 GameObject:
   m_ObjectHideFlags: 0

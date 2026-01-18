@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GasStationInside.unity
     guid: a62bfe69d06be604591abe62c1284b10
+  - enabled: 1
+    path: Assets/Scenes/BigBuildingInside.unity
+    guid: c87319d83461c7d43945c77c02c096a1
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
