@@ -127,9 +127,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1693594579179999294, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_Name
+      value: GasStationDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 512.379
+      value: 530.54
       objectReference: {fileID: 0}
     - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -623,10 +627,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 267857309854984112, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
-      propertyPath: acceleration
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 4672375051657317503, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 512.015
@@ -676,6 +676,75 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
+--- !u!1001 &8049178405807582501
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 284740369527228438, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_Name
+      value: BigBuildingRightDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 505.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 532.846
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4570721072878242866, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_Name
+      value: Big Building
+      objectReference: {fileID: 0}
+    - target: {fileID: 5502958937087901729, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: targetSpawnID
+      value: LeftSpawnPoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511711094379018348, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+      propertyPath: m_Name
+      value: BigBuildingLeftDoor
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8019110a9902f5342b301375d63234bd, type: 3}
 --- !u!1001 &9086343341975612329
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -744,3 +813,4 @@ SceneRoots:
   - {fileID: 687518405}
   - {fileID: 55060091}
   - {fileID: 9086343341975612329}
+  - {fileID: 8049178405807582501}
