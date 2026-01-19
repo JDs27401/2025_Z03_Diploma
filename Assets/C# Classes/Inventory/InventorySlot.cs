@@ -2,13 +2,21 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CraftingSlot : MonoBehaviour, IDropHandler
+public class InventorySlot : MonoBehaviour, IDropHandler
 {
+    [Header("Konfiguracja")]
+    // ZAZNACZ 'TRUE' W UNITY DLA SLOTU WYNIKU (RESULT SLOT)!
+    public bool isReadOnly = false; 
+
+    [Header("Dane (Nie ruszaj w edytorze)")]
     public ItemData currentItem;
     public Image iconDisplay;
 
     public void OnDrop(PointerEventData eventData)
     {
+        // 1. BLOKADA: Jeśli slot jest tylko do odczytu (np. Wynik), nie pozwól nic wrzucić
+        if (isReadOnly) return;
+
         if (eventData.pointerDrag == null) return;
 
         CleanUpGhosts();
@@ -20,7 +28,7 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
 
         Transform oldSlotTransform = droppedItemScript.parentAfterDrag;
 
-        // --- SCENARIUSZ A: PUSTY ---
+        // --- SCENARIUSZ A: SLOT PUSTY ---
         if (transform.childCount == 0)
         {
             droppedItemScript.parentAfterDrag = transform;
@@ -30,7 +38,7 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
 
             UpdateOldSlot(oldSlotTransform, null, null);
         }
-        // --- SCENARIUSZ B: SWAP ---
+        // --- SCENARIUSZ B: ZAMIANA (SWAP) ---
         else
         {
             GameObject residentObj = transform.GetChild(0).gameObject;
@@ -52,17 +60,12 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
             }
         }
         
-        // POWIADOMIENIE UI
-        if (CraftingUI.instance != null)
-        {
-            CraftingUI.instance.UpdateCraftingGrid();
-        }
-        
         TooltipManager.instance.HideTooltip();
     }
 
     private void UpdateOldSlot(Transform oldSlotTransform, ItemData newItem, Image newIcon)
     {
+        // Czy to był Ekwipunek?
         InventorySlot invSlot = oldSlotTransform.GetComponent<InventorySlot>();
         if (invSlot != null)
         {
@@ -71,11 +74,18 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
             return; 
         }
 
+        // Czy to był Crafting?
         CraftingSlot craftSlot = oldSlotTransform.GetComponent<CraftingSlot>();
         if (craftSlot != null)
         {
             craftSlot.currentItem = newItem;
             craftSlot.iconDisplay = newIcon;
+
+            // WAŻNE: Powiadom UI craftingu, że zabrano przedmiot!
+            if (CraftingUI.instance != null)
+            {
+                CraftingUI.instance.UpdateCraftingGrid();
+            }
             return;
         }
     }

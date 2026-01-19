@@ -1,18 +1,26 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 public class CraftingManager : MonoBehaviour
 {
+    // Singleton zostawiamy, bo CraftingUI go potrzebuje do odwołań
+    public static CraftingManager instance;
+
     public List<RecipeData> allRecipes;
 
+    private void Awake()
+    {
+        if (instance != null && instance != this) Destroy(this.gameObject);
+        else instance = this;
+    }
+
+    // Ta metoda tylko zwraca ItemData (logika), nie dotyka UI!
     public ItemData CheckForRecipe(ItemData[] currentGrid)
     {
         foreach (var recipe in allRecipes)
         {
             if (MatchRecipe(recipe, currentGrid))
             {
-                Debug.Log($"Wytworzono: {recipe.resultItem.itemName}");
                 return recipe.resultItem;
             }
         }
@@ -21,41 +29,18 @@ public class CraftingManager : MonoBehaviour
 
     private bool MatchRecipe(RecipeData recipe, ItemData[] currentGrid)
     {
-        Debug.Log($"--- Sprawdzam przepis: {recipe.recipeName} ---");
-
         for (int i = 0; i < 4; i++)
         {
             ItemData recipeItem = recipe.inputs[i];
-            ItemData gridItem = currentGrid[i];
-
-            string rName = recipeItem != null ? recipeItem.name : "PUSTO";
-            string gName = gridItem != null ? gridItem.name : "PUSTO";
-
-            // Sprawdźmy co widzi system w tym slocie
-            Debug.Log($"Slot {i}: Przepis chce [{rName}] <-> Na stole jest [{gName}]");
+            ItemData gridItem = (i < currentGrid.Length) ? currentGrid[i] : null;
 
             bool recipeSlotEmpty = recipeItem == null;
             bool gridSlotEmpty = gridItem == null;
 
-            // 1. Jeśli oba puste -> OK
             if (recipeSlotEmpty && gridSlotEmpty) continue;
-
-            // 2. Jeśli jedno puste a drugie nie -> BŁĄD
-            if (recipeSlotEmpty != gridSlotEmpty)
-            {
-                Debug.Log($"-> BŁĄD w slocie {i}: Niezgodność pustego pola! (Wymagane: {rName}, Jest: {gName})");
-                return false;
-            }
-
-            // 3. Jeśli różne przedmioty -> BŁĄD
-            if (recipeItem != gridItem)
-            {
-                Debug.Log($"-> BŁĄD w slocie {i}: Zły przedmiot! (Wymagane: {rName}, Jest: {gName})");
-                return false;
-            }
+            if (recipeSlotEmpty != gridSlotEmpty) return false;
+            if (recipeItem.itemName != gridItem.itemName) return false;
         }
-        
-        Debug.Log("-> SUKCES! Przepis pasuje idealnie.");
         return true;
     }
 }

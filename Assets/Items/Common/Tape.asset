@@ -16,5 +16,5 @@ MonoBehaviour:
   itemName: Tape
   icon: {fileID: -7133185374514817068, guid: 71e3b754d6e1db64cbc0ce766ed732fd, type: 3}
   rarity: 0
-  description: 
+  description: Just a tape
   isStackable: 1

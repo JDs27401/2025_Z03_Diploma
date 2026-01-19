@@ -16,5 +16,5 @@ MonoBehaviour:
   itemName: Wooden plank
   icon: {fileID: 3593017019613040609, guid: 386af8e94c954184997fdcabcdc9cc8c, type: 3}
   rarity: 0
-  description: 
+  description: Just a wooden plank
   isStackable: 1

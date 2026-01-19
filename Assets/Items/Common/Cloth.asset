@@ -16,5 +16,5 @@ MonoBehaviour:
   itemName: Cloth
   icon: {fileID: 406586822670204799, guid: 5d8395ef4ee4f1245bd04f22d00491a8, type: 3}
   rarity: 0
-  description: 
+  description: a piece of old cloth
   isStackable: 1

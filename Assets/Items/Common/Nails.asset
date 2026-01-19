@@ -16,5 +16,5 @@ MonoBehaviour:
   itemName: Nails
   icon: {fileID: -5051568109157756345, guid: 14849e1550e147c47bdbbfcfe1189f32, type: 3}
   rarity: 0
-  description: 
+  description: nails.
   isStackable: 1
