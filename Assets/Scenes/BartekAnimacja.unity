@@ -171,6 +171,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7365283573738809165, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: MainScene
+      value: BartekAnimacja
+      objectReference: {fileID: 0}
     - target: {fileID: 8344336692475606003, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
       propertyPath: m_Name
       value: Gas Station Building

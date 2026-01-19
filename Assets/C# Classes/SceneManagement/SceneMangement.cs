@@ -1,44 +1,65 @@
+using C__Classes.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneManagement : MonoBehaviour
+namespace C__Classes.SceneManagement
 {
-    [Header("Ustawienia")] 
-    public string sceneToLoad;
-    
-    [Header("ID spawnu w nowej scenie")]
-    public string targetSpawnID;
-    
-    private bool isPlayerInRange = false;
-
-    private void Update()
+    public class SceneManagement : MonoBehaviour
     {
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
+        [Header("Ustawienia")] public string sceneToLoad;
+        [SerializeField] private string MainScene;
+
+        [Header("ID spawnu w nowej scenie")] public string targetSpawnID;
+
+        private bool isPlayerInRange = false;
+
+        private void Update()
         {
-            EnterDoor();
+            if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
+            {
+                EnterDoor();
+            }
         }
-    }
 
-    private void EnterDoor()
-    {
-        
-        SceneTransport.TargetSpawnID = targetSpawnID;
-        SceneManager.LoadScene(sceneToLoad);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("player"))
+        private void EnterDoor()
         {
-            isPlayerInRange = true;
+            if (SceneManager.GetActiveScene().name == MainScene)
+            {
+                SceneTransport.TargetSpawnID = targetSpawnID;
+                SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);
+                SceneManager.sceneLoaded += SceneManagerOnsceneLoaded; 
+                
+            } else if (SceneManager.GetActiveScene().name == sceneToLoad)
+            {
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(MainScene));
+                SceneTransport.TargetSpawnID = targetSpawnID;
+                SceneManager.UnloadSceneAsync(sceneToLoad);
+                
+            }
         }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("player"))
+        private void SceneManagerOnsceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            isPlayerInRange = false;
+            if (scene.name != sceneToLoad) return;
+            
+            SceneManager.sceneLoaded -= SceneManagerOnsceneLoaded;
+            SceneManager.SetActiveScene(scene);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("player"))
+            {
+                isPlayerInRange = true;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.CompareTag("player"))
+            {
+                isPlayerInRange = false;
+            }
         }
     }
 }

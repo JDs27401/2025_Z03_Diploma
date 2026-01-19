@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using C__Classes.Systems;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 namespace C__Classes.Systems
 {
@@ -11,6 +14,8 @@ namespace C__Classes.Systems
         private string hash;
         [SerializeField]
         private Tilemap tilemap;
+        private Rigidbody2D rigidbody2D;
+        private EdgeCollider2D edgeCollider2D;
         [SerializeField]
         private TileBase waterTile;
         [SerializeField]
@@ -36,7 +41,33 @@ namespace C__Classes.Systems
             tileProperties = new TileProperties[mapSize, mapSize];
             RunProceduralGeneration();
         }
-        
+
+        private void Start()
+        {
+            rigidbody2D = tilemap.AddComponent<Rigidbody2D>();
+            rigidbody2D.bodyType = RigidbodyType2D.Static;
+
+            edgeCollider2D = tilemap.AddComponent<EdgeCollider2D>();
+            
+            tilemap.CompressBounds();
+            
+            BoundsInt bounds = tilemap.cellBounds;
+            Vector3 min = tilemap.CellToWorld(bounds.min);
+            Vector3 max = tilemap.CellToWorld(bounds.max);
+
+            //Punkty ramki (zgodnie z ruchem wskazówek)
+            Vector2[] points =
+            {
+                new Vector2(min.x, min.y),
+                new Vector2(min.x, max.y),
+                new Vector2(max.x, max.y),
+                new Vector2(max.x, min.y),
+                new Vector2(min.x, min.y) // zamknięcie
+            };
+
+            edgeCollider2D.points = points;
+        }
+
         private void RunProceduralGeneration()
         {
             GenerateTilemap();

@@ -1,6 +1,10 @@
 using UnityEngine;
 
-public static class SceneTransport
+namespace C__Classes.SceneManagement
 {
-    public static string TargetSpawnID;
+    public static class SceneTransport
+    {
+        public static string TargetSpawnID;
+    }
+    
 }
