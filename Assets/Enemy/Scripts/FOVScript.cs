@@ -1,21 +1,27 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class FOVScript : MonoBehaviour
 {
-    private AI callParentAI;
+    private EAI parentAI;
+    
     void Start()
     {
-        callParentAI = GetComponentInParent<AI>();
+        parentAI = GetComponentInParent<EAI>();
     }
-    void OnTriggerStay2D(Collider2D other)
+
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Vector2 collisiionPoint = other.gameObject.transform.position;
-        callParentAI.Aggrevate(collisiionPoint);
+        if (other.CompareTag("player"))
+        {
+            parentAI.Aggravate(other.transform);
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        callParentAI.Pacify();
+        if (other.CompareTag("player"))
+        {
+            parentAI.Pacify();
+        }
     }
 }
