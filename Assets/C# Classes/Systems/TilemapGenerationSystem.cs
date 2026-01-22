@@ -17,7 +17,7 @@ namespace C__Classes.Systems
         private int chunkSize = 128;
         [SerializeField]
         private Tilemap tilemap;
-        private Rigidbody2D rigidbody2D;
+        private Rigidbody2D rigidBody2D;
         private EdgeCollider2D edgeCollider2D;
         [Header("Tiles")]
         [SerializeField]
@@ -61,8 +61,8 @@ namespace C__Classes.Systems
             //     return;
             // }
 
-            rigidbody2D.AddComponent<Rigidbody2D>();
-            rigidbody2D.bodyType = RigidbodyType2D.Static;
+            rigidBody2D = tilemap.AddComponent<Rigidbody2D>();
+            rigidBody2D.bodyType = RigidbodyType2D.Static;
 
             edgeCollider2D = tilemap.AddComponent<EdgeCollider2D>();
             
