@@ -2,26 +2,20 @@ using UnityEngine;
 
 public class PickableItem : MonoBehaviour
 {
-    public ItemData itemData; // Twoje dane z pliku .asset
+    public ItemData itemData;
+    public int amount = 1; 
 
-    // Ta funkcja wywoła się AUTOMATYCZNIE, gdy ktoś wejdzie w ten obiekt
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Sprawdzamy, czy to GRACZ wszedł w przedmiot (a nie np. potwór czy ściana)
         if (other.CompareTag("player"))
         {
-            Debug.Log("Gracz dotknął przedmiotu!");
-
-            InventoryManager manager = FindObjectOfType<InventoryManager>();
-            
-            if (manager != null)
+            if (InventoryManager.instance != null)
             {
-                // Próbujemy dodać do ekwipunku
-                bool wasPickedUp = manager.AddItemToFirstFreeSlot(itemData, itemData.icon);
+                bool wasPickedUp = InventoryManager.instance.AddItem(itemData, amount);
 
-                // Jeśli się udało -> zniszcz przedmiot na scenie
                 if (wasPickedUp)
                 {
+                    Debug.Log($"Podniesiono: {itemData.itemName} x{amount}");
                     Destroy(gameObject);
                 }
             }

@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: nails
   itemName: Nails
-  icon: {fileID: -5051568109157756345, guid: 14849e1550e147c47bdbbfcfe1189f32, type: 3}
+  icon: {fileID: 21300000, guid: 0f4c295ee21bb4b45badb150f1de6366, type: 3}
   rarity: 0
-  description: nails.
+  itemType: 0
+  description: nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.
   isStackable: 1
+  maxStackSize: 100

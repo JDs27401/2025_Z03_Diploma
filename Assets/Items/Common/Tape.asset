@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: tape
   itemName: Tape
-  icon: {fileID: -7133185374514817068, guid: 71e3b754d6e1db64cbc0ce766ed732fd, type: 3}
+  icon: {fileID: 21300000, guid: c2e3f70c2159f0642ae2844fd0b3e9c5, type: 3}
   rarity: 0
+  itemType: 0
   description: Just a tape
   isStackable: 1
+  maxStackSize: 100
