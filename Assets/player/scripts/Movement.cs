@@ -1,10 +1,19 @@
 using System;
 using C__Classes;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class Movement : Actor
 {
+    // Lukasz, health bar event
+    [Header("UI Events")]
+    public UnityEvent<float> onHealthChanged;
+    public UnityEvent<float> onStaminaChanged;
+    
+    private float _lastKnownHealth;
+    private int _lastKnownStamina;
+
     //Wiktor
     [SerializeField]
     private int maxStamina = 100;
@@ -46,10 +55,36 @@ public class Movement : Actor
         // acceleration /= 10;
         friction = 1-friction;
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        _lastKnownHealth = currentHealth;
+        float healthPercent = currentHealth / maxHealth;
+        onHealthChanged?.Invoke(healthPercent);
+
+        _lastKnownStamina = stamina;
+        float staminaPercent = (maxStamina > 0) ? (float)stamina / maxStamina : 0;
+        onStaminaChanged?.Invoke(staminaPercent);
     }
     
     void FixedUpdate()
     {
+        if (Mathf.Abs(currentHealth - _lastKnownHealth) > 0.01f)
+        {
+            _lastKnownHealth = currentHealth;
+        
+            float healthPercent = (maxHealth > 0) ? currentHealth / maxHealth : 0;
+            
+            onHealthChanged?.Invoke(healthPercent);
+        }
+
+        if (stamina != _lastKnownStamina)
+        {
+            _lastKnownStamina = stamina;
+            
+            float staminaPercent = (maxStamina > 0) ? (float)stamina / maxStamina : 0;
+            
+            onStaminaChanged?.Invoke(staminaPercent);
+        }
+
         ManageSprint();
         // ManageCrouch();
         ManageRoll();

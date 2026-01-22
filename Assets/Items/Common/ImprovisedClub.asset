@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: improvised_club
   itemName: Improvised club
-  icon: {fileID: 4850531764899697021, guid: 160878208ce6c4943be0a42b6d0c2ed2, type: 3}
+  icon: {fileID: 21300000, guid: 3dbd377bd8ee18941b7dd435f6945a44, type: 3}
   rarity: 0
+  itemType: 0
   description: 
   isStackable: 0
+  maxStackSize: 100
