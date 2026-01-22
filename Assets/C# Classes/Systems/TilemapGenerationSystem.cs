@@ -55,11 +55,23 @@ namespace C__Classes.Systems
         
         private void Start()
         {
-            // rigidbody2D = tilemap.GetComponent<Rigidbody2D>();
-            // if (ReferenceEquals(rigidbody2D, null))
-            // {
-            //     return;
-            // }
+            
+        }
+        
+        private void RunProceduralGeneration() //maybe this whole shit ass method should be removed
+        {
+            GenerateTilemap();
+            GenerateMapBoundaries(); //dunno, this has to be b4 RunBuildingGeneration() method for some reason 
+            RunBuildingGeneration();
+        }
+
+        private void GenerateMapBoundaries()
+        {
+            /*rigidBody2D = tilemap.GetComponent<Rigidbody2D>();
+            if (ReferenceEquals(rigidBody2D, null))
+            {
+                return;
+            }*/
 
             rigidBody2D = tilemap.AddComponent<Rigidbody2D>();
             rigidBody2D.bodyType = RigidbodyType2D.Static;
@@ -83,12 +95,6 @@ namespace C__Classes.Systems
             };
 
             edgeCollider2D.points = points;
-        }
-        
-        private void RunProceduralGeneration()
-        {
-            GenerateTilemap();
-            RunBuildingGeneration();
         }
 
         private void GenerateTilemap()
