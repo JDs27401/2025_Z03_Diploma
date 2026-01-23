@@ -5,17 +5,36 @@ public class PlayerSpawner : MonoBehaviour
 {
     void Start()
     {
-        if (!string.IsNullOrEmpty(SceneTransport.TargetSpawnID))
-        {
-            GameObject target = GameObject.Find(SceneTransport.TargetSpawnID);
+        string targetScene = SceneTransport.TargetSpawnID;
+        
+        if (string.IsNullOrEmpty(targetScene)) return;
 
-            if (target != null)
+        GameObject targetObject = null;
+        
+        targetObject = GameObject.Find(targetScene);
+        
+        if (targetObject == null)
+        {
+            SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
+            foreach (var door in allDoors)
             {
-                transform.position = target.transform.position;
-                Debug.Log($"Sukces, znalazłem {target.name}");
+                if (door.myUniqueID == targetScene)
+                {
+                    targetObject = door.gameObject;
+                    break;
+                }
             }
-            //If there's no spawn point of that name, Player will simply be taken into the scene 
         }
+        
+        if (targetObject != null)
+        {
+            transform.position = targetObject.transform.position;
+        }
+        else
+        {
+            Debug.LogWarning($"Target not found: {targetScene}");
+        }
+        
         SceneTransport.TargetSpawnID = null;
     }
 }
