@@ -20,7 +20,8 @@ public class Fight : MonoBehaviour
     [SerializeField] private Material meleeVisualMaterial;
 
     [Header("Visuals Settings")]
-    [SerializeField] private int visualSortingOrder = 10;
+    [SerializeField] private int visualSortingOrder;
+    [SerializeField] private string visualSortingLayer;
 
     [Header("Ranged Stats")]
     [SerializeField] private float shootingSpeed = 4f; // shots per sec
@@ -121,6 +122,7 @@ public class Fight : MonoBehaviour
         meleeMeshRenderer = meleeVisualObj.AddComponent<MeshRenderer>();
         
         meleeMeshRenderer.sortingOrder = visualSortingOrder; 
+        meleeMeshRenderer.sortingLayerName = visualSortingLayer; 
         
         meleeMeshRenderer.enabled = false;
         

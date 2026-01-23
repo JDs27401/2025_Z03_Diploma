@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5025425033013735497}
   - component: {fileID: 5703000714113738365}
   - component: {fileID: 3562104371583064557}
+  - component: {fileID: 5160126871664793592}
   m_Layer: 8
   m_Name: Player
   m_TagString: player
@@ -116,6 +117,12 @@ MonoBehaviour:
   currentHealth: 50
   damage: 0
   iFrameTime: 1
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onStaminaChanged:
+    m_PersistentCalls:
+      m_Calls: []
   maxStamina: 100
   debugInfo: 0
   rollPower: 10
@@ -323,3 +330,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e73b9910bfa89f46a6e57d144b4ef0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawner
+--- !u!114 &5160126871664793592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292680892767096521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39dc6583dc66d824cb4979b12cef45cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fight
+  projectilePrefab: {fileID: 8520928149139622634, guid: 37d1858775293e447afd48070baef938, type: 3}
+  firePoint: {fileID: 0}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  meleeSpeed: 2
+  meleeRange: 2.5
+  meleeDamage: 25
+  meleeAngle: 120
+  meleeVisualMaterial: {fileID: 2100000, guid: 6f3148bdbecdf974eb3b3e3554a04900, type: 2}
+  visualSortingOrder: 10
+  shootingSpeed: 4
+  projectileSpeed: 10
+  projectileSize: 0.5
+  projectileSpread: 5
+  projectileDamage: 10

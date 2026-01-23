@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine.AI;
 
 namespace C__Classes.Systems
 {
@@ -100,7 +101,7 @@ namespace C__Classes.Systems
                     randomVectors[iX + 1, iY + 1]);
             }
         }
-
+        
         return grid;
     }
     

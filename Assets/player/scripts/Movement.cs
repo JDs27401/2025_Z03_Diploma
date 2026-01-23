@@ -179,7 +179,7 @@ public class Movement : Actor
     {
         if (mainCam == null || Mouse.current == null) return;
         
-        bool isMoving = Mathf.Abs(currentSpeed.x) > 0.01f || Mathf.Abs(currentSpeed.y) > 0.01f;
+        bool isMoving = Mathf.Abs(currentSpeed.x) > 1f || Mathf.Abs(currentSpeed.y) > 1f;
         animator.SetBool("isWalking", isMoving);
         
         //Calculating where player is looking based on the mouse position
