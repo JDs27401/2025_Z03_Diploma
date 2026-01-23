@@ -403,6 +403,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TilemapGenerationSystem
   hash: "g\xF3wno"
+  mapSize: 1024
+  chunkSize: 128
   tilemap: {fileID: 1270452878}
   waterTile: {fileID: 11400000, guid: 0aa1d1ec559b24103a44bfdaf0fc1506, type: 2}
   groundTilesLight:
@@ -426,8 +428,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c84d47f09d3ec5d468e6893619c0b5f2, type: 2}
   - {fileID: 11400000, guid: ee74fc0cddbfe14439291c6f38985a2a, type: 2}
   highValueTile: {fileID: 11400000, guid: c3ab124f808864b42b0380c1d57b2f8b, type: 2}
-  mapSize: 1024
-  chunkSize: 128
+  buildingPrefabs:
+  - {fileID: 8344336692475606003, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+  numberOfCircles: 5
+  radius: 50
+  radiusIncrease: 30
 --- !u!483693784 &1270452877
 TilemapRenderer:
   serializedVersion: 2

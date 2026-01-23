@@ -133,11 +133,11 @@ PrefabInstance:
       objectReference: {fileID: 1092936835}
     - target: {fileID: 1004522292839000671, guid: 77122195b8068d443932c43d256c1ddd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.4145362
+      value: 6.89
       objectReference: {fileID: 0}
     - target: {fileID: 1004522292839000671, guid: 77122195b8068d443932c43d256c1ddd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.3751566
+      value: 10002.06
       objectReference: {fileID: 0}
     - target: {fileID: 1004522292839000671, guid: 77122195b8068d443932c43d256c1ddd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -271,7 +271,7 @@ Transform:
   m_GameObject: {fileID: 618854092}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 10000, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -287,11 +287,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4672375051657317503, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.4145362
+      value: 6.89
       objectReference: {fileID: 0}
     - target: {fileID: 4672375051657317503, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.3751566
+      value: 10002.06
       objectReference: {fileID: 0}
     - target: {fileID: 4672375051657317503, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -386,6 +386,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.TilemapGenerationSystem
   hash: skibidi
+  mapSize: 24
+  chunkSize: 12
   tilemap: {fileID: 1239301889}
   waterTile: {fileID: 11400000, guid: 989f2405a15729e449b909b07c720eb7, type: 2}
   groundTilesLight:
@@ -397,8 +399,10 @@ MonoBehaviour:
   cropTiles:
   - {fileID: 11400000, guid: 989f2405a15729e449b909b07c720eb7, type: 2}
   highValueTile: {fileID: 11400000, guid: 989f2405a15729e449b909b07c720eb7, type: 2}
-  mapSize: 24
-  chunkSize: 12
+  buildingPrefabs: []
+  numberOfCircles: 0
+  radius: 0
+  radiusIncrease: 0
 --- !u!483693784 &1239301888
 TilemapRenderer:
   serializedVersion: 2
@@ -531,7 +535,7 @@ Transform:
   m_GameObject: {fileID: 1919475307}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 10000, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -550,7 +554,7 @@ GameObject:
   - component: {fileID: 2112254878}
   - component: {fileID: 2112254877}
   m_Layer: 0
-  m_Name: LeftSpawnPoint
+  m_Name: BigBuildingSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -565,8 +569,8 @@ Transform:
   m_GameObject: {fileID: 2112254875}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.99, y: 2.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 13.49, y: 10000, z: 0}
+  m_LocalScale: {x: 1.99875, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -583,8 +587,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c5f3c85b740344dbca9f9a2f39c256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneManagement
-  sceneToLoad: BartekAnimacja
-  targetSpawnID: BigBuildingLeftDoor
+  sceneToLoad: MERGED_SCENE
+  targetSpawnID: 
+  myUniqueID: 
 --- !u!61 &2112254878
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -631,99 +636,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 4.6950083, y: 2.9599607}
   m_EdgeRadius: 0
---- !u!1 &2129449428
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2129449429}
-  - component: {fileID: 2129449431}
-  - component: {fileID: 2129449430}
-  m_Layer: 0
-  m_Name: RightSpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2129449429
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2129449428}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.7, y: 2.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2129449430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2129449428}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2c5f3c85b740344dbca9f9a2f39c256, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneManagement
-  sceneToLoad: BartekAnimacja
-  targetSpawnID: BigBuildingRightDoor
---- !u!61 &2129449431
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2129449428}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.112457275, y: -0.5622839}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 3.2170067, y: 2.1245677}
-  m_EdgeRadius: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -732,5 +644,4 @@ SceneRoots:
   - {fileID: 618854094}
   - {fileID: 1919475309}
   - {fileID: 1092936834}
-  - {fileID: 2129449429}
   - {fileID: 2112254876}
