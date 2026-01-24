@@ -1,8 +1,12 @@
+using System.Collections;
 using System.Collections.Generic;
 using C__Classes.Systems;
+// using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using NavMeshPlus.Components;
+using NavMeshSurface = Unity.AI.Navigation.NavMeshSurface;
 
 namespace C__Classes.Systems
 {
@@ -32,6 +36,8 @@ namespace C__Classes.Systems
         private TileBase[] cropTiles;
         [SerializeField]
         private TileBase highValueTile;
+        [SerializeField]
+        private NavMeshSurface navmesh;
         
         [Header("Buildings")]
         [SerializeField]
@@ -51,11 +57,6 @@ namespace C__Classes.Systems
         {
             tileProperties = new TileProperties[mapSize, mapSize];
             RunProceduralGeneration();
-        }
-        
-        private void Start()
-        {
-            
         }
         
         private void RunProceduralGeneration() //maybe this whole shit ass method should be removed

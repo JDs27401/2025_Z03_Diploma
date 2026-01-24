@@ -12,6 +12,7 @@ TagManager:
   - attack
   - destructible
   - groundTilemap
+  - navmesh
   layers:
   - Default
   - TransparentFX

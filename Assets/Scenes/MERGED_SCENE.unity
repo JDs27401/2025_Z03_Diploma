@@ -378,9 +378,10 @@ GameObject:
   - component: {fileID: 860279405}
   - component: {fileID: 860279404}
   - component: {fileID: 860279403}
+  - component: {fileID: 860279406}
   m_Layer: 0
   m_Name: NavMesh Surface
-  m_TagString: Untagged
+  m_TagString: navmesh
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -431,7 +432,7 @@ MonoBehaviour:
   m_BuildHeightMesh: 0
   m_MinRegionArea: 0
   m_HideEditorLogs: 0
-  m_NavMeshData: {fileID: 23800000, guid: 9421a7ffcb04c442bb5430df73cd1204, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!4 &860279405
 Transform:
   m_ObjectHideFlags: 0
@@ -447,6 +448,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &860279406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860279402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e36a1cd67af944c1be80c8a32ad32dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.NavMeshBaker
+  navmesh: {fileID: 0}
 --- !u!1 &1270452874
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,7 +473,6 @@ GameObject:
   - component: {fileID: 1270452878}
   - component: {fileID: 1270452877}
   - component: {fileID: 1270452876}
-  - component: {fileID: 1270452879}
   m_Layer: 6
   m_Name: Tilemap
   m_TagString: groundTilemap
@@ -520,6 +533,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c84d47f09d3ec5d468e6893619c0b5f2, type: 2}
   - {fileID: 11400000, guid: ee74fc0cddbfe14439291c6f38985a2a, type: 2}
   highValueTile: {fileID: 11400000, guid: c3ab124f808864b42b0380c1d57b2f8b, type: 2}
+  navmesh: {fileID: 0}
   buildingPrefabs:
   - {fileID: 8344336692475606003, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
   - {fileID: 4570721072878242866, guid: 8019110a9902f5342b301375d63234bd, type: 3}
@@ -620,22 +634,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &1270452879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1270452874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshModifier
-  m_OverrideArea: 0
-  m_Area: 0
-  m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff
 --- !u!1 &1325118935
 GameObject:
   m_ObjectHideFlags: 0
