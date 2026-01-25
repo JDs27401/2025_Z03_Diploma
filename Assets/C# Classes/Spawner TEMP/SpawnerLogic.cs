@@ -11,12 +11,11 @@ namespace C__Classes.Spawner_TEMP
         [SerializeField] private GameObject prefab;
         [SerializeField] private int spawnAmount;
         [SerializeField] private int interval;
-        [SerializeField] private bool isActive;
+        [SerializeField] private bool isActive = false;
         private bool canSpawn;
 
         private void Start()
         {
-            isActive = true;
             canSpawn = true;
         }
 
