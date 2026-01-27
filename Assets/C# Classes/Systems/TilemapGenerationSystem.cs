@@ -38,24 +38,38 @@ namespace C__Classes.Systems
         private TileBase highValueTile;
         [SerializeField]
         private NavMeshSurface navmesh;
-        
-        [Header("Buildings")]
+
+        [Header("Buildings")] 
+        private GameObject buildingsParent;
         [SerializeField]
         private GameObject[] buildingPrefabs;
         // [SerializeField] 
         // private Vector2 circleCenter;
         [SerializeField]
-        private int numberOfCircles;
+        private int numberOfCirclesBuildings;
         [SerializeField]
-        private int radius;
+        private int radiusBuildings;
         [SerializeField]
-        private int radiusIncrease;
+        private int radiusIncreaseBuildings;
+
+        [Header("Decorations")] 
+        private GameObject decorationsParent;
+        [SerializeField]
+        private GameObject[] decorationPrefabs;
+        [SerializeField]
+        private int numberOfCirclesDecorations;
+        [SerializeField]
+        private int radiusDecorations;
+        [SerializeField]
+        private int radiusIncreaseDecorations;
         
         private TileProperties[,] tileProperties;
 
         private void Awake()
         {
             tileProperties = new TileProperties[mapSize, mapSize];
+            buildingsParent = new GameObject("Buildings");
+            decorationsParent = new GameObject("Decorations");
             RunProceduralGeneration();
         }
         
@@ -63,7 +77,10 @@ namespace C__Classes.Systems
         {
             GenerateTilemap();
             GenerateMapBoundaries(); //dunno, this has to be b4 RunBuildingGeneration() method for some reason 
-            RunBuildingGeneration();
+            // RunBuildingGeneration();
+            // RunDecorationGeneration();
+            RunCircularGeneration(radiusBuildings, radiusIncreaseBuildings, numberOfCirclesBuildings, 0, false, buildingPrefabs, buildingsParent);
+            RunCircularGeneration(radiusDecorations, radiusIncreaseDecorations, numberOfCirclesDecorations, 30, true, decorationPrefabs, decorationsParent);
         }
 
         private void GenerateMapBoundaries()
@@ -145,7 +162,7 @@ namespace C__Classes.Systems
             return tiles[Random.Range(0, tiles.Length)];
         }
 
-        private void RunBuildingGeneration()
+        /*private void RunBuildingGeneration()
         {
             if (buildingPrefabs.Length == 0)
                 return;
@@ -154,7 +171,7 @@ namespace C__Classes.Systems
 
             for (int i = 1; i <= numberOfCircles; i++)
             {
-                float currentRadius = radius + i * radiusIncrease;
+                float currentRadius = radius + i * radiusIncrease2;
                 float startDeg = GenerateBuildingAngle(center, currentRadius, i);
 
                 float stepDeg = 360f / i;
@@ -167,13 +184,53 @@ namespace C__Classes.Systems
                     int x = Mathf.RoundToInt(center.x + Mathf.Cos(angleRad) * currentRadius);
                     int y = Mathf.RoundToInt(center.y + Mathf.Sin(angleRad) * currentRadius);
 
-                    int prefabIndex = GetDeterministicPrefabIndex(x, y, j);
+                    int prefabIndex = GetDeterministicPrefabIndex(x, y, j, buildingPrefabs);
 
                     Instantiate(
                         buildingPrefabs[prefabIndex],
                         new Vector3(x, y, 0),
                         Quaternion.identity
                     );    
+                }
+            }
+        }*/
+        
+        private void RunCircularGeneration(int radius, int radiusIncrease, int numberOfCircles, int offset, bool removeIfOnWater, GameObject[] prefabs, GameObject parent)
+        {
+            if (prefabs.Length == 0)
+                return;
+
+            Vector2Int center = new Vector2Int(mapSize / 2, mapSize / 2);
+
+            for (int i = 1; i <= numberOfCircles; i++)
+            {
+                float currentRadius = radius + (i - 1) * radiusIncrease;
+                float startDeg = GenerateBuildingAngle(center, currentRadius, i);
+
+                float stepDeg = 360f / i;
+                
+                for (int j = 0; j < i; j++)
+                {
+                    float angleDeg = startDeg + j * stepDeg + offset;
+                    float angleRad = angleDeg * Mathf.Deg2Rad;
+
+                    int x = Mathf.RoundToInt(center.x + Mathf.Cos(angleRad) * currentRadius);
+                    int y = Mathf.RoundToInt(center.y + Mathf.Sin(angleRad) * currentRadius);
+
+                    int prefabIndex = GetDeterministicPrefabIndex(x, y, j, prefabs);
+
+                    if (tileProperties[x,y].type == TileType.Water && removeIfOnWater)
+                    {
+                        break;
+                    }
+
+                    GameObject tempObj =
+                        Instantiate(
+                            prefabs[prefabIndex],
+                            new Vector3(x, y, 0),
+                            Quaternion.identity
+                        );
+                    tempObj.transform.SetParent(parent.transform);
                 }
             }
         }
@@ -193,7 +250,7 @@ namespace C__Classes.Systems
             return (u / (float)uint.MaxValue) * 360f;
         }
         
-        private int GetDeterministicPrefabIndex(int x, int y, int index)
+        private int GetDeterministicPrefabIndex(int x, int y, int index, GameObject[] prefabs)
         {
             int seed = MapGenerationSystem.GenerateSeed(hash);
 
@@ -204,7 +261,7 @@ namespace C__Classes.Systems
                 (index * 2147483647);
 
             h = Mathf.Abs(h);
-            return h % buildingPrefabs.Length;
+            return h % prefabs.Length;
         }
 
 

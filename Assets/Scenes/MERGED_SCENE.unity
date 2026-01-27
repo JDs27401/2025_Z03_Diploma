@@ -720,9 +720,14 @@ MonoBehaviour:
   buildingPrefabs:
   - {fileID: 8344336692475606003, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
   - {fileID: 4570721072878242866, guid: 8019110a9902f5342b301375d63234bd, type: 3}
-  numberOfCircles: 5
-  radius: 50
-  radiusIncrease: 30
+  numberOfCirclesBuildings: 7
+  radiusBuildings: 30
+  radiusIncreaseBuildings: 20
+  decorationPrefabs:
+  - {fileID: 4136115596892236881, guid: b0d92eb4eba20b8409f498594dc90d93, type: 3}
+  numberOfCirclesDecorations: 55
+  radiusDecorations: 20
+  radiusIncreaseDecorations: 5
 --- !u!483693784 &1270452877
 TilemapRenderer:
   serializedVersion: 2
