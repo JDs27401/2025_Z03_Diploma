@@ -31,6 +31,10 @@ namespace C__Classes
         protected TilemapGenerationSystem tilemapGenerationSystem;
         protected TileType tileType = TileType.Ground;
 
+        //Bartek - this is for animator issues, as everything should inherit from Actor class
+        //we want to be able how long we want to wait until deleting this object by "kill" method
+        [SerializeField] protected float waitUntilDestroyed;
+
         protected void Start()
         {
             currentHealth = maxHealth;
@@ -119,7 +123,7 @@ namespace C__Classes
         public void Kill()
         {
             isDead = true;
-            Destroy(gameObject);
+            Destroy(gameObject, waitUntilDestroyed);
         }
 
         public bool GetInvulnerable()

@@ -1,5 +1,6 @@
 using System;
 using C__Classes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -69,6 +70,20 @@ public class Movement : Actor
     {
         if (Mathf.Abs(currentHealth - _lastKnownHealth) > 0.01f)
         {
+            //We check if the health is lower than last known health so we can play hurt or death animation
+            if (currentHealth < _lastKnownHealth)
+            {
+                if (currentHealth <= 0)
+                {
+                    animator.SetTrigger("Die");
+                }
+                else
+                {
+                    animator.SetTrigger("Hurt");
+                }
+            }
+            
+            
             _lastKnownHealth = currentHealth;
         
             float healthPercent = (maxHealth > 0) ? currentHealth / maxHealth : 0;
@@ -84,6 +99,12 @@ public class Movement : Actor
             
             onStaminaChanged?.Invoke(staminaPercent);
         }
+        
+        if (base.isDead)
+        {
+            return;
+        }
+        
 
         ManageSprint();
         // ManageCrouch();
@@ -179,6 +200,7 @@ public class Movement : Actor
     {
         if (mainCam == null || Mouse.current == null) return;
         
+        
         bool isMoving = Mathf.Abs(currentSpeed.x) > 1f || Mathf.Abs(currentSpeed.y) > 1f;
         animator.SetBool("isWalking", isMoving);
         
@@ -191,6 +213,8 @@ public class Movement : Actor
         
         animator.SetFloat("XInput", direction.x);
         animator.SetFloat("YInput", direction.y);
+        
+        
     }
     
     void ManageRoll()
