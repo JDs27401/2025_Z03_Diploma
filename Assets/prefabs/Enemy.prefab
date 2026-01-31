@@ -132,7 +132,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.03}
+  m_Offset: {x: 0, y: -0.04034199}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -142,7 +142,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.1, y: 0.1}
+  m_Size: {x: 0.1, y: 0.0830569}
   m_EdgeRadius: 0
 --- !u!114 &3445969687212416114
 MonoBehaviour:
@@ -156,6 +156,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3bee33760ab1a42b084efd5ffbe0b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AI
+  speed: 4
+  acceleration: 2
+  friction: 0.1
+  maxHealth: 100
+  currentHealth: 0
+  damage: 0
+  iFrameTime: 1
+  waitUntilDestroyed: 1
+  hurtAnimCooldown: 1
 --- !u!114 &7328224769420379187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,8 +238,9 @@ MonoBehaviour:
   friction: 0.1
   maxHealth: 100
   currentHealth: 0
-  damage: 10
+  damage: 20
   iFrameTime: 0
+  waitUntilDestroyed: 0
 --- !u!1 &6066769052555957367
 GameObject:
   m_ObjectHideFlags: 0

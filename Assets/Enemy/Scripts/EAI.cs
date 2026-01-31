@@ -7,7 +7,7 @@ using UnityEngine.AI;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
-public class EAI : MonoBehaviour
+public class EAI : Actor
 {
     private NavMeshAgent agent;
     private Transform playerTarget;
@@ -16,21 +16,64 @@ public class EAI : MonoBehaviour
     private enum State { Asleep, Aggravated}
     private State currentState = State.Asleep;
     
+    private float _lastKnownHealth;
+    
+    //for animation timing (so it doesn't loop)
+    private float lastHurtTime = -1f;
+    [SerializeField] private float hurtAnimCooldown = 0.5f; 
+
+    private Actor actor;
+    
     //Animation stuff
     private Animator animator;
     
-    void Start()
+    new void Start()
     {
+        base.Start();
+        
+        actor = GetComponent<Actor>();
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         animator = GetComponent<Animator>();
         
+        _lastKnownHealth = currentHealth;
+        
         // PAMIĘTAJ: Jeśli w base.Start() masz jakieś dzielenie speed /= 50, 
         // to AI będzie bardzo wolne. Przy delcie operujemy na czystych wartościach.
     }
-    void Update()
+    new void Update()
     {
+        base.Update();
+        
+        if (Mathf.Abs(currentHealth - _lastKnownHealth) > 0.01f)
+        {
+            //We check if the health is lower than last known health so we can play hurt or death animation
+            if (currentHealth < _lastKnownHealth)
+            {
+                if (currentHealth <= 0)
+                {
+                    animator.SetTrigger("Die");
+                }
+                else
+                {
+                    //Added so the animation doesn't loop
+                    if (Time.time >= lastHurtTime + hurtAnimCooldown)
+                    {
+                        animator.SetTrigger("Hurt");
+                        lastHurtTime = Time.time;
+                    }
+                }
+            }
+            
+            
+            _lastKnownHealth = currentHealth;
+        }
+        
+        if (isDead)
+        {
+            return;
+        }
         //
         switch (currentState)
         {
@@ -66,6 +109,8 @@ public class EAI : MonoBehaviour
             transform.position = pos;
         }
     }
+    
+    
 
     void UpdateAnimation()
     {
