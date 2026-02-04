@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -47,10 +48,13 @@ public class SceneManagement : MonoBehaviour
             {
                 AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
                 
+                
                 while (!asyncLoad.isDone)
                 {
                     yield return null;
                 }
+                
+                MovePlayerToInteriorScene();
             }
         }
         else
@@ -63,6 +67,21 @@ public class SceneManagement : MonoBehaviour
         }
     }
 
+    private void MovePlayerToInteriorScene()
+    {
+        SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
+        
+        foreach (var door in allDoors)
+        {
+            // POPRAWKA: Sprawdzamy czy NAZWA OBIEKTU (gameObject.name) jest taka sama jak ID celu
+            if (door.gameObject.name == SceneTransport.TargetSpawnID)
+            {
+                TeleportPlayerWithCamera(door.transform.position);
+                break; // Znaleźliśmy, przerywamy
+            }
+        }
+    }
+
     private void MovePlayerToReturnPoint()
     {
         SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
@@ -70,12 +89,25 @@ public class SceneManagement : MonoBehaviour
         {
             if (door.myUniqueID == SceneTransport.ReturnSpawnID)
             {
-                GameObject player = GameObject.FindGameObjectWithTag("Player");
-                if (player != null)
-                {
-                    player.transform.position = door.transform.position;
-                }
+                TeleportPlayerWithCamera(door.transform.position);
                 break;
+            }
+        }
+    }
+
+    private void TeleportPlayerWithCamera(Vector3 position)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("player");
+        if (player != null)
+        {
+            Vector3 positionDelta = position - player.transform.position;
+            
+            player.transform.position = position;
+
+            var cinemachine = FindObjectOfType<Unity.Cinemachine.CinemachineCamera>();
+            if (cinemachine != null)
+            {
+                cinemachine.OnTargetObjectWarped(player.transform, positionDelta);
             }
         }
     }
