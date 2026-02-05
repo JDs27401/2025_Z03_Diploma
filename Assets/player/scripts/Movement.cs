@@ -20,12 +20,16 @@ public class Movement : Actor
     private int maxStamina = 100;
     [SerializeField] //true if you want to know all the stuff
     private bool debugInfo = true;
-    [SerializeField] //duration between rolls
-    private float rollPower = 10;
+    [SerializeField]
+    private float rollPower = 40;
+    [SerializeField]
+    private int rollStaminaCost = 20;
     [SerializeField] //duration between rolls
     private float rollCoodownSeconds = 3;
     [SerializeField] //duration of a single roll
-    private float rollDurationSeconds = 1;
+    private float rollDurationSeconds = 0.5f;
+    [SerializeField] 
+    private float sprintPower = 2; //multiplying speed by this while sprinting 
     
     private Vector2 moveInput; 
     private Vector2 currentSpeed = Vector2.zero;
@@ -68,6 +72,37 @@ public class Movement : Actor
     
     void FixedUpdate()
     {
+        CheckForHurtAnimation();
+        ManageStamina();
+        if (base.isDead)
+        {
+            return;
+        }
+        ManageSprint();
+        ManageCrouch();
+        ManageRoll();
+        if (!isRolling)
+        {
+            CalculateSpeed();
+        }
+        Move();
+        UpdateAnimations();
+    }
+
+    private void ManageStamina()
+    {
+        if (stamina != _lastKnownStamina)
+        {
+            _lastKnownStamina = stamina;
+            
+            float staminaPercent = (maxStamina > 0) ? (float)stamina / maxStamina : 0;
+            
+            onStaminaChanged?.Invoke(staminaPercent);
+        }
+    }
+
+    private void CheckForHurtAnimation()
+    {
         if (Mathf.Abs(currentHealth - _lastKnownHealth) > 0.01f)
         {
             //We check if the health is lower than last known health so we can play hurt or death animation
@@ -90,42 +125,7 @@ public class Movement : Actor
             
             onHealthChanged?.Invoke(healthPercent);
         }
-
-        if (stamina != _lastKnownStamina)
-        {
-            _lastKnownStamina = stamina;
-            
-            float staminaPercent = (maxStamina > 0) ? (float)stamina / maxStamina : 0;
-            
-            onStaminaChanged?.Invoke(staminaPercent);
-        }
-        
-        if (base.isDead)
-        {
-            return;
-        }
-        
-
-        ManageSprint();
-        // ManageCrouch();
-        ManageRoll();
-        
-        if (!isRolling)
-        {
-            CalculateSpeed();
-        }
-        
-        Move();
-        UpdateAnimations();
-        
-        // print(currentHealth);
-        // print(currentTile.type);
-        if (debugInfo)
-        {
-            //PrintVariables("currentHealth");
-        }
     }
-    
     
     public void WSADManagement(InputAction.CallbackContext context){ //getting directions from keys pressed
         moveInput = context.ReadValue<Vector2>();
@@ -134,7 +134,7 @@ public class Movement : Actor
     {
         if (!rollCooldown && !isRolling)
         {
-            stamina -= 20;
+            stamina -= rollStaminaCost;
             isRolling = true;
             rollCooldown = true;
             lastRollTime = DateTime.Now.Ticks;
@@ -150,13 +150,15 @@ public class Movement : Actor
         if (context.phase == InputActionPhase.Started && stamina > 20)
         {
             isSprinting = true;
-            speed *= 3;
+            speed *= sprintPower;
+            acceleration *= sprintPower;
         }
 
         if (context.phase == InputActionPhase.Canceled && isSprinting)
         {
             isSprinting = false;
-            speed /= 3;
+            speed /= sprintPower;
+            acceleration /= sprintPower;
         }
     }
     
@@ -185,6 +187,8 @@ public class Movement : Actor
         {
             currentSpeed.y = -speed;
         }
+        print(currentSpeed);
+        print("a: " + acceleration);
     }
     void Move() //changing player position
     {
@@ -233,19 +237,19 @@ public class Movement : Actor
             currentSpeed *= 0.8f;
         }
     }
-    // void ManageCrouch()
-    // {
-    //     if (isCrouching)
-    //     {
-    //         if(playerColorAlpha > 0.7) playerColorAlpha -= 0.01f;
-    //     }
-    //     else
-    //     {
-    //         if(playerColorAlpha < 1) playerColorAlpha += 0.01f;
-    //     }
-    //     var newColor = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, playerColorAlpha);
-    //     spriteRenderer.color = newColor;
-    // }
+    void ManageCrouch()
+    {
+        if (isCrouching)
+        {
+            if(playerColorAlpha > 0.4) playerColorAlpha -= 0.05f;
+        }
+        else
+        {
+            if(playerColorAlpha < 1) playerColorAlpha += 0.05f;
+        }
+        var newColor = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, playerColorAlpha);
+        spriteRenderer.color = newColor;
+    }
     void ManageSprint()
     {
         if (isSprinting)
@@ -253,7 +257,8 @@ public class Movement : Actor
             if (stamina <= 0)
             {
                 isSprinting = false;
-                speed /= 3;
+                speed /= sprintPower;
+                acceleration /= sprintPower;
             }
 
             stamina -= 1;
@@ -266,4 +271,6 @@ public class Movement : Actor
             }
         }
     }
+
+    public bool IsCrouching() => isCrouching;
 }

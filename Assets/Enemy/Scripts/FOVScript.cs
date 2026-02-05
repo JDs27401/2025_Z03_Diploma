@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FOVScript : MonoBehaviour
@@ -9,9 +10,9 @@ public class FOVScript : MonoBehaviour
         parentAI = GetComponentInParent<EAI>();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("player"))
+        if (other.CompareTag("player") && !other.GetComponent<Movement>().IsCrouching())
         {
             parentAI.Aggravate(other.transform);
         }
