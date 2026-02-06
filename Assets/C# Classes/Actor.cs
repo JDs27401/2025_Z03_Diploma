@@ -90,7 +90,6 @@ namespace C__Classes
             {
                 currentHealth -= dmg;
             }
-            print("currentHealth: " + currentHealth);
             if (currentHealth <= 0)
             {
                 Kill();
@@ -161,10 +160,6 @@ namespace C__Classes
         public float GetDamage()
         {
             return damage;
-        }
-        public void SetDamage(float value)
-        {
-            damage = value;
         }
     }
 }
