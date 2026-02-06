@@ -45,7 +45,7 @@ namespace C__Classes.Pipelines
                         return;
                     
                     case "projectile":
-                        otherActor.DealDamage(self.GetDamage());
+                        //otherActor.DealDamage(self.GetDamage());
                         otherActor.StartInvulnerability();
                         //other function calls 
                         return;
@@ -68,7 +68,7 @@ namespace C__Classes.Pipelines
                         return;
                     
                     default:
-                        return;
+                        break;
                 }
             } else if (other.CompareTag("destructible"))
             {
@@ -85,7 +85,7 @@ namespace C__Classes.Pipelines
                         return;
                     
                     default:
-                        return;
+                        break;
                 }
             } else if (other.CompareTag("hostile"))
             {
@@ -107,9 +107,19 @@ namespace C__Classes.Pipelines
                         return;
                     
                     default:
+                        break;
+                }
+            } else if (other.CompareTag("projectile"))
+            {
+                switch (tag)
+                {
+                    case "hostile":
+                        GetComponent<Actor>().DealDamage(otherActor.GetDamage());
+                        //other function calls 
                         return;
                 }
             }
+            
         }
     }
 }

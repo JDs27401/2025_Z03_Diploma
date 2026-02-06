@@ -41,18 +41,6 @@ public class Projectile : MonoBehaviour
         // Jeśli trafiliśmy w przeciwnika
         if (other.CompareTag("hostile"))
         {
-            // Próbujemy pobrać komponent Actor (lub inny skrypt HP przeciwnika)
-            Actor enemyActor = other.GetComponent<Actor>();
-            if (enemyActor != null)
-            {
-                enemyActor.DealDamage(damage);
-            }
-            else
-            {
-                // Fallback: jeśli przeciwnik nie ma skryptu Actor, ale jest "hostile"
-                Debug.Log($"Trafiono {other.name}, ale brak komponentu Actor!");
-            }
-
             Destroy(gameObject); // Zniszcz pocisk po trafieniu
         }
     }

@@ -187,8 +187,6 @@ public class Movement : Actor
         {
             currentSpeed.y = -speed;
         }
-        print(currentSpeed);
-        print("a: " + acceleration);
     }
     void Move() //changing player position
     {
