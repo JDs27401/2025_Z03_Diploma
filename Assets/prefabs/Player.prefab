@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5703000714113738365}
   - component: {fileID: 3562104371583064557}
   - component: {fileID: 5160126871664793592}
+  - component: {fileID: 5305719679199625660}
   m_Layer: 8
   m_Name: Player
   m_TagString: player
@@ -115,7 +116,7 @@ MonoBehaviour:
   friction: 0.1
   maxHealth: 100
   currentHealth: 50
-  damage: 0
+  damage: 50
   iFrameTime: 1
   waitUntilDestroyed: 1
   onHealthChanged:
@@ -151,8 +152,10 @@ MonoBehaviour:
   maxStamina: 100
   debugInfo: 0
   rollPower: 10
+  rollStaminaCost: 20
   rollCoodownSeconds: 3
   rollDurationSeconds: 1
+  sprintPower: 2
   animator: {fileID: 5703000714113738365}
 --- !u!114 &6678964200872021751
 MonoBehaviour:
@@ -367,20 +370,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39dc6583dc66d824cb4979b12cef45cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fight
-  projectilePrefab: {fileID: 8520928149139622634, guid: 37d1858775293e447afd48070baef938, type: 3}
   firePoint: {fileID: 0}
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  projectilePrefab: {fileID: 8520928149139622634, guid: 37d1858775293e447afd48070baef938, type: 3}
+  meleeHitboxPrefab: {fileID: 0}
   meleeSpeed: 2
-  meleeRange: 2.5
   meleeDamage: 25
+  meleeDuration: 1
   meleeAngle: 120
-  meleeVisualMaterial: {fileID: 2100000, guid: 6f3148bdbecdf974eb3b3e3554a04900, type: 2}
-  visualSortingOrder: 0
-  visualSortingLayer: Foreground
+  meleeRange: 2.5
   shootingSpeed: 4
   projectileSpeed: 10
-  projectileSize: 0.5
-  projectileSpread: 5
   projectileDamage: 10
+  projectileSpread: 5
+--- !u!114 &5305719679199625660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292680892767096521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde1407d1c73472dacf0efc73a5392ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Pipelines.DamagePipeline
