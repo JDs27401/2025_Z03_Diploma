@@ -26,100 +26,79 @@ namespace C__Classes.Pipelines
         private void BaseDamagePipelineFunction(Collider2D other)
         {
             Actor otherActor = other.GetComponent<Actor>();
-            if (otherActor.CompareTag("player") && 
-                // !ReferenceEquals(otherActor, null) && //this is not used now
-                otherActor.GetInvulnerable())
+            if (!otherActor) //fix for script being activated if entity entering does not have Actor
             {
                 return;
             }
-
-            //yes, the branches are the same, but this is on purpose for now, if we want to do different things depending on the trigger type
-            if (other.CompareTag("player"))
+            
+            if (self.GetInvulnerable())
             {
-                switch (tag)
-                {
-                    case "hostile":
-                        otherActor.DealDamage(self.GetDamage());
-                        otherActor.StartInvulnerability();
-                        //other function calls 
-                        return;
-                    
-                    case "projectile":
-                        //otherActor.DealDamage(self.GetDamage());
-                        otherActor.StartInvulnerability();
-                        //other function calls 
-                        return;
-                    
-                    case "attack":
-                        otherActor.DealDamage(self.GetDamage());
-                        otherActor.StartInvulnerability();
-                        //other function calls 
-                        return;
-                    
-                    case "trap":
-                        otherActor.DealDamage(self.GetDamage());
-                        otherActor.StartInvulnerability();
-                        //other function calls 
-                        return;
-                    
-                    case "heal":
-                        otherActor.Heal(self.GetDamage()); //actor will be healed by the amount specified in damage field
-                        //other function calls 
-                        return;
-                    
-                    default:
-                        break;
-                }
-            } else if (other.CompareTag("destructible"))
-            {
-                switch (tag)
-                {
-                    case "projectile":
-                        otherActor.DealDamage(self.GetDamage());
-                        //other function calls 
-                        return;
-                    
-                    case "attack":
-                        otherActor.DealDamage(self.GetDamage());
-                        //other function calls 
-                        return;
-                    
-                    default:
-                        break;
-                }
-            } else if (other.CompareTag("hostile"))
-            {
-                switch (tag)
-                {
-                    case "attack":
-                        otherActor.DealDamage(self.GetDamage());
-                        //other function calls 
-                        return;
-                    
-                    case "projectile":
-                        otherActor.DealDamage(self.GetDamage());
-                        //other function calls 
-                        return;
-                    
-                    case "trap":
-                        otherActor.DealDamage(self.GetDamage());
-                        //other function calls 
-                        return;
-                    
-                    default:
-                        break;
-                }
-            } else if (other.CompareTag("projectile"))
-            {
-                switch (tag)
-                {
-                    case "hostile":
-                        GetComponent<Actor>().DealDamage(otherActor.GetDamage());
-                        //other function calls 
-                        return;
-                }
+                return;
             }
             
+            //yes, the branches are the same, but this is on purpose for now, if we want to do different things depending on the trigger type
+            switch (tag)
+            {
+                case "player": //this list interaction that player tagged object can interact with
+                    
+                    switch (other.tag)
+                    {
+                        case "hostile":
+                            self.DealDamage(otherActor.GetDamage());
+                            self.StartInvulnerability();
+                            break;
+                        
+                        case "projectile":
+                            self.DealDamage(otherActor.GetDamage());
+                            self.StartInvulnerability();
+                            break;
+                        
+                        case "attack":
+                            self.DealDamage(otherActor.GetDamage());
+                            self.StartInvulnerability();
+                            break;
+                        
+                        case "trap":
+                            self.DealDamage(otherActor.GetDamage());
+                            self.StartInvulnerability();
+                            break;
+                        
+                        case "heal":
+                            self.Heal(otherActor.GetDamage());
+                            break;
+                    }
+                    break;
+                
+                case "hostile": //this list interaction that hostile tagged object can interact with
+                    switch (other.tag)
+                    {
+                        case "projectile":
+                            self.DealDamage(otherActor.GetDamage());
+                            break;
+                        
+                        case "attack":
+                            self.DealDamage(otherActor.GetDamage());
+                            break;
+                        
+                        case "trap":
+                            self.DealDamage(otherActor.GetDamage());
+                            break;
+                    }
+                    break;
+                
+                case "destructible": //this list interaction that destructible tagged object can interact with
+                    switch (other.tag)
+                    {
+                        case "projectile":
+                            self.DealDamage(otherActor.GetDamage());
+                            break;
+                        
+                        case "attack":
+                            self.DealDamage(otherActor.GetDamage());
+                            break;
+                    }
+                    break;
+            }
         }
     }
 }
