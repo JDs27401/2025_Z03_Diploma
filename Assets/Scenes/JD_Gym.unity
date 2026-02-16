@@ -129,12 +129,11 @@ GameObject:
   m_Component:
   - component: {fileID: 107219723}
   - component: {fileID: 107219722}
-  - component: {fileID: 107219721}
   - component: {fileID: 107219720}
   - component: {fileID: 107219724}
   m_Layer: 0
   m_Name: Square
-  m_TagString: hostile
+  m_TagString: trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,18 +158,6 @@ MonoBehaviour:
   damage: 10
   iFrameTime: 1
   waitUntilDestroyed: 0
---- !u!114 &107219721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107219719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dde1407d1c73472dacf0efc73a5392ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Pipelines.DamagePipeline
 --- !u!212 &107219722
 SpriteRenderer:
   serializedVersion: 2

@@ -20,6 +20,10 @@ namespace C__Classes.Pipelines
 
         private void OnTriggerStay2D(Collider2D other)
         {
+            if (other.CompareTag("trap"))
+            {
+                return;
+            }
             BaseDamagePipelineFunction(other);
         }
 
