@@ -48,10 +48,11 @@ namespace C__Classes.Pipelines
                             self.StartInvulnerability();
                             break;
                         
-                        case "projectile":
-                            self.DealDamage(otherActor.GetDamage());
-                            self.StartInvulnerability();
-                            break;
+                        //workaround for now, so that player does not get damaged from its own bullets
+                        // case "projectile":
+                        //     self.DealDamage(otherActor.GetDamage());
+                        //     self.StartInvulnerability();
+                        //     break;
                         
                         case "attack":
                             self.DealDamage(otherActor.GetDamage());
