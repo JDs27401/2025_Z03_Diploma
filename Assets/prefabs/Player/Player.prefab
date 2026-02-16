@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 5703000714113738365}
   - component: {fileID: 3562104371583064557}
   - component: {fileID: 5160126871664793592}
-  - component: {fileID: 5305719679199625660}
   m_Layer: 8
   m_Name: Player
   m_TagString: player
@@ -116,7 +115,7 @@ MonoBehaviour:
   friction: 0.1
   maxHealth: 100
   currentHealth: 50
-  damage: 50
+  damage: 0
   iFrameTime: 1
   waitUntilDestroyed: 1
   onHealthChanged:
@@ -372,25 +371,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fight
   firePoint: {fileID: 0}
   projectilePrefab: {fileID: 8520928149139622634, guid: 37d1858775293e447afd48070baef938, type: 3}
-  meleeHitboxPrefab: {fileID: 0}
+  meleeHitboxPrefab: {fileID: 4881051944800817092, guid: 285bb27a60ba7d845af52c690ad7d8ec, type: 3}
   meleeSpeed: 2
   meleeDamage: 25
-  meleeDuration: 1
+  meleeDuration: 0.2
   meleeAngle: 120
-  meleeRange: 2.5
+  meleeRange: 3
   shootingSpeed: 4
   projectileSpeed: 10
   projectileDamage: 10
   projectileSpread: 5
---- !u!114 &5305719679199625660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8292680892767096521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dde1407d1c73472dacf0efc73a5392ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Pipelines.DamagePipeline
