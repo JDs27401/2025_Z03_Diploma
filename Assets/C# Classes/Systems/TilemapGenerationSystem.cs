@@ -219,7 +219,6 @@ namespace C__Classes.Systems
 
                     int prefabIndex = GetDeterministicPrefabIndex(x, y, j, prefabs);
 
-                    print(x + "tutaj" + y);
                     if (tileProperties[x,y].type == TileType.Water && removeIfOnWater)
                     {
                         break;
