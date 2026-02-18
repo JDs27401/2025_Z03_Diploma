@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
-namespace C__Classes
+namespace C__Classes.Objects
 {
     public class ExplodingTrap : Actor
     {
@@ -17,12 +18,13 @@ namespace C__Classes
             DamageTrigger.enabled = false;
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        private IEnumerator OnTriggerEnter2D(Collider2D other)
         {
             tag = "trap";
             DamageTrigger.enabled = true;
             
             print("boom");
+            yield return new WaitForFixedUpdate();
             Destroy(DamageTrigger);
             Destroy(gameObject, waitUntilDestroyed);
         }
