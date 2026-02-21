@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using C__Classes.Systems;
 using UnityEngine;
@@ -30,6 +31,8 @@ namespace C__Classes
         protected TilemapGenerationSystem.TileProperties currentTile;
         protected TilemapGenerationSystem tilemapGenerationSystem;
         protected TileType tileType = TileType.Ground;
+        [SerializeField] 
+        protected bool checkTileProperties = true;
 
         //Bartek - this is for animator issues, as everything should inherit from Actor class
         //we want to be able how long we want to wait until deleting this object by "kill" method
@@ -57,9 +60,12 @@ namespace C__Classes
 
         protected void Update()
         {
-            if (!CompareTag("projectile") || !CompareTag("heal") || CompareTag("trap") || CompareTag("destructible"))
+            if (checkTileProperties)
             {
-                GetActorTileType();
+                if (!CompareTag("projectile") || !CompareTag("heal") || CompareTag("trap") || CompareTag("destructible")) //this line could possibly be removed in the future
+                {
+                    GetActorTileType();
+                }
             }
         }
 
@@ -70,8 +76,19 @@ namespace C__Classes
                 return;
             }
             // worldPosition = tilemap.WorldToCell(transform.position);
-            TilemapGenerationSystem.TileProperties newTile = tilemapGenerationSystem
-                .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
+
+            TilemapGenerationSystem.TileProperties newTile;
+            
+            try
+            {
+                newTile = tilemapGenerationSystem
+                    .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
+
+            }
+            catch (Exception)
+            {
+                return;
+            }
             
             if (newTile.type == currentTile.type)
             {
