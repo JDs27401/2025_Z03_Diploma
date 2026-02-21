@@ -69,7 +69,7 @@ namespace C__Classes
             }
         }
 
-        public void GetActorTileType()
+        protected void GetActorTileType()
         {
             if (ReferenceEquals(tilemap, null) || ReferenceEquals(tilemapGenerationSystem, null))
             {
