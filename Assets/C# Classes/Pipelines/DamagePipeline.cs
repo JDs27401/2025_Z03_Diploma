@@ -1,15 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using C__Classes.Objects;
+using UnityEngine;
 
 namespace C__Classes.Pipelines
 {
     public class DamagePipeline : MonoBehaviour
     {
-        // private Collider2D collision;
         private Actor self;
+        
+        private bool takenDamageFromMine = false;
+        [SerializeField] private float MineInvurnerabilityTime = 0.5f;
 
         private void Awake()
         {
-            // collision = FindFirstObjectByType<Collider2D>();
             self = GetComponent<Actor>();
         }
         
@@ -20,10 +23,6 @@ namespace C__Classes.Pipelines
 
         private void OnTriggerStay2D(Collider2D other)
         {
-            if (other.CompareTag("trap"))
-            {
-                return;
-            }
             BaseDamagePipelineFunction(other);
         }
 
@@ -64,8 +63,11 @@ namespace C__Classes.Pipelines
                             break;
                         
                         case "trap":
+                            if (takenDamageFromMine) return;
+                            
                             self.DealDamage(otherActor.GetDamage());
                             self.StartInvulnerability();
+                            StartCoroutine(MineInvurnerability());
                             break;
                         
                         case "heal":
@@ -86,7 +88,10 @@ namespace C__Classes.Pipelines
                             break;
                         
                         case "trap":
+                            if (takenDamageFromMine) return;
+                            
                             self.DealDamage(otherActor.GetDamage());
+                            StartCoroutine(MineInvurnerability());
                             break;
                     }
                     break;
@@ -104,6 +109,13 @@ namespace C__Classes.Pipelines
                     }
                     break;
             }
+        }
+
+        private IEnumerator MineInvurnerability()
+        {
+            takenDamageFromMine = true;
+            yield return new WaitForSeconds(MineInvurnerabilityTime);
+            takenDamageFromMine = false;
         }
     }
 }

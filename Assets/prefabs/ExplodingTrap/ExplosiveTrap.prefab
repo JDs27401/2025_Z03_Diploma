@@ -114,9 +114,11 @@ MonoBehaviour:
   currentHealth: 0
   damage: 50
   iFrameTime: 0
+  checkTileProperties: 0
   waitUntilDestroyed: 0.25
   TrapTrigger: {fileID: 3124314930330253835}
   DamageTrigger: {fileID: 4863283742124934643}
+  DestroyTriggerAfter: 0.25
 --- !u!58 &4863283742124934643
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -166,7 +168,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

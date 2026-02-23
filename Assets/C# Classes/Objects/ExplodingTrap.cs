@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace C__Classes.Objects
 {
@@ -8,24 +6,26 @@ namespace C__Classes.Objects
     {
         [SerializeField] private Collider2D TrapTrigger;
         [SerializeField] private Collider2D DamageTrigger;
+        [SerializeField] private float DestroyTriggerAfter = 0.25f;
 
         private new void Start()
         {
-            if (ReferenceEquals(TrapTrigger, null))
+            if (ReferenceEquals(TrapTrigger, null) || ReferenceEquals(DamageTrigger, null))
             {
                 return;
             }
+            
             DamageTrigger.enabled = false;
         }
 
-        private IEnumerator OnTriggerEnter2D(Collider2D other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             tag = "trap";
             DamageTrigger.enabled = true;
             
             print("boom");
-            yield return new WaitForFixedUpdate();
-            Destroy(DamageTrigger);
+            // yield return new WaitForFixedUpdate();
+            Destroy(DamageTrigger, 0.25f);
             Destroy(gameObject, waitUntilDestroyed);
         }
     }

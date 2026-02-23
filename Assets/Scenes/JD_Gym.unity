@@ -1122,7 +1122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b27b4b6e634d947b949ef1372ac6f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthBar
---- !u!1001 &4077087527395525334
+--- !u!1001 &2137770621
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1136,11 +1136,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8806558321893638912, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 64
+      value: 63.43433
       objectReference: {fileID: 0}
     - target: {fileID: 8806558321893638912, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 70
+      value: 67.47289
       objectReference: {fileID: 0}
     - target: {fileID: 8806558321893638912, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1256,4 +1256,4 @@ SceneRoots:
   - {fileID: 687518405}
   - {fileID: 1509505492}
   - {fileID: 860279405}
-  - {fileID: 4077087527395525334}
+  - {fileID: 2137770621}
