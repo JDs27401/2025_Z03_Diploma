@@ -10,6 +10,7 @@ namespace C__Classes.Pipelines
         
         private bool takenDamageFromMine = false;
         [SerializeField] private float MineInvurnerabilityTime = 0.5f;
+        private GameObject lastMine = null;
 
         private void Awake()
         {
@@ -63,11 +64,11 @@ namespace C__Classes.Pipelines
                             break;
                         
                         case "trap":
-                            if (takenDamageFromMine) return;
+                            if (lastMine == other.gameObject) return;
+                            lastMine = other.gameObject;
                             
                             self.DealDamage(otherActor.GetDamage());
                             self.StartInvulnerability();
-                            StartCoroutine(MineInvurnerability());
                             break;
                         
                         case "heal":
@@ -88,10 +89,10 @@ namespace C__Classes.Pipelines
                             break;
                         
                         case "trap":
-                            if (takenDamageFromMine) return;
+                            if (lastMine == other.gameObject) return;
+                            lastMine = other.gameObject;
                             
                             self.DealDamage(otherActor.GetDamage());
-                            StartCoroutine(MineInvurnerability());
                             break;
                     }
                     break;
