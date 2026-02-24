@@ -737,7 +737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TilemapGenerationSystem
   hash: "g\xF3wno"
-  mapSize: 1024
+  mapSize: 640
   chunkSize: 128
   tilemap: {fileID: 1270452878}
   waterTile: {fileID: 11400000, guid: 0aa1d1ec559b24103a44bfdaf0fc1506, type: 2}
@@ -774,10 +774,16 @@ MonoBehaviour:
   radiusBuildings: 30
   radiusIncreaseBuildings: 20
   decorationPrefabs:
-  - {fileID: 4136115596892236881, guid: b0d92eb4eba20b8409f498594dc90d93, type: 3}
-  numberOfCirclesDecorations: 55
+  - {fileID: 3047421814488414733, guid: a28a1908b09bf0843add99fc80a2ddd3, type: 3}
+  - {fileID: 4570721072878242866, guid: db107e9d20a34de4086c1ae47f6d54a3, type: 3}
+  - {fileID: 4570721072878242866, guid: c2badeb5c95647a4ba932222a6a1dfa6, type: 3}
+  - {fileID: 4570721072878242866, guid: 4db5ccb265344ab4d91bf4825129176c, type: 3}
+  - {fileID: 4570721072878242866, guid: 531b1121588a75b43a2b5d106860208b, type: 3}
+  - {fileID: 4570721072878242866, guid: 7a9a366a524380545b547353e420badb, type: 3}
+  - {fileID: 4570721072878242866, guid: 967345cfa2627ec40b1346431bb0983d, type: 3}
+  numberOfCirclesDecorations: 100
   radiusDecorations: 20
-  radiusIncreaseDecorations: 5
+  radiusIncreaseDecorations: 3
 --- !u!483693784 &1270452877
 TilemapRenderer:
   serializedVersion: 2
@@ -1364,6 +1370,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4672375051657317503, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5987078456509161891, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
+      propertyPath: m_CollisionDetection
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8292680892767096521, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
