@@ -90,8 +90,13 @@ namespace C__Classes.Systems
         {
             return RealTime;
         }
+
+        public static Phase GetTimeOfDay()
+        {
+            return TimeOfDay;            
+        }
         
-        private enum Phase
+        public enum Phase
         {
             Day,
             Sundown,
