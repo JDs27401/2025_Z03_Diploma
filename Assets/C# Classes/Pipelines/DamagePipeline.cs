@@ -8,8 +8,6 @@ namespace C__Classes.Pipelines
     {
         private Actor self;
         
-        private bool takenDamageFromMine = false;
-        [SerializeField] private float MineInvurnerabilityTime = 0.5f;
         private GameObject lastMine = null;
 
         private void Awake()
@@ -110,13 +108,6 @@ namespace C__Classes.Pipelines
                     }
                     break;
             }
-        }
-
-        private IEnumerator MineInvurnerability()
-        {
-            takenDamageFromMine = true;
-            yield return new WaitForSeconds(MineInvurnerabilityTime);
-            takenDamageFromMine = false;
         }
     }
 }

@@ -23,9 +23,9 @@ namespace C__Classes.Objects
             tag = "trap";
             DamageTrigger.enabled = true;
             
-            print("boom");
+            // print("boom"); //just a check if the mine works
             // yield return new WaitForFixedUpdate();
-            Destroy(DamageTrigger, 0.25f);
+            Destroy(DamageTrigger, DestroyTriggerAfter);
             Destroy(gameObject, waitUntilDestroyed);
         }
     }
