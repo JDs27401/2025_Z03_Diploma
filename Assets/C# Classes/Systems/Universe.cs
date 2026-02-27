@@ -34,9 +34,10 @@ namespace C__Classes.Systems
             {
                 return;
             }
-            
-            Minute += Time.deltaTime * Ratio;
-            RealTime += Time.deltaTime * Ratio;
+
+            var increment = Time.deltaTime * Ratio;
+            Minute += increment;
+            RealTime += increment;
             RealTime %= 24f;
 
             if (Minute >= 60)
@@ -52,7 +53,7 @@ namespace C__Classes.Systems
             }
             
             SetDayPhase();
-            PrintTime();
+            // PrintTime();
         }
 
         private void SetDayPhase()
@@ -67,7 +68,7 @@ namespace C__Classes.Systems
 
         private static void PrintTime() //just a debug method
         {
-            print($"Day: {Day} Hour: {Hour} Minute: {(int) Minute} Phase: {TimeOfDay}");
+            print($"Day: {Day} Hour: {Hour} Minute: {(int) Minute} Phase: {TimeOfDay} Realtime: {RealTime}");
         }
 
         public static int GetDay()
