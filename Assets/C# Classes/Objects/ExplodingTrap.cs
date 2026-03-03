@@ -20,6 +20,11 @@ namespace C__Classes.Objects
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            if (other.CompareTag("projectile"))
+            {
+                return;
+            }
+            
             tag = "trap";
             DamageTrigger.enabled = true;
             
