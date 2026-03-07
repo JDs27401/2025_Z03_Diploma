@@ -13,7 +13,7 @@ public class EAI : Actor
     private Transform playerTarget;
     private float pathUpdateTimer = 0f;
     private const float PATH_UPDATE_DELAY = 0.5f;
-    private enum State { Asleep, Aggravated}
+    public enum State { Asleep, Aggravated}
     private State currentState = State.Asleep;
     
     private float _lastKnownHealth;
@@ -35,6 +35,7 @@ public class EAI : Actor
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        agent.speed = speed;
         animator = GetComponent<Animator>();
         
         _lastKnownHealth = currentHealth;
