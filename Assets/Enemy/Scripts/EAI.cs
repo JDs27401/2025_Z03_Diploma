@@ -22,7 +22,7 @@ public class EAI : Actor
     private float lastHurtTime = -1f;
     [SerializeField] private float hurtAnimCooldown = 0.5f; 
 
-    private Actor actor;
+    // private Actor actor;
     
     //Animation stuff
     private Animator animator;
@@ -31,7 +31,7 @@ public class EAI : Actor
     {
         base.Start();
         
-        actor = GetComponent<Actor>();
+        // actor = GetComponent<Actor>();
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -45,36 +45,14 @@ public class EAI : Actor
     new void Update()
     {
         base.Update();
-        
-        if (Mathf.Abs(currentHealth - _lastKnownHealth) > 0.01f)
-        {
-            //We check if the health is lower than last known health so we can play hurt or death animation
-            if (currentHealth < _lastKnownHealth)
-            {
-                if (currentHealth <= 0)
-                {
-                    animator.SetTrigger("Die");
-                }
-                else
-                {
-                    //Added so the animation doesn't loop
-                    if (Time.time >= lastHurtTime + hurtAnimCooldown)
-                    {
-                        animator.SetTrigger("Hurt");
-                        lastHurtTime = Time.time;
-                    }
-                }
-            }
-            
-            
-            _lastKnownHealth = currentHealth;
-        }
+
+        CheckForHurtAnimation();
         
         if (isDead)
         {
             return;
         }
-        //
+        
         switch (currentState)
         {
             case State.Aggravated:
@@ -86,6 +64,43 @@ public class EAI : Actor
         }
         FixZPosition();
         UpdateAnimation();
+    }
+
+    private void CheckForHurtAnimation()
+    {
+        if (!(Mathf.Abs(currentHealth - _lastKnownHealth) > 0.01f))
+        {
+            return;
+        }
+        
+        //We check if the health is lower than last known health so we can play hurt or death animation
+        if (!(currentHealth < _lastKnownHealth))
+        {
+            return;
+        }
+        
+        if (currentHealth <= 0)
+        {
+            animator.SetTrigger("Die");
+        }
+        else
+        {
+            //Added so the animation doesn't loop
+            if (!(Time.time >= lastHurtTime + hurtAnimCooldown))
+            {
+                return;
+            }
+            
+            animator.SetTrigger("Hurt");
+            lastHurtTime = Time.time;
+        }
+        
+        _lastKnownHealth = currentHealth;
+    }
+
+    private new void DealDamage(float dmg)
+    {
+        base.DealDamage(dmg);
     }
     
     void MoveToTarget()

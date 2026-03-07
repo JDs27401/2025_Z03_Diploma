@@ -42,21 +42,25 @@ namespace C__Classes.Pipelines
             switch (tag)
             {
                 case "player": //this list interaction that player tagged object can interact with
+                    // Movement movement = GetComponent<Movement>();
                     
                     switch (other.tag)
                     {
                         case "hostile":
+                            // movement.DealDamage(otherActor.GetDamage());
                             self.DealDamage(otherActor.GetDamage());
                             self.StartInvulnerability();
                             break;
                         
                         //workaround for now, so that player does not get damaged from its own bullets
                         // case "projectile":
+                        //     movement.DealDamage(otherActor.GetDamage());
                         //     self.DealDamage(otherActor.GetDamage());
                         //     self.StartInvulnerability();
                         //     break;
                         
                         case "attack":
+                            // movement.DealDamage(otherActor.GetDamage());
                             self.DealDamage(otherActor.GetDamage());
                             self.StartInvulnerability();
                             break;
@@ -65,11 +69,13 @@ namespace C__Classes.Pipelines
                             if (lastMine == other.gameObject) return;
                             lastMine = other.gameObject;
                             
+                            // movement.DealDamage(otherActor.GetDamage());
                             self.DealDamage(otherActor.GetDamage());
                             self.StartInvulnerability();
                             break;
                         
                         case "heal":
+                            // movement.DealDamage(otherActor.GetDamage());
                             self.Heal(otherActor.GetDamage());
                             break;
                     }
