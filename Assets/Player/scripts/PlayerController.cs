@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class Movement : Actor
+public class PlayerController : Actor
 {
     // Lukasz, health bar event
     [Header("UI Events")]

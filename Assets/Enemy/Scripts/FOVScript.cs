@@ -12,7 +12,7 @@ public class FOVScript : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("player") && !other.GetComponent<Movement>().IsCrouching())
+        if (other.CompareTag("player") && !other.GetComponent<PlayerController>().IsCrouching())
         {
             parentAI.Aggravate(other.transform);
         }

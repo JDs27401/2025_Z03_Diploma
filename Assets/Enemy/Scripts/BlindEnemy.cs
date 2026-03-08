@@ -13,7 +13,7 @@ namespace Enemy.Scripts
                 return;
             }
             
-            Aggravate(FindFirstObjectByType<Movement>().transform);
+            Aggravate(FindFirstObjectByType<PlayerController>().transform);
         }
 
         private void OnTriggerExit2D(Collider2D other)
