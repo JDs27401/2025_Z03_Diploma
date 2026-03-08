@@ -1,28 +1,32 @@
 using System;
+using Enemy.Scripts;
 using UnityEngine;
 
-public class FOVScript : MonoBehaviour
+namespace Enemy.Scripts
 {
-    private EAI parentAI;
+    public class FOVScript : MonoBehaviour
+    {
+        private NpcBase parentAI;
     
-    void Start()
-    {
-        parentAI = GetComponentInParent<EAI>();
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("player") && !other.GetComponent<PlayerController>().IsCrouching())
+        void Start()
         {
-            parentAI.Aggravate(other.transform);
+            parentAI = GetComponentInParent<NpcBase>();
         }
-    }
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("player"))
+        private void OnTriggerStay2D(Collider2D other)
         {
-            parentAI.Pacify();
+            if (other.CompareTag("player") && !other.GetComponent<PlayerController>().IsCrouching())
+            {
+                parentAI.Aggravate(other.transform);
+            }
+        }
+
+        void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("player"))
+            {
+                parentAI.Pacify();
+            }
         }
     }
 }
