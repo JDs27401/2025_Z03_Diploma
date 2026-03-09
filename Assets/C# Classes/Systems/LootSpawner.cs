@@ -21,7 +21,7 @@ namespace C__Classes.Systems
                 if (Random.value < spawnChance)
                 {
                     int randomIndex = Random.Range(0, possibleLootPrefabs.Length);
-                    Instantiate(possibleLootPrefabs[randomIndex], spawnPoint.position, Quaternion.identity);
+                    Instantiate(possibleLootPrefabs[randomIndex], spawnPoint.position, Quaternion.identity, spawnPoint);
                 }
             }
         }

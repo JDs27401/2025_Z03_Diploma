@@ -782,7 +782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d97cde841f538eb49801f9581996d069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TilemapGenerationSystem
-  hash: cwel
+  hash: "g\xF3wno"
   mapSize: 640
   chunkSize: 128
   tilemap: {fileID: 1270452878}
@@ -810,12 +810,7 @@ MonoBehaviour:
   highValueTile: {fileID: 11400000, guid: c3ab124f808864b42b0380c1d57b2f8b, type: 2}
   navmesh: {fileID: 0}
   buildingPrefabs:
-  - {fileID: 8344336692475606003, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
-  - {fileID: 4570721072878242866, guid: 8019110a9902f5342b301375d63234bd, type: 3}
-  - {fileID: 4570721072878242866, guid: 6f4021c13a135b548830527686984eec, type: 3}
-  - {fileID: 4570721072878242866, guid: d2c1d7bd3e09062419558a56fd69e45c, type: 3}
   - {fileID: 4570721072878242866, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
-  - {fileID: 4570721072878242866, guid: daa2bcf0751a5af44ae96f50a502266d, type: 3}
   numberOfCirclesBuildings: 7
   radiusBuildings: 30
   radiusIncreaseBuildings: 20
