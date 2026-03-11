@@ -13,8 +13,8 @@ namespace Enemy.Scripts
     {
         protected NavMeshAgent agent;
         protected Transform playerTarget;
-        private float pathUpdateTimer = 0f;
-        private const float PATH_UPDATE_DELAY = 0.5f;
+        protected float pathUpdateTimer = 0f;
+        protected const float PATH_UPDATE_DELAY = 0.5f;
         public enum State { Asleep, Aggravated}
         protected State currentState = State.Asleep;
         
@@ -29,7 +29,7 @@ namespace Enemy.Scripts
         //Animation stuff
         private Animator animator;
         
-        protected new void Start()
+        protected new virtual void Start()
         {
             base.Start();
             
@@ -45,7 +45,7 @@ namespace Enemy.Scripts
             // PAMIĘTAJ: Jeśli w base.Start() masz jakieś dzielenie speed /= 50, 
             // to AI będzie bardzo wolne. Przy delcie operujemy na czystych wartościach.
         }
-        new void Update()
+        protected new virtual void Update()
         {
             base.Update();
 
@@ -106,7 +106,7 @@ namespace Enemy.Scripts
             base.DealDamage(dmg);
         }
         
-        void MoveToTarget()
+        protected virtual void MoveToTarget()
         {
             if (!playerTarget) return;
 
@@ -150,7 +150,7 @@ namespace Enemy.Scripts
             return new Vector2(v.x, v.y);
         }
 
-        public void Aggravate(Transform target)
+        public virtual void Aggravate(Transform target)
         {
             playerTarget = target;
             currentState = State.Aggravated;
