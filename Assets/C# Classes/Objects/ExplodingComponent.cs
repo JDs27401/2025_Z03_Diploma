@@ -15,11 +15,11 @@ namespace C__Classes.Objects
 
         [SerializeField] private float destroyTriggerAfter = 0.25f;
         private float _waitUntilDestroyed = 0f;
+
+        private Actor a;
         
         private bool _triggered = false;
         
-        private bool _startExplosionAnimation = false;
-        private bool _endExplosionAnimation = false;
 
         private void Start()
         {
@@ -28,7 +28,7 @@ namespace C__Classes.Objects
                 return;
             }
 
-            Actor a = GetComponent<Actor>();
+            a = GetComponent<Actor>();
             if (ReferenceEquals(a, null))
             {
                 a = GetComponentInParent<Actor>();
@@ -53,7 +53,12 @@ namespace C__Classes.Objects
             
             _triggered = true;
             print("start");
+            
+            Animator animator = a.GetComponent<Animator>();
+            animator.SetTrigger("AboutToExplode");
             yield return new WaitForSeconds(explodeAfter);
+            animator.SetTrigger("Explode");
+            
             print("end");
             tag = "trap";
             damageTrigger.enabled = true;

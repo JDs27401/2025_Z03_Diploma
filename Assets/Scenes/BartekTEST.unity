@@ -1144,18 +1144,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 511637736318074352, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 4982597701792551325, guid: a8e1b89c51af60141b30137138ac8018, type: 3}
     - target: {fileID: 1506628920627489286, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
       propertyPath: m_Name
       value: ExplodingEnemy
       objectReference: {fileID: 0}
-    - target: {fileID: 1511098431106693569, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 24c1fa78c5e5ec14dbad8bc5a4671494, type: 2}
     - target: {fileID: 3013463401261768326, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 511.37

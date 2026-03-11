@@ -27,7 +27,7 @@ namespace Enemy.Scripts
         // private Actor actor;
         
         //Animation stuff
-        private Animator animator;
+        protected Animator animator;
         
         protected new void Start()
         {

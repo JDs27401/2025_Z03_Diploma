@@ -5,9 +5,6 @@ namespace Enemy.Scripts
 {
     public class ExplodingEnemy : NpcBase
     {
-        private bool _startExplosionAnimation = false;
-        private bool _endExplosionAnimation = false;
-        
         private new void Start()
         {
             base.Start();
@@ -22,7 +19,6 @@ namespace Enemy.Scripts
             {
                 return;
             }
-            
             Pacify();
             agent.SetDestination(transform.position);
         }
