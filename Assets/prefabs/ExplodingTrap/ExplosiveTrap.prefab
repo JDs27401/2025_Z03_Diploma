@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8806558321893638912}
   - component: {fileID: 8798874252100462599}
+  - component: {fileID: 7619631842820880877}
   - component: {fileID: 5242754442642536568}
   - component: {fileID: 4863283742124934643}
   - component: {fileID: 3124314930330253835}
@@ -95,6 +96,27 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &7619631842820880877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8046912208383433724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b492ef6288ddf4d9a23365a765afe6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Actor
+  speed: 0
+  acceleration: 0
+  friction: 0
+  maxHealth: 100
+  currentHealth: 0
+  damage: 50
+  iFrameTime: 0
+  checkTileProperties: 0
+  waitUntilDestroyed: 0.25
 --- !u!114 &5242754442642536568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,18 +129,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21ccb57074949098216bc3adddba9f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.ExplodingTrap
-  speed: 0
-  acceleration: 0
-  friction: 0
-  maxHealth: 100
-  currentHealth: 0
-  damage: 50
-  iFrameTime: 0
-  checkTileProperties: 0
-  waitUntilDestroyed: 0.25
-  TrapTrigger: {fileID: 3124314930330253835}
-  DamageTrigger: {fileID: 4863283742124934643}
-  DestroyTriggerAfter: 0.25
+  trapTrigger: {fileID: 3124314930330253835}
+  trapTriggerRadius: 0.5
+  damageTrigger: {fileID: 4863283742124934643}
+  damageTriggerRadius: 3
+  explodeAfter: 0
+  destroyTriggerAfter: 0.25
 --- !u!58 &4863283742124934643
 CircleCollider2D:
   m_ObjectHideFlags: 0

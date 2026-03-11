@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Enemy.Scripts;
 using UnityEngine;
 
 namespace C__Classes.Objects
@@ -15,11 +16,13 @@ namespace C__Classes.Objects
 
         [SerializeField] private float destroyTriggerAfter = 0.25f;
         private float _waitUntilDestroyed = 0f;
+
+        private Actor a;
         
         private bool _triggered = false;
         
-        private bool _startExplosionAnimation = false;
-        private bool _endExplosionAnimation = false;
+        private Animator animator;
+        
 
         private void Start()
         {
@@ -28,7 +31,7 @@ namespace C__Classes.Objects
                 return;
             }
 
-            Actor a = GetComponent<Actor>();
+            a = GetComponent<Actor>();
             if (ReferenceEquals(a, null))
             {
                 a = GetComponentInParent<Actor>();
@@ -41,6 +44,15 @@ namespace C__Classes.Objects
             
             trapTrigger.radius = trapTriggerRadius;
             damageTrigger.enabled = false;
+
+            if (GetComponent<ExplodingEnemy>())
+            {
+                animator = a.GetComponent<Animator>();
+            }
+            else
+            {
+                animator = GetComponent<Animator>();
+            }
             
         }
 
@@ -53,7 +65,15 @@ namespace C__Classes.Objects
             
             _triggered = true;
             print("start");
+            
+            
+            if (GetComponent<ExplodingEnemy>()) animator.SetTrigger("AboutToExplode");
+            
+            
             yield return new WaitForSeconds(explodeAfter);
+            
+            animator.SetTrigger("Explode");
+            
             print("end");
             tag = "trap";
             damageTrigger.enabled = true;

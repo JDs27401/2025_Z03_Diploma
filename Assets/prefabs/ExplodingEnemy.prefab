@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 3816615599098617108, guid: b9d72d6032afe634e9cdf43f919c9f14, type: 3}
+  m_Sprite: {fileID: 4982597701792551325, guid: a8e1b89c51af60141b30137138ac8018, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -120,7 +120,6 @@ MonoBehaviour:
   checkTileProperties: 1
   waitUntilDestroyed: 1
   hurtAnimCooldown: 1
-  trigger: {fileID: 0}
 --- !u!114 &370202850924807969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,7 +137,7 @@ MonoBehaviour:
   damageTrigger: {fileID: 267448449916791146}
   damageTriggerRadius: 0.2
   explodeAfter: 1
-  destroyTriggerAfter: 0.25
+  destroyTriggerAfter: 1
 --- !u!58 &2554739456918011883
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -233,7 +232,7 @@ Animator:
   m_GameObject: {fileID: 1506628920627489286}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e70e18efaf219d84fbe4e4143d92b4f8, type: 2}
+  m_Controller: {fileID: 9100000, guid: 24c1fa78c5e5ec14dbad8bc5a4671494, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
