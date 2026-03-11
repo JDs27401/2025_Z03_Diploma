@@ -12,11 +12,11 @@ namespace Enemy.Scripts
     public class NpcBase : Actor
     {
         protected NavMeshAgent agent;
-        private Transform playerTarget;
+        protected Transform playerTarget;
         private float pathUpdateTimer = 0f;
         private const float PATH_UPDATE_DELAY = 0.5f;
         public enum State { Asleep, Aggravated}
-        private State currentState = State.Asleep;
+        protected State currentState = State.Asleep;
         
         private float _lastKnownHealth;
         
@@ -29,7 +29,7 @@ namespace Enemy.Scripts
         //Animation stuff
         private Animator animator;
         
-        new void Start()
+        protected new void Start()
         {
             base.Start();
             

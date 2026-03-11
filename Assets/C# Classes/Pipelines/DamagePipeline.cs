@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using C__Classes.Objects;
+using Enemy.Scripts;
 using UnityEngine;
 
 namespace C__Classes.Pipelines
@@ -48,6 +49,10 @@ namespace C__Classes.Pipelines
                     {
                         case "hostile":
                             // movement.DealDamage(otherActor.GetDamage());
+                            if (other.GetComponent<ExplodingEnemy>())
+                            {
+                                return;
+                            }
                             self.DealDamage(otherActor.GetDamage());
                             self.StartInvulnerability();
                             break;

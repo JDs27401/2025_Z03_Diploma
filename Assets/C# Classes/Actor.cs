@@ -175,10 +175,16 @@ namespace C__Classes
             return friction;
         }
 
+        public float GetWaitUntilDestroyed()
+        {
+            return waitUntilDestroyed;
+        }
+
         public float GetDamage()
         {
             return damage;
         }
+        
         public void SetDamage(float value)
         {
             damage = value;
