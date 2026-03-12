@@ -15,15 +15,12 @@ namespace C__Classes.Objects
         [SerializeField] private float explodeAfter = 0f;
 
         [SerializeField] private float destroyTriggerAfter = 0.25f;
-        private float _waitUntilDestroyed = 0f;
 
-        private Actor a;
-        
+        private Actor _actor;
         private bool _triggered = false;
         
         private Animator animator;
         
-
         private void Start()
         {
             if (ReferenceEquals(trapTrigger, null) || ReferenceEquals(damageTrigger, null))
@@ -31,15 +28,15 @@ namespace C__Classes.Objects
                 return;
             }
 
-            a = GetComponent<Actor>();
-            if (ReferenceEquals(a, null))
+            _actor = GetComponent<Actor>();
+            if (ReferenceEquals(_actor, null))
             {
-                a = GetComponentInParent<Actor>();
+                _actor = GetComponentInParent<Actor>();
             }
 
-            if (!ReferenceEquals(a, null))
+            if (ReferenceEquals(_actor, null))
             {
-                _waitUntilDestroyed = a.GetWaitUntilDestroyed();
+                return;
             }
             
             trapTrigger.radius = trapTriggerRadius;
@@ -47,7 +44,7 @@ namespace C__Classes.Objects
 
             if (GetComponent<ExplodingEnemy>())
             {
-                animator = a.GetComponent<Animator>();
+                animator = _actor.GetComponent<Animator>();
             }
             else
             {
@@ -64,17 +61,20 @@ namespace C__Classes.Objects
             }
             
             _triggered = true;
+            #if UNITY_EDITOR
             print("start");
-            
-            
-            if (GetComponent<ExplodingEnemy>()) animator.SetTrigger("AboutToExplode");
-            
+            #endif
+            if (GetComponent<ExplodingEnemy>())
+            {
+                animator.SetTrigger("AboutToExplode");
+            }
             
             yield return new WaitForSeconds(explodeAfter);
-            
+            #if UNITY_EDITOR
+            print("end");
+            #endif
             animator.SetTrigger("Explode");
             
-            print("end");
             tag = "trap";
             damageTrigger.enabled = true;
             damageTrigger.radius = damageTriggerRadius;
@@ -82,7 +82,7 @@ namespace C__Classes.Objects
             // print("boom"); //just a check if the mine works
             // yield return new WaitForFixedUpdate();
             Destroy(damageTrigger, destroyTriggerAfter);
-            Destroy(gameObject, _waitUntilDestroyed);
+            Destroy(gameObject, _actor.GetWaitUntilDestroyed());
         }
     }
 }

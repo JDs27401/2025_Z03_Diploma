@@ -505,42 +505,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.NavMeshBaker
   navmesh: {fileID: 0}
---- !u!1 &1163287434 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8046912208383433724, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
-  m_PrefabInstance: {fileID: 1305338246}
-  m_PrefabAsset: {fileID: 0}
---- !u!58 &1163287436 stripped
-CircleCollider2D:
-  m_CorrespondingSourceObject: {fileID: 3124314930330253835, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
-  m_PrefabInstance: {fileID: 1305338246}
-  m_PrefabAsset: {fileID: 0}
---- !u!58 &1163287437 stripped
-CircleCollider2D:
-  m_CorrespondingSourceObject: {fileID: 4863283742124934643, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
-  m_PrefabInstance: {fileID: 1305338246}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1163287441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1163287434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6b492ef6288ddf4d9a23365a765afe6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Actor
-  speed: 0
-  acceleration: 0
-  friction: 0
-  maxHealth: 100
-  currentHealth: 0
-  damage: 50
-  iFrameTime: 0
-  checkTileProperties: 0
-  waitUntilDestroyed: 0.25
 --- !u!1 &1270452874
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,26 +696,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5242754442642536568, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
-      propertyPath: trapTrigger
-      value: 
-      objectReference: {fileID: 1163287436}
-    - target: {fileID: 5242754442642536568, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
-      propertyPath: damageTrigger
-      value: 
-      objectReference: {fileID: 1163287437}
-    - target: {fileID: 5242754442642536568, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
-      propertyPath: trapTriggerRadius
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5242754442642536568, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
-      propertyPath: waitUntilDestroyed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5242754442642536568, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
-      propertyPath: damageTriggerRadius
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 8046912208383433724, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
       propertyPath: m_Name
       value: ExplosiveTrap
@@ -799,10 +743,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8046912208383433724, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 1163287441}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50c5c46c7f44aa24c8980947fa2d454d, type: 3}
 --- !u!1 &1325118935
 GameObject:
@@ -1300,14 +1241,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1902263295324740345, guid: a4ade0c1d546947ef96ec49e1bb27249, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1902263295324740345, guid: a4ade0c1d546947ef96ec49e1bb27249, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2009427456061222058, guid: a4ade0c1d546947ef96ec49e1bb27249, type: 3}
       propertyPath: m_LocalPosition.x
       value: 50
@@ -1351,10 +1284,6 @@ PrefabInstance:
     - target: {fileID: 5282703699267420326, guid: a4ade0c1d546947ef96ec49e1bb27249, type: 3}
       propertyPath: m_Name
       value: 'BlindEnemy '
-      objectReference: {fileID: 0}
-    - target: {fileID: 8294629724060503943, guid: a4ade0c1d546947ef96ec49e1bb27249, type: 3}
-      propertyPath: PATH_UPDATE_DELAY
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

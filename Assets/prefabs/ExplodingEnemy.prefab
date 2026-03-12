@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 674e7ee1843a4f15a3be5699a548c43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.Scripts.ExplodingEnemy
-  speed: 5
+  speed: 0
   acceleration: 2
   friction: 0.1
   maxHealth: 100
@@ -136,8 +136,8 @@ MonoBehaviour:
   trapTriggerRadius: 0.1
   damageTrigger: {fileID: 267448449916791146}
   damageTriggerRadius: 0.2
-  explodeAfter: 1
-  destroyTriggerAfter: 1
+  explodeAfter: 1.5
+  destroyTriggerAfter: 0.25
 --- !u!58 &2554739456918011883
 CircleCollider2D:
   m_ObjectHideFlags: 0
