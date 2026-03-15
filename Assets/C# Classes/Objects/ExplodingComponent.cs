@@ -19,7 +19,7 @@ namespace C__Classes.Objects
         private Actor _actor;
         private bool _triggered = false;
         
-        private Animator animator;
+        private Animator _animator;
         
         private void Start()
         {
@@ -42,15 +42,14 @@ namespace C__Classes.Objects
             trapTrigger.radius = trapTriggerRadius;
             damageTrigger.enabled = false;
 
-            if (GetComponent<ExplodingEnemy>())
+            _animator = GetComponent<Animator>();
+            if (ReferenceEquals(_animator, null))
             {
-                animator = _actor.GetComponent<Animator>();
+                #if UNITY_EDITOR
+                print("Animator not found");
+                #endif
+                return;
             }
-            else
-            {
-                animator = GetComponent<Animator>();
-            }
-            
         }
 
         private IEnumerator OnTriggerEnter2D(Collider2D other)
@@ -66,14 +65,14 @@ namespace C__Classes.Objects
             #endif
             if (GetComponent<ExplodingEnemy>())
             {
-                animator.SetTrigger("AboutToExplode");
+                _animator.SetTrigger("AboutToExplode");
             }
             
             yield return new WaitForSeconds(explodeAfter);
             #if UNITY_EDITOR
             print("end");
             #endif
-            animator.SetTrigger("Explode");
+            _animator.SetTrigger("Explode");
             
             tag = "trap";
             damageTrigger.enabled = true;

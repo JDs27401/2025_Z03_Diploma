@@ -38,7 +38,7 @@ namespace C__Classes
         //we want to be able how long we want to wait until deleting this object by "kill" method
         [SerializeField] protected float waitUntilDestroyed;
 
-        protected void Start()
+        protected virtual void Start()
         {
             currentHealth = maxHealth;
             
@@ -58,8 +58,13 @@ namespace C__Classes
                 .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
         }
 
-        protected void Update()
+        protected virtual void Update()
         {
+            if (isDead)
+            {
+                return;
+            }
+            
             if (checkTileProperties)
             {
                 if (!CompareTag("projectile") || !CompareTag("heal") || CompareTag("trap") || CompareTag("destructible")) //this line could possibly be removed in the future

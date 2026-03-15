@@ -5,7 +5,7 @@ namespace Enemy.Scripts
 {
     public class ExplodingEnemy : NpcBase
     {
-        private new void Start()
+        protected override void Start()
         {
             base.Start();
             // Aggravate(GameObject.FindWithTag("player").transform);
@@ -21,6 +21,8 @@ namespace Enemy.Scripts
             }
             Pacify();
             agent.SetDestination(transform.position);
+            
+            // animator.SetTrigger("AboutToExplose"); //zagadać do bartka apropo bo może uda się przenieść start animacji tutaj
         }
     }
 }

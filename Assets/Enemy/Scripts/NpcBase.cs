@@ -29,7 +29,7 @@ namespace Enemy.Scripts
         //Animation stuff
         protected Animator animator;
         
-        protected new void Start()
+        protected override void Start()
         {
             base.Start();
             
@@ -45,16 +45,11 @@ namespace Enemy.Scripts
             // PAMIĘTAJ: Jeśli w base.Start() masz jakieś dzielenie speed /= 50, 
             // to AI będzie bardzo wolne. Przy delcie operujemy na czystych wartościach.
         }
-        new void Update()
+        protected override void Update()
         {
             base.Update();
 
             CheckForHurtAnimation();
-            
-            if (isDead)
-            {
-                return;
-            }
             
             switch (currentState)
             {
@@ -99,11 +94,6 @@ namespace Enemy.Scripts
             }
             
             _lastKnownHealth = currentHealth;
-        }
-
-        private new void DealDamage(float dmg)
-        {
-            base.DealDamage(dmg);
         }
         
         void MoveToTarget()
