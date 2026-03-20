@@ -10,7 +10,7 @@ namespace C__Classes
     {
         public static MainMenuManager Instance;
 
-        public string Hash {get; private set;}
+        public string Seed {get; private set;}
         
         [SerializeField] private TMP_InputField inputField;
 
@@ -29,7 +29,7 @@ namespace C__Classes
 
         public void OnSubmitSeed()
         {
-            Hash = inputField.text;
+            Seed = inputField.text;
             SceneManager.LoadScene("JD_Gym");
             // print(_hash);
         } 

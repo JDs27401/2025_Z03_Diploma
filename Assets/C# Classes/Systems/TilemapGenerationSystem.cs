@@ -67,7 +67,11 @@ namespace C__Classes.Systems
 
         private void Awake()
         {
-            hash = MainMenuManager.Instance.Hash;
+            if (MainMenuManager.Instance != null)
+            {
+                hash = MainMenuManager.Instance.Seed;    
+            }
+            
             tileProperties = new TileProperties[mapSize, mapSize];
             buildingsParent = new GameObject("Buildings");
             decorationsParent = new GameObject("Decorations");

@@ -8,9 +8,7 @@ namespace Enemy.Scripts
         protected override void Start()
         {
             base.Start();
-            // Aggravate(GameObject.FindWithTag("player").transform);
-            playerTarget = GameObject.FindWithTag("player").transform;
-            currentState = State.Aggravated;
+            Aggravate(GameObject.FindWithTag("player").transform);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
