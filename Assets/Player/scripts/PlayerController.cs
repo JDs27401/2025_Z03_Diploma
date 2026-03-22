@@ -49,7 +49,7 @@ public class PlayerController : Actor
     private Vector3 mousePos;
     
     
-    new void Start(){
+    protected override void Start(){
         base.Start();
         mainCam = Camera.main;
         if (mainCam == null)
