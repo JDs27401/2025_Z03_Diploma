@@ -63,10 +63,6 @@ namespace C__Classes.Objects
             #if UNITY_EDITOR
             print("start");
             #endif
-            if (GetComponent<ExplodingEnemy>())
-            {
-                _animator.SetTrigger("AboutToExplode");
-            }
             
             yield return new WaitForSeconds(explodeAfter);
             #if UNITY_EDITOR
