@@ -64,7 +64,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c58354684796438459f10c4cc5081fe8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   currentHealth: 0
   damage: 10
   iFrameTime: 0
+  checkTileProperties: 1
   waitUntilDestroyed: 1
   hurtAnimCooldown: 1
 --- !u!114 &7328224769420379187

@@ -49,11 +49,8 @@ namespace C__Classes.Systems
             {
                 return;
             }
-
             var increment = Time.deltaTime * Ratio;
             Minute += increment;
-            RealTime += increment;
-            RealTime %= 24f;
 
             if (Minute >= 60)
             {
@@ -66,6 +63,9 @@ namespace C__Classes.Systems
                 Day += 1;
                 Hour = 0;
             }
+            
+            RealTime += increment;
+            RealTime %= 24f;
             
             SetDayPhase();
             // PrintTime();
