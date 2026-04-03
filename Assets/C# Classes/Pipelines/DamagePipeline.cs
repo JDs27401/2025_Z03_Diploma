@@ -28,6 +28,10 @@ namespace C__Classes.Pipelines
 
         private void BaseDamagePipelineFunction(Collider2D other)
         {
+            if (CompareTag(other.tag))
+            {
+                return;
+            }
             Actor otherActor = other.GetComponent<Actor>();
             if (!otherActor) //fix for script being activated if entity entering does not have Actor
             {
