@@ -38,6 +38,11 @@ namespace Enemy.Scripts
             agent.updateRotation = false;
             agent.updateUpAxis = false;
             agent.speed = speed;
+            
+            agent.radius = 0.05f;
+            agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+            agent.avoidancePriority = Random.Range(0, 100);
+            
             animator = GetComponent<Animator>();
             
             _lastKnownHealth = currentHealth;

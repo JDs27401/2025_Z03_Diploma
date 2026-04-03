@@ -67,10 +67,7 @@ namespace C__Classes
             
             if (checkTileProperties)
             {
-                if (!CompareTag("projectile") || !CompareTag("heal") || CompareTag("trap") || CompareTag("destructible")) //this line could possibly be removed in the future
-                {
-                    GetActorTileType();
-                }
+                GetActorTileType();
             }
         }
 
