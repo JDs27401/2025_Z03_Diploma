@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4340019360399571401}
   - component: {fileID: 1511098431106693569}
   - component: {fileID: 4348082178960730758}
+  - component: {fileID: 870511922206509156}
   m_Layer: 7
   m_Name: ExplodingEnemy
   m_TagString: hostile
@@ -33,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 1506628920627489286}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 72.71, y: 68.8, z: 0}
+  m_LocalPosition: {x: 72.741, y: 68.8, z: 0}
   m_LocalScale: {x: 10.1283, y: 10.1283, z: 10.1283}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -120,6 +121,7 @@ MonoBehaviour:
   checkTileProperties: 1
   waitUntilDestroyed: 1
   hurtAnimCooldown: 1
+  agentRadius: 0.05
 --- !u!114 &370202850924807969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,10 +153,10 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1792
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4343
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -208,7 +210,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.03}
   m_Radius: 0.0001
 --- !u!114 &4340019360399571401
 MonoBehaviour:
@@ -254,7 +256,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 5.12
-  m_Speed: 0
+  m_Speed: 2
   m_Acceleration: 12
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -266,3 +268,40 @@ NavMeshAgent:
   m_BaseOffset: 0.080000006
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
+--- !u!70 &870511922206509156
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506628920627489286}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 4096
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 2039
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.00043652282, y: -0.002401417}
+  m_Size: {x: 0.1276899, y: 0.15519719}
+  m_Direction: 0

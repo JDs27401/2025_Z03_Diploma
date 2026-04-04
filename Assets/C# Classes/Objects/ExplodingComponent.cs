@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Enemy.Scripts;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace C__Classes.Objects
@@ -54,7 +55,12 @@ namespace C__Classes.Objects
 
         private IEnumerator OnTriggerEnter2D(Collider2D other)
         {
-            if (_triggered || other.CompareTag("projectile") || other.CompareTag("trap")|| ReferenceEquals(other.gameObject.GetComponent<Actor>(), null))
+            if (gameObject.GetComponent<ExplodingEnemy>() && !other.CompareTag("player"))
+            {
+                // print("bomba"); //@todo poprawić ten patologiczny fix na to żeby wybuchający nie wybuchał sam jak wejdzie w minę ^ tamto wyżej już powinno być git
+                yield break;
+            }
+            if (_triggered || other.CompareTag("projectile") || other.CompareTag("trap")|| other.gameObject.GetComponent<Actor>() == null)
             {
                 yield break;
             }

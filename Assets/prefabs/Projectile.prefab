@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1622866905768570342}
   - component: {fileID: 7174260559235847011}
   - component: {fileID: 4052123370509750770}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Projectile
   m_TagString: projectile
   m_Icon: {fileID: 0}
@@ -199,4 +199,5 @@ MonoBehaviour:
   currentHealth: 0
   damage: 10
   iFrameTime: 1
+  checkTileProperties: 1
   waitUntilDestroyed: 0

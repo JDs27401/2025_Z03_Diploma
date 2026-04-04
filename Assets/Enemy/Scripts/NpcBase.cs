@@ -29,6 +29,8 @@ namespace Enemy.Scripts
         //Animation stuff
         protected Animator animator;
         
+        [SerializeField] private float agentRadius = 0.05f;
+        
         protected override void Start()
         {
             base.Start();
@@ -39,7 +41,7 @@ namespace Enemy.Scripts
             agent.updateUpAxis = false;
             agent.speed = speed;
             
-            agent.radius = 0.05f;
+            agent.radius = agentRadius;
             agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
             agent.avoidancePriority = Random.Range(0, 100);
             
