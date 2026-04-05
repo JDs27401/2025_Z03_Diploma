@@ -28,6 +28,7 @@ namespace C__Classes.Systems
 
         private void Start()
         {
+            
             _playerController = FindFirstObjectByType<PlayerController>();
             if (_playerController == null)
             {
@@ -36,7 +37,7 @@ namespace C__Classes.Systems
             }
             if (visualTrigger == null)
             {
-                print("Noise trigger is not set up in the Editor");
+                print("Visual trigger is not set up in the Editor");
                 return;
             }
             visualTrigger.radius = triggerSize;
@@ -49,7 +50,15 @@ namespace C__Classes.Systems
 
         public void UpdateVisualRange(bool b)
         {
-            
+            switch (b)
+            {
+                case true:
+                    visualTrigger.radius = triggerSize / 2;
+                    break;
+                case false:
+                    visualTrigger.radius = triggerSize;
+                    break;
+            }
         }
     }
 }

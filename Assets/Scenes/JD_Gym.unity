@@ -548,89 +548,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.NavMeshBaker
   navmesh: {fileID: 0}
---- !u!1 &1117419544
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1117419545}
-  - component: {fileID: 1117419547}
-  - component: {fileID: 1117419546}
-  m_Layer: 8
-  m_Name: PlayerVisualComponent
-  m_TagString: PlayerVisualComponent
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1117419545
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1117419544}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 580190162}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1117419546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1117419544}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0673ef1d59694c7bb283300f5ec057c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.PlayerVisualSystem
-  visualTrigger: {fileID: 0}
-  triggerSize: 0
---- !u!58 &1117419547
+--- !u!58 &1117419547 stripped
 CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 5075899852516862935, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
+  m_PrefabInstance: {fileID: 6483840467078953283}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1117419544}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 128
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 512
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 2
 --- !u!1 &1270452874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1510,6 +1432,10 @@ PrefabInstance:
       propertyPath: onStaminaChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 611660468}
+    - target: {fileID: 2121898771330198329, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
+      propertyPath: visualTrigger
+      value: 
+      objectReference: {fileID: 1117419547}
     - target: {fileID: 4672375051657317503, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 64
@@ -1556,10 +1482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4672375051657317503, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1117419545}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
 --- !u!1660057539 &9223372036854775807
