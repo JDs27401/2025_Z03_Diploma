@@ -43,12 +43,26 @@ namespace C__Classes.Systems
         private void Update()
         {
             //@todo remove this as soon as we get a proper implementation. Change should only be called from UpdateNoiseRadius on weight changes
-            UpdateNoiseRadius(triggerSize);
+            // UpdateNoiseRadius(triggerSize);
         }
 
-        public void UpdateNoiseRadius(float newRadius)
+        public void UpdateNoiseRadius()
         {
-            noiseTrigger.radius = newRadius;
+            switch (_playerController.IsSprinting())
+            {
+                case true:
+                    noiseTrigger.radius *= 1.5f;
+                    break;
+                case false:
+                    noiseTrigger.radius = triggerSize;
+                    break;
+            }
+            //@todo rest of the math involved related to equipment weight, or a completely different function for calculating it
         }
+        
+        // public void UpdateNoiseRadius(float newRadius)
+        // {
+        //     noiseTrigger.radius = newRadius;
+        // }
     }
 }

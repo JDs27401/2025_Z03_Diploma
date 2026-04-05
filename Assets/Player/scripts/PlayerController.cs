@@ -162,6 +162,7 @@ public class PlayerController : Actor
             speed /= sprintPower;
             acceleration /= sprintPower;
         }
+        PlayerNoiseSystem.Instance.UpdateNoiseRadius();
     }
     
     
@@ -273,4 +274,5 @@ public class PlayerController : Actor
     }
 
     public bool IsCrouching() => isCrouching;
+    public bool IsSprinting() => isSprinting;
 }

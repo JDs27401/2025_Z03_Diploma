@@ -4,7 +4,7 @@ namespace C__Classes.Systems
 {
     public class PlayerVisualSystem : MonoBehaviour
     {
-        public static PlayerVisualSystem Instance;
+        public static PlayerVisualSystem Instance { get; private set; }
         
         private PlayerController _playerController;
         
