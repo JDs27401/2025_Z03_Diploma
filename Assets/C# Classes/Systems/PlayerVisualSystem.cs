@@ -1,11 +1,10 @@
-﻿using UnityEngine;
+﻿using C__Classes.Singletons;
+using UnityEngine;
 
 namespace C__Classes.Systems
 {
-    public class PlayerVisualSystem : MonoBehaviour
+    public class PlayerVisualSystem : SingletonNonPersistant<PlayerVisualSystem>
     {
-        public static PlayerVisualSystem Instance { get; private set; }
-        
         private PlayerController _playerController;
         
         [SerializeField]
@@ -13,19 +12,7 @@ namespace C__Classes.Systems
         
         //temporary only, until proper Item data and inventory is implemented
         [SerializeField] private float triggerSize;
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-            }
-            else
-            {
-                Instance = this;
-            }
-        }
-
+        
         private void Start()
         {
             
