@@ -17,6 +17,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     
     private Transform startParent;
     private Transform rootCanvasTransform;
+    private bool isHovered = false;
 
     private void Awake()
     {
@@ -30,12 +31,24 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     private void Start()
     {
+        parentAfterDrag = transform.parent;
         UpdateTextPosition();
     }
 
-// Tooltip handler
+    private void Update()
+    {
+        if (isHovered && Input.GetKeyDown(KeyCode.G))
+        {
+            if (InventoryManager.instance != null)
+            {
+                InventoryManager.instance.DropItem(this);
+            }
+        }
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
+        isHovered = true;
         if (itemData != null && TooltipManager.instance != null)
         {
             TooltipManager.instance.ShowTooltip(itemData); 
@@ -44,19 +57,18 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        isHovered = false;
         if (TooltipManager.instance != null)
         {
             TooltipManager.instance.HideTooltip();
         }
     }
 
-// Count text position updater
     public void UpdateTextPosition()
     {
         if (itemData == null || amountText == null) return;
         RectTransform textRect = amountText.rectTransform;
 
-        // Check for ammo types to adjust text position and color
         if (itemData.itemType == ItemType.Ammo9mm || itemData.itemType == ItemType.Ammo12Gauge)
         {
             if (ColorUtility.TryParseHtmlString("#585248", out Color ammoColor))
@@ -81,7 +93,6 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    // Drag & Drop handlers
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (image == null) return;
