@@ -45,7 +45,6 @@ public class TimeUIController : MonoBehaviour
     private void OpenJournal()
     {
         Debug.Log("Otwieranie dziennika...");
-        // Tutaj dodaj logikę otwierania panelu notatek, np.:
-        // JournalManager.Instance.ToggleJournal();
+        JournalManager.Instance.ToggleJournal();
     }
 }

@@ -30,6 +30,25 @@ public class PickableItem : MonoBehaviour
                 return;
             }
 
+            // --- 1. SPRAWDZENIE CZY TO ZNAJDŹKA (OMIJAMY EKWIPUNEK) ---
+            if (itemData.itemType == ItemType.Collectible)
+            {
+                if (JournalManager.Instance != null)
+                {
+                    JournalManager.Instance.UnlockCollectible(itemData.id); // Dodajemy tylko do dziennika
+                    isBeingPickedUp = true;
+                    Debug.Log($"[Journal] Odkryto nową znajdźkę: {itemData.itemName}");
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    Debug.LogWarning("Brak JournalManager na scenie! Znajdźka nie została podniesiona.");
+                }
+                
+                return; // Przerywamy funkcję, by kod nie przeszedł do normalnego ekwipunku
+            }
+
+            // --- 2. JEŚLI TO NORMALNY PRZEDMIOT, TRAFIA DO EKWIPUNKU ---
             if (InventoryManager.instance != null)
             {
                 bool wasPickedUp = InventoryManager.instance.AddItem(itemData, amount);
