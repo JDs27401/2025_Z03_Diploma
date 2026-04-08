@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8054489075748176644}
   - component: {fileID: 5075899852516862935}
   - component: {fileID: 2121898771330198329}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: PlayerVisualComponent
   m_TagString: PlayerVisualComponent
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 1086201876998197304}
   - component: {fileID: 2961196786781959780}
   - component: {fileID: 4798075080625140071}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayerNoiseComponent
   m_TagString: PlayerNoiseComponent
   m_Icon: {fileID: 0}
