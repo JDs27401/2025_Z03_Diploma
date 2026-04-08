@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3013463401261768326}
   - component: {fileID: 511637736318074352}
   - component: {fileID: 5790615174850182257}
+  - component: {fileID: 5086003537331686703}
   - component: {fileID: 370202850924807969}
   - component: {fileID: 2554739456918011883}
   - component: {fileID: 267448449916791146}
@@ -122,6 +123,18 @@ MonoBehaviour:
   waitUntilDestroyed: 1
   hurtAnimCooldown: 1
   agentRadius: 0.05
+--- !u!114 &5086003537331686703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506628920627489286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e37f5f001b74df183eeed54eea481e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.PlayerTrackingComponent
 --- !u!114 &370202850924807969
 MonoBehaviour:
   m_ObjectHideFlags: 0

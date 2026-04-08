@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 5374738579231581078}
   - component: {fileID: 260617202927939239}
   - component: {fileID: 7442481241201880365}
+  - component: {fileID: 3580229885410406979}
   m_Layer: 7
   m_Name: ExplodingEnemy_wave_variant
   m_TagString: hostile
@@ -318,3 +319,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8010b38db162406b8739f81404bc81b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.WaveComponent
+--- !u!114 &3580229885410406979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4111905758827386282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e37f5f001b74df183eeed54eea481e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.PlayerTrackingComponent
