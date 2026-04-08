@@ -12,7 +12,7 @@ namespace Enemy.Scripts
                 return;
             }
             Pacify();
-            agent.SetDestination(transform.position);
+            Agent.SetDestination(transform.position);
             animator.SetTrigger("AboutToExplode"); 
         }
     }

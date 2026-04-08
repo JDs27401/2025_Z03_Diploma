@@ -11,7 +11,7 @@ namespace Enemy.Scripts
 {
     public class NpcBase : Actor
     {
-        protected NavMeshAgent agent;
+        public NavMeshAgent Agent { get; private set; }
         protected Transform playerTarget;
         private float pathUpdateTimer = 0f;
         private const float PATH_UPDATE_DELAY = 0.5f;
@@ -36,14 +36,14 @@ namespace Enemy.Scripts
             base.Start();
             
             // actor = GetComponent<Actor>();
-            agent = GetComponent<NavMeshAgent>();
-            agent.updateRotation = false;
-            agent.updateUpAxis = false;
-            agent.speed = speed;
+            Agent = GetComponent<NavMeshAgent>();
+            Agent.updateRotation = false;
+            Agent.updateUpAxis = false;
+            Agent.speed = speed;
             
-            agent.radius = agentRadius;
-            agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
-            agent.avoidancePriority = Random.Range(0, 100);
+            Agent.radius = agentRadius;
+            Agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+            Agent.avoidancePriority = Random.Range(0, 100);
             
             animator = GetComponent<Animator>();
             
@@ -110,7 +110,7 @@ namespace Enemy.Scripts
             pathUpdateTimer += Time.deltaTime;
             if (pathUpdateTimer >= PATH_UPDATE_DELAY)
             {
-                agent.SetDestination(playerTarget.position);
+                Agent.SetDestination(playerTarget.position);
                 pathUpdateTimer = 0f;
             }
         }
@@ -129,16 +129,16 @@ namespace Enemy.Scripts
 
         void UpdateAnimation()
         {
-            bool isMoving = Mathf.Abs(agent.velocity.x) > 0.01f || Mathf.Abs(agent.velocity.y) > 0.01f;
+            bool isMoving = Mathf.Abs(Agent.velocity.x) > 0.01f || Mathf.Abs(Agent.velocity.y) > 0.01f;
             animator.SetBool("isWalking", isMoving);
             
-            if (V3toV2(agent.velocity) != Vector2.zero)
+            if (V3toV2(Agent.velocity) != Vector2.zero)
             {
-                if(agent.velocity.x < 0)
+                if(Agent.velocity.x < 0)
                     animator.SetFloat("XInput", -1); 
                 else 
-                    animator.SetFloat("XInput", agent.velocity.x); // Tu warto by dać Mathf.Sign lub 1, żeby animacja się nie psuła przy małych prędkościach
-                animator.SetFloat("YInput", agent.velocity.y);    
+                    animator.SetFloat("XInput", Agent.velocity.x); // Tu warto by dać Mathf.Sign lub 1, żeby animacja się nie psuła przy małych prędkościach
+                animator.SetFloat("YInput", Agent.velocity.y);    
             }
         }
 

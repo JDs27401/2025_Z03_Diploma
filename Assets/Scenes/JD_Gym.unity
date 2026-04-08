@@ -872,7 +872,7 @@ MonoBehaviour:
   waveSizeMultiplier: 1.5
   spawnDelta: 1
   enemies:
-  - {fileID: 566414726841538931, guid: ab988995b1f0cde47aeb3a485f2caf5f, type: 3}
+  - {fileID: 0}
 --- !u!1001 &1509505492
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1174,6 +1174,14 @@ PrefabInstance:
       propertyPath: onStaminaChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 611660468}
+    - target: {fileID: 752213839473067345, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139925246951852580, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2121898771330198329, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
       propertyPath: visualTrigger
       value: 

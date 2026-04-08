@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 674e7ee1843a4f15a3be5699a548c43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.Scripts.ExplodingEnemy
-  speed: 0
+  speed: 4
   acceleration: 2
   friction: 0.1
   maxHealth: 100
