@@ -872,7 +872,7 @@ MonoBehaviour:
   waveSizeMultiplier: 1.5
   spawnDelta: 1
   enemies:
-  - {fileID: 4111905758827386282, guid: a0f70032e89226e47b4c934b4d48f33f, type: 3}
+  - {fileID: 566414726841538931, guid: ab988995b1f0cde47aeb3a485f2caf5f, type: 3}
 --- !u!1001 &1509505492
 PrefabInstance:
   m_ObjectHideFlags: 0
