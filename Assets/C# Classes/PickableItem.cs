@@ -23,6 +23,13 @@ public class PickableItem : MonoBehaviour
     {
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
+            // --- ZABEZPIECZENIE: Sprawdzamy czy gracz aktualnie przeciąga inny przedmiot ---
+            if (DraggableItem.isDraggingItem)
+            {
+                Debug.Log("[PickableItem] Nie można podnieść przedmiotu, przeciągasz inny przedmiot w ekwipunku.");
+                return;
+            }
+
             if (InventoryManager.instance != null)
             {
                 bool wasPickedUp = InventoryManager.instance.AddItem(itemData, amount);
@@ -39,8 +46,6 @@ public class PickableItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"[Tracer] {gameObject.name} wszedł w Trigger z: {other.gameObject.name} (Tag: {other.tag})");
-        
         if (other.CompareTag("player"))
         {
             isPlayerInRange = true;
@@ -65,7 +70,8 @@ public class PickableItem : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log($"[Tracer] {gameObject.name} uderzył w kolider twardy: {collision.gameObject.name} (Tag: {collision.gameObject.tag})");
+        // Debug można usunąć, żeby nie śmiecił konsoli
+        // Debug.Log($"[Tracer] {gameObject.name} uderzył w kolider twardy: {collision.gameObject.name} (Tag: {collision.gameObject.tag})");
     }
 
     private void OnDisable()

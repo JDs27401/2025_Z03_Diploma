@@ -31,7 +31,10 @@ public class ItemData : ScriptableObject
     [Header("Stackowanie")]
     public bool isStackable = true;
     public int maxStackSize = 100;
-    
+
     [Header("Świat Gry")]
     public GameObject dropPrefab;
+
+    [Header("Fizyka")]
+    public float weight = 1.0f; 
 }

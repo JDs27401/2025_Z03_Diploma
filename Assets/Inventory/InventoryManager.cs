@@ -214,5 +214,24 @@ public class InventoryManager : MonoBehaviour
             draggableItem.RefreshCount(draggableItem.count);
             if (slot != null) slot.UpdateUI();
         }
+
+        // Aktualizacja hałasu gracza po wyrzuceniu przedmiotu (zmiana wagi)
+        if (C__Classes.Systems.PlayerNoiseSystem.Instance != null)
+        {
+            C__Classes.Systems.PlayerNoiseSystem.Instance.UpdateNoiseRadius();
+        }
+    }
+
+    public float GetTotalWeight()
+    {
+        float totalWeight = 0f;
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (slot.currentItem != null)
+            {
+                totalWeight += slot.currentItem.weight * slot.currentCount;
+            }
+        }
+        return totalWeight;
     }
 }

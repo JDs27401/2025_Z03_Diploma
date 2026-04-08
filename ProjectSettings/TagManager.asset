@@ -55,6 +55,9 @@ TagManager:
   - name: Background
     uniqueID: 2680051351
     locked: 0
+  - name: Item
+    uniqueID: 2250045055
+    locked: 0
   - name: Foreground
     uniqueID: 123850683
     locked: 0
