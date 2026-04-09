@@ -7,10 +7,15 @@ public class Fight : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform firePoint; // Punkt wylotu pocisków/ataku
     
-    [Header("Prefabs")]
-    [Tooltip("Prefab pocisku. Musi posiadać Collider2D(Trigger), Actor, DamagePipeline oraz tag 'projectile'.")]
-    [SerializeField] private GameObject projectilePrefab;
-    
+    [Header("Weapons")]
+    [Tooltip("Lista broni dostępnych dla gracza")]
+    public WeaponData[] availableWeapons;
+    [Tooltip("Punkt do którego będzie przyczepiany model broni (np. Ramię)")]
+    public Transform weaponHolder;
+    private WeaponController weaponController;
+    private int currentWeaponIndex = 0;
+
+    [Header("Melee (Legayc)")]
     [Tooltip("Prefab ataku wręcz. Musi posiadać Collider2D(Trigger), Actor, DamagePipeline oraz tag 'attack'.")]
     [SerializeField] private GameObject meleeHitboxPrefab;
 
@@ -24,45 +29,75 @@ public class Fight : MonoBehaviour
     [Header("Ranged Stats")]
     [SerializeField] private float shootingSpeed = 4f; // strzały na sekundę
     [SerializeField] private float projectileSpeed = 10f;
-    [SerializeField] private float projectileDamage = 10f;
+    private float projectileDamage = 10f;
     [SerializeField] private float projectileSpread = 5f; // rozrzut w stopniach
 
     private float nextMeleeTime = 0f;
-    private float nextFireTime = 0f;
 
     private Camera mainCam;
-    // private Animator animator; // Opcjonalnie, jeśli chcesz animować postać
 
     void Start()
     {
         mainCam = Camera.main;
         if (mainCam == null) mainCam = FindFirstObjectByType<Camera>();
         
-        // animator = GetComponent<Animator>();
         if (firePoint == null) firePoint = transform;
+        if (weaponHolder == null) weaponHolder = transform; 
+
+        weaponController = gameObject.AddComponent<WeaponController>();
+        weaponController.firePoint = this.firePoint;
+        weaponController.weaponHolder = this.weaponHolder; 
+        if (availableWeapons != null && availableWeapons.Length > 0)
+        {
+            EquipWeapon(0);
+        }
     }
 
     void Update()
     {
         if (Mouse.current == null) return;
 
-        // Strzelanie (LPM)
-        if (Mouse.current.leftButton.isPressed)
+        Vector3 mouseWorldPos = GetMouseWorldPosition();
+        
+        if (weaponController != null)
         {
-            if (Time.time >= nextFireTime)
+            weaponController.AimAt(mouseWorldPos);
+        }
+
+        Vector2 scroll = Mouse.current.scroll.ReadValue();
+        if (scroll.y > 0)
+        {
+            SwitchWeapon(1);
+        }
+        else if (scroll.y < 0)
+        {
+            SwitchWeapon(-1);
+        }
+
+        if (weaponController.currentWeapon != null)
+        {
+            bool wantsToShoot = false;
+            if (weaponController.currentWeapon.isAutomatic)
             {
-                Shoot();
-                nextFireTime = Time.time + (1f / shootingSpeed);
+                wantsToShoot = Mouse.current.leftButton.isPressed;
+            }
+            else
+            {
+                wantsToShoot = Mouse.current.leftButton.wasPressedThisFrame;
+            }
+
+            if (wantsToShoot)
+            {
+                Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
+                weaponController.TryShoot(direction);
             }
         }
 
-        // Atak wręcz (PPM)
+
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            print("a");
             if (Time.time >= nextMeleeTime)
             {
-                print("b");
                 MeleeAttack();
                 nextMeleeTime = Time.time + (1f / meleeSpeed);
             }
@@ -73,73 +108,50 @@ public class Fight : MonoBehaviour
     {
         if (meleeHitboxPrefab == null) return;
 
-        // 1. Oblicz rotację w stronę myszy
         Vector3 mouseWorldPos = GetMouseWorldPosition();
         Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
         float rotZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
     
-        // Obiekt obracamy tak, aby jego "przód" (oś X) celował w myszkę
         Quaternion rotation = Quaternion.Euler(0, 0, rotZ);
 
-        // 2. Instancjonuj
-        print("instantiate");
         GameObject hitbox = Instantiate(meleeHitboxPrefab, firePoint.position, rotation);
-        hitbox.transform.SetParent(this.transform); // Przyczep do gracza
+        hitbox.transform.SetParent(this.transform);
 
-        // 3. SKONFIGURUJ KSZTAŁT (To jest nowość)
         ArcHitbox arcScript = hitbox.GetComponent<ArcHitbox>();
         if (arcScript != null)
         {
-            // Przekazujemy parametry z Fight.cs do hitboxa
             arcScript.SetArcShape(meleeAngle, meleeRange);
         }
 
-        // 4. Skonfiguruj obrażenia
         Actor actorScript = hitbox.GetComponent<Actor>();
         if (actorScript != null)
         {
             actorScript.SetDamage(meleeDamage);
         }
 
-        // 5. Zniszcz po czasie
         Destroy(hitbox, meleeDuration);
     }
 
-    void Shoot()
+    private void SwitchWeapon(int dir)
     {
-        if (projectilePrefab == null) return;
+        if (availableWeapons == null || availableWeapons.Length == 0) return;
 
-        Vector3 mouseWorldPos = GetMouseWorldPosition();
-        Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
+        currentWeaponIndex += dir;
+        if (currentWeaponIndex >= availableWeapons.Length) currentWeaponIndex = 0;
+        if (currentWeaponIndex < 0) currentWeaponIndex = availableWeapons.Length - 1;
 
-        // Oblicz rotację z rozrzutem
-        float rotZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        float randomSpread = Random.Range(-projectileSpread, projectileSpread);
-        Quaternion rotation = Quaternion.Euler(0, 0, rotZ + randomSpread);
+        EquipWeapon(currentWeaponIndex);
+    }
 
-        // 1. Stwórz pocisk
-        GameObject bullet = Instantiate(projectilePrefab, firePoint.position, rotation);
-
-        // 2. Skonfiguruj obrażenia
-        SetupDamageOnObject(bullet, projectileDamage);
-
-        // 3. Nadaj prędkość (jeśli pocisk ma Rigidbody2D)
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        if (rb != null)
+    private void EquipWeapon(int index)
+    {
+        if (weaponController != null)
         {
-            rb.linearVelocity = bullet.transform.right * projectileSpeed; // lub bullet.transform.up zależnie od sprite'a
+            weaponController.EquipWeapon(availableWeapons[index]);
+            Debug.Log("Wybrano broń: " + availableWeapons[index].weaponName);
         }
     }
 
-    // Pomocnicza funkcja do ustawiania obrażeń na komponencie Actor
-    private void SetupDamageOnObject(GameObject obj, float dmgValue)
-    {
-        Actor actorScript = obj.GetComponent<Actor>();
-        if (actorScript != null)
-        {
-            actorScript.SetDamage(dmgValue);
-        }
-    }
 
     Vector3 GetMouseWorldPosition()
     {

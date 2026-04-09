@@ -37,7 +37,6 @@ namespace C__Classes.Pipelines
             {
                 return;
             }
-            
             if (self.GetInvulnerable())
             {
                 return;
