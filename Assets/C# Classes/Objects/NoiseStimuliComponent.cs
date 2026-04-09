@@ -1,11 +1,23 @@
-using System;
+﻿using Enemy.Scripts;
 using UnityEngine;
 
-namespace Enemy.Scripts
+namespace C__Classes.Objects
 {
-    [Obsolete("DO NOT USE, use NoiseStimuliComponent instead")]
-    public class BlindEnemy : NpcBase
+    public class NoiseStimuliComponent : MonoBehaviour
     {
+        private NpcBase _base;
+
+        private void Start()
+        {
+            _base = GetComponent<NpcBase>();
+            if (_base == null)
+            {
+                #if UNITY_EDITOR
+                print("No NPC Base component found");
+                #endif
+                return;
+            }
+        }
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("PlayerNoiseComponent"))
@@ -15,7 +27,7 @@ namespace Enemy.Scripts
             #if UNITY_EDITOR
             print("Entered Noise Component");
             #endif
-            Aggravate(FindFirstObjectByType<PlayerController>().transform);
+            _base.Aggravate(FindFirstObjectByType<PlayerController>().transform);
         }
 
         private void OnTriggerExit2D(Collider2D other)
@@ -28,8 +40,8 @@ namespace Enemy.Scripts
             print("Left Noise Component");
             #endif
             
-            Pacify();
-            Agent.SetDestination(transform.position);
+            _base.Pacify();
+            _base.Agent.SetDestination(transform.position);
         }
     }
 }

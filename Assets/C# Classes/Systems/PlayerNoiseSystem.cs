@@ -1,11 +1,10 @@
+using C__Classes.Singletons;
 using UnityEngine;
 
 namespace C__Classes.Systems
 {
-    public class PlayerNoiseSystem : MonoBehaviour
+    public class PlayerNoiseSystem : SingletonNonPersistant<PlayerNoiseSystem>
     {
-        public static PlayerNoiseSystem Instance { get; private set; }
-        
         private PlayerController _playerController;
         [SerializeField] private CircleCollider2D noiseTrigger;
         
@@ -16,17 +15,6 @@ namespace C__Classes.Systems
         [Header("Wpływ Wagi na Hałas")]
         [SerializeField] private float weightNoiseMultiplier = 0.01f; // Noise penalty per 1 point (ex. 0.01 = +1% noise for 1 kg)
 
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this.gameObject);
-            }
-            else
-            {
-                Instance = this;
-            }
-        }
         
         private void Start()
         {

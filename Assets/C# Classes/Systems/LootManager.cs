@@ -1,32 +1,21 @@
 using System.Collections.Generic;
+using C__Classes.Singletons;
 using UnityEngine;
 
-public class LootManager : MonoBehaviour
+namespace C__Classes.Systems
 {
-    public static LootManager Instance;
+    public class LootManager : SingletonPersistant<LootManager>
+    {
+        private HashSet<string> collectedItems = new HashSet<string>();
     
-    private HashSet<string> collectedItems = new HashSet<string>();
-
-    private void Awake()
-    {
-        if (Instance == null)
+        public void MarkAsLooted(string itemID)
         {
-            Instance = this;
-            DontDestroyOnLoad(this);
+            collectedItems.Add(itemID);
         }
-        else
+
+        public bool IsAlreadyLooted(string itemID)
         {
-            Destroy(gameObject);
+            return collectedItems.Contains(itemID);
         }
-    }
-
-    public void MarkAsLooted(string itemID)
-    {
-        collectedItems.Add(itemID);
-    }
-
-    public bool IsAlreadyLooted(string itemID)
-    {
-        return collectedItems.Contains(itemID);
     }
 }
