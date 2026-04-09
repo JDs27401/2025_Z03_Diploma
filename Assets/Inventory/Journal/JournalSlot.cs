@@ -5,11 +5,11 @@ public class JournalSlot : MonoBehaviour
 {
     [Header("UI Elements")]
     public Image iconImage;
+    public Outline itemOutline; // <--- NOWE POLE
     
     private ItemData assignedItem;
     private bool isUnlocked = false;
 
-    // Inicjalizacja slota przypisanym przedmiotem
     public void Setup(ItemData item)
     {
         assignedItem = item;
@@ -27,7 +27,6 @@ public class JournalSlot : MonoBehaviour
         UpdateVisuals();
     }
 
-    // Aktualizacja stanu odblokowania
     public void SetUnlocked(bool state)
     {
         isUnlocked = state;
@@ -41,11 +40,21 @@ public class JournalSlot : MonoBehaviour
         if (isUnlocked)
         {
             iconImage.color = Color.white; // Pełen kolor
+            
+            // Wyłączamy outline po podniesieniu przedmiotu
+            if (itemOutline != null) 
+                itemOutline.enabled = false; 
         }
         else
         {
-            // Wyszarzenie - możesz dostosować te wartości (np. ciemnoszary, lekko przezroczysty)
-            iconImage.color = new Color(0.2f, 0.2f, 0.2f, 1f); 
+            iconImage.color = new Color(0.2f, 0.2f, 0.2f, 1f); // Wyszarzenie
+            
+            // Włączamy biały outline, gdy przedmiot jest nieodkryty
+            if (itemOutline != null) 
+            {
+                itemOutline.enabled = true;
+                itemOutline.effectColor = Color.white; // Ustawienie koloru na biały
+            }
         }
     }
 }

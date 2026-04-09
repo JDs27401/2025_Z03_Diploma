@@ -84,4 +84,8 @@ public class JournalManager : MonoBehaviour
             RefreshJournalUI();
         }
     }
+    public void CloseJournal()
+    {
+        journalPanel.SetActive(false);
+    }
 }

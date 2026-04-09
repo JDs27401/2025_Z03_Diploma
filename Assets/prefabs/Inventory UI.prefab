@@ -1025,6 +1025,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: JournalPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 2214053514708774084, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214053514708774084, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214053514708774084, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214053514708774084, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214053514708774084, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214053514708774084, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -125
+      objectReference: {fileID: 0}
     - target: {fileID: 4410814882225320095, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1051,11 +1075,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4410814882225320095, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 4410814882225320095, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 4410814882225320095, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1104,6 +1128,30 @@ PrefabInstance:
     - target: {fileID: 4410814882225320095, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532480404198184188, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_Spacing.x
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532480404198184188, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_Spacing.y
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8645243645508310180, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5386074041666078598}
+    - target: {fileID: 8645243645508310180, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseJournal
+      objectReference: {fileID: 0}
+    - target: {fileID: 8645243645508310180, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: JournalManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8645243645508310180, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
