@@ -1,14 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
 public class JournalSlot : MonoBehaviour
 {
     [Header("UI Elements")]
     public Image iconImage;
-    public Outline itemOutline; // <--- NOWE POLE
+    public Outline itemOutline;
     
     private ItemData assignedItem;
     private bool isUnlocked = false;
+    private Button slotButton; 
+
+    private void Awake()
+    {
+        slotButton = GetComponent<Button>();
+        slotButton.onClick.AddListener(OnSlotClicked); 
+    }
 
     public void Setup(ItemData item)
     {
@@ -39,22 +47,27 @@ public class JournalSlot : MonoBehaviour
 
         if (isUnlocked)
         {
-            iconImage.color = Color.white; // Pełen kolor
-            
-            // Wyłączamy outline po podniesieniu przedmiotu
-            if (itemOutline != null) 
-                itemOutline.enabled = false; 
+            // Unlocked: full color, no outline
+            iconImage.color = Color.white; 
+            if (itemOutline != null) itemOutline.enabled = false; 
         }
         else
         {
-            iconImage.color = new Color(0.2f, 0.2f, 0.2f, 1f); // Wyszarzenie
-            
-            // Włączamy biały outline, gdy przedmiot jest nieodkryty
+            // Locked: grayed out, white outline
+            iconImage.color = new Color(0.2f, 0.2f, 0.2f, 1f); 
             if (itemOutline != null) 
             {
                 itemOutline.enabled = true;
-                itemOutline.effectColor = Color.white; // Ustawienie koloru na biały
+                itemOutline.effectColor = Color.white; 
             }
+        }
+    }
+
+    private void OnSlotClicked()
+    {
+        if (isUnlocked && assignedItem != null)
+        {
+            JournalManager.Instance.ShowInspectPanel(assignedItem);
         }
     }
 }

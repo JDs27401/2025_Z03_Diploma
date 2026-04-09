@@ -1,23 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class JournalManager : MonoBehaviour
 {
     public static JournalManager Instance;
 
     [Header("UI Panels")]
-    public GameObject journalPanel; // Główny panel dziennika (ten, który się włącza/wyłącza)
-    public Transform gridContainer; // Obiekt z komponentem Grid Layout Group
-    public GameObject journalSlotPrefab; // Prefab pojedynczego slota (z podpiętym JournalSlot.cs)
+    public GameObject journalPanel; 
+    public Transform gridContainer; 
+    public GameObject journalSlotPrefab; 
 
-    [Header("Baza Znajdziek (Ustal kolejność!)")]
-    [Tooltip("Dodaj tu 16 przedmiotów: 1-8 notatki, 9-12 gazety, 13-16 plakaty")]
+    [Header("Inspect Panel")]
+    public GameObject inspectPanel; 
+    public Image inspectImage; 
+
+    [Header("Collectibles arrangement")]
     public ItemData[] allCollectibles = new ItemData[16];
 
-    // Lista przechowująca ID odblokowanych przedmiotów
     private HashSet<string> unlockedCollectibleIDs = new HashSet<string>();
-    
-    // Lista fizycznych slotów w UI, aby łatwo je aktualizować
     private List<JournalSlot> uiSlots = new List<JournalSlot>();
 
     private void Awake()
@@ -29,12 +30,12 @@ public class JournalManager : MonoBehaviour
     private void Start()
     {
         InitializeJournalUI();
-        journalPanel.SetActive(false); // Dziennik domyślnie ukryty
+        journalPanel.SetActive(false); 
+        if(inspectPanel != null) inspectPanel.SetActive(false);
     }
 
     private void InitializeJournalUI()
     {
-        // Tworzenie 16 slotów na podstawie bazy danych
         foreach (ItemData item in allCollectibles)
         {
             GameObject newSlotObj = Instantiate(journalSlotPrefab, gridContainer);
@@ -43,24 +44,21 @@ public class JournalManager : MonoBehaviour
             if (slotScript != null)
             {
                 slotScript.Setup(item);
-                slotScript.SetUnlocked(false); // Na start wszystko wyszarzone
+                slotScript.SetUnlocked(false); 
                 uiSlots.Add(slotScript);
             }
         }
     }
 
-    // Metoda wywoływana, gdy gracz podniesie znajdźkę
     public void UnlockCollectible(string itemID)
     {
         if (!unlockedCollectibleIDs.Contains(itemID))
         {
             unlockedCollectibleIDs.Add(itemID);
             RefreshJournalUI();
-            Debug.Log($"[Journal] Odblokowano nową znajdźkę: {itemID}");
         }
     }
 
-    // Aktualizuje wygląd wszystkich slotów, np. po otwarciu dziennika
     private void RefreshJournalUI()
     {
         for (int i = 0; i < allCollectibles.Length; i++)
@@ -73,19 +71,35 @@ public class JournalManager : MonoBehaviour
         }
     }
 
-    // Funkcja podpinana pod przycisk "otwórz dziennik" z Twojego mockupu czasu
     public void ToggleJournal()
     {
         bool isActive = !journalPanel.activeSelf;
         journalPanel.SetActive(isActive);
 
-        if (isActive)
-        {
-            RefreshJournalUI();
-        }
+        if (isActive) RefreshJournalUI();
     }
+
     public void CloseJournal()
     {
         journalPanel.SetActive(false);
+    }
+
+    public void ShowInspectPanel(ItemData item)
+    {
+        if (inspectPanel == null || inspectImage == null) return;
+
+        Sprite imageToShow = item.fullSizeImage != null ? item.fullSizeImage : item.icon;
+
+        if (imageToShow != null)
+        {
+            inspectImage.sprite = imageToShow;
+            inspectImage.preserveAspect = true; 
+            inspectPanel.SetActive(true);
+        }
+    }
+
+    public void CloseInspectPanel()
+    {
+        if (inspectPanel != null) inspectPanel.SetActive(false);
     }
 }

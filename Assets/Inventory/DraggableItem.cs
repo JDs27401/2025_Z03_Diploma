@@ -5,7 +5,6 @@ using TMPro;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    // --- NOWA FLAGA STATYCZNA ---
     public static bool isDraggingItem = false; 
 
     [Header("UI Components")]
@@ -114,7 +113,6 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
              return;
         }
 
-        // Ustawienie flagi na start przeciągania
         isDraggingItem = true;
 
         if (eventData.button == PointerEventData.InputButton.Right && count > 1)
@@ -168,7 +166,6 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         image.raycastTarget = true;
         isSplitDrag = false; 
         
-        // Reset flagi po upuszczeniu
         isDraggingItem = false;
         
         RectTransform rect = GetComponent<RectTransform>();
@@ -245,7 +242,6 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    // Dodatkowe zabezpieczenie: jeśli wyrzucimy przedmiot na ziemię podczas przeciągania, resetujemy flagę
     private void OnDisable()
     {
         if (isDraggingItem && image != null && !image.raycastTarget)

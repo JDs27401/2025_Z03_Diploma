@@ -5,18 +5,18 @@ using TMPro;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    [Header("Konfiguracja UI")]
+    [Header("Configuration UI")]
     public TextMeshProUGUI quantityText;
 
-    [Header("Ustawienia Logiczne")]
+    [Header("Logic Settings")]
     public bool isReadOnly = false;
     public ItemType allowedType = ItemType.General;
     public bool lockContent = false;
     
-    [Header("Stały Slot (Opcjonalne)")]
+    [Header("Static slot (Optional)")]
     public ItemData dedicatedItem;
 
-    [Header("Stan Slotu (Dane)")]
+    [Header("Slot state")]
     public ItemData currentItem;
     public int currentCount = 0;
     public Image iconDisplay;
@@ -60,7 +60,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             {
                 this.currentCount += amountToAdd;
                 
-                // Modyfikacja: nie usuwaj z oryginalnego slota, jeśli to podział stacka
                 if (oldSlot != null && oldSlot != this && !droppedItemScript.isSplitDrag)
                 {
                     oldSlot.currentCount -= amountToAdd;
@@ -102,7 +101,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             this.currentCount = droppedItemScript.count;
             this.iconDisplay = droppedObj.GetComponent<Image>();
 
-            // Modyfikacja: nie czyść starego slota, jeśli ucięto sztukę (bo jest tam reszta!)
             if (oldSlot != null && oldSlot != this && !droppedItemScript.isSplitDrag)
             {
                 oldSlot.ClearSlot();
@@ -121,7 +119,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             if (transform.childCount == 0) return;
             
-            // Odrzuć zamianę (swap), jeśli upuszczamy tylko 1 odseparowaną sztukę
             if (droppedItemScript.isSplitDrag) return; 
 
             GameObject residentObj = transform.GetChild(0).gameObject;

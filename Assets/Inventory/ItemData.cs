@@ -28,13 +28,16 @@ public class ItemData : ScriptableObject
     [TextArea]
     public string description;
     
-    [Header("Stackowanie")]
+    [Header("Stacking")]
     public bool isStackable = true;
     public int maxStackSize = 100;
 
-    [Header("Świat Gry")]
+    [Header("Environment")]
     public GameObject dropPrefab;
 
-    [Header("Fizyka")]
+    [Header("Journal / Inspect")]
+    public Sprite fullSizeImage;
+
+    [Header("Physics")]
     public float weight = 1.0f; 
 }

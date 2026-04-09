@@ -5,7 +5,7 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
 
-    [Header("Konfiguracja")]
+    [Header("Configuration")]
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
 
@@ -75,7 +75,6 @@ public class InventoryManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("[Inventory] Brak miejsca w ekwipunku.");
                 return false; 
             }
         }
@@ -157,14 +156,12 @@ public class InventoryManager : MonoBehaviour
     {
         if (draggableItem == null || draggableItem.itemData == null || draggableItem.itemData.dropPrefab == null)
         {
-            Debug.LogWarning("[Inventory] Przedmiot nie ma przypisanego poprawnego dropPrefab!");
             return;
         }
 
         PlayerController player = Object.FindFirstObjectByType<PlayerController>();
         if (player == null)
         {
-            Debug.LogWarning("[Inventory] Nie znaleziono gracza na scenie!");
             return;
         }
 
@@ -215,7 +212,6 @@ public class InventoryManager : MonoBehaviour
             if (slot != null) slot.UpdateUI();
         }
 
-        // Aktualizacja hałasu gracza po wyrzuceniu przedmiotu (zmiana wagi)
         if (C__Classes.Systems.PlayerNoiseSystem.Instance != null)
         {
             C__Classes.Systems.PlayerNoiseSystem.Instance.UpdateNoiseRadius();

@@ -21,10 +21,9 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
 
         Transform oldSlotTransform = droppedItemScript.parentAfterDrag;
 
-        // --- DODANA LOGIKA: Łączenie takich samych przedmiotów w stół do craftingu ---
         if (currentItem != null && currentItem == droppedItemScript.itemData && currentItem.isStackable)
         {
-            if (oldSlotTransform == transform) return; // Zignoruj, jeśli próbujemy upuścić w tym samym slocie
+            if (oldSlotTransform == transform) return;
 
             int spaceLeft = currentItem.maxStackSize - currentCount;
             int amountToAdd = Mathf.Min(spaceLeft, droppedItemScript.count);
@@ -36,7 +35,6 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
                 InventorySlot oldInvSlot = oldSlotTransform.GetComponent<InventorySlot>();
                 CraftingSlot oldCraftSlot = oldSlotTransform.GetComponent<CraftingSlot>();
 
-                // Aktualizacja starego slota (pomijamy, jeśli to odseparowana 1 sztuka, bo stary stack odświeżył się w OnBeginDrag)
                 if (oldInvSlot != null && !droppedItemScript.isSplitDrag)
                 {
                     oldInvSlot.currentCount -= amountToAdd;
@@ -53,12 +51,12 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
                         oldCraftSlot.iconDisplay = null;
                     }
                     
-                    // Odświeżenie UI dla starego slota craftingu
+                    // UI refresh for old inventory slot
                     DraggableItem oldItemScript = oldCraftSlot.GetComponentInChildren<DraggableItem>();
                     if (oldItemScript != null) oldItemScript.RefreshCount(oldCraftSlot.currentCount);
                 }
 
-                // Odświeżenie UI obecnego slota
+                // UI refresh for current slot
                 DraggableItem residentScript = GetComponentInChildren<DraggableItem>();
                 if (residentScript != null)
                 {
@@ -73,7 +71,6 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
             }
         }
 
-        // --- PUSTY SLOT LUB ZAMIANA (SWAP) INNYCH PRZEDMIOTÓW ---
         if (transform.childCount == 0)
         {
             droppedItemScript.parentAfterDrag = transform;
@@ -89,7 +86,7 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
         }
         else
         {
-            // Zablokuj zamianę przy próbie upuszczenia wydzielonej 1 sztuki na INNY przedmiot
+            // Block for a case when you try to swap items while moving one item from a pile
             if (droppedItemScript.isSplitDrag) return;
 
             GameObject residentObj = transform.GetChild(0).gameObject;

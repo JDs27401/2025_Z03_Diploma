@@ -10,11 +10,11 @@ namespace C__Classes.Systems
         [SerializeField] private CircleCollider2D noiseTrigger;
         
         [Header("Konfiguracja Hałasu")]
-        [SerializeField] private float baseTriggerSize = 5f; // Bazowy promień hałasu
-        [SerializeField] private float sprintMultiplier = 1.5f; // Mnożnik podczas sprintu
+        [SerializeField] private float baseTriggerSize = 5f;
+        [SerializeField] private float sprintMultiplier = 1.5f;
         
         [Header("Wpływ Wagi na Hałas")]
-        [SerializeField] private float weightNoiseMultiplier = 0.01f; // Kara do hałasu za 1 jednostkę wagi (np. 0.01 = +1% hałasu za 1 kg)
+        [SerializeField] private float weightNoiseMultiplier = 0.01f; // Noise penalty per 1 point (ex. 0.01 = +1% noise for 1 kg)
 
         private void Awake()
         {
@@ -60,7 +60,6 @@ namespace C__Classes.Systems
             {
                 float currentWeight = global::InventoryManager.instance.GetTotalWeight();
                 
-                // Brak limitu wagi - każdy punkt wagi poszerza promień
                 float weightFactor = 1f + (currentWeight * weightNoiseMultiplier);
                 
                 calculatedRadius *= weightFactor;
