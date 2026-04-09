@@ -5,18 +5,18 @@ using TMPro;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    [Header("Konfiguracja UI")]
+    [Header("Configuration UI")]
     public TextMeshProUGUI quantityText;
 
-    [Header("Ustawienia Logiczne")]
+    [Header("Logic Settings")]
     public bool isReadOnly = false;
     public ItemType allowedType = ItemType.General;
     public bool lockContent = false;
     
-    [Header("Stały Slot (Opcjonalne)")]
+    [Header("Static slot (Optional)")]
     public ItemData dedicatedItem;
 
-    [Header("Stan Slotu (Dane)")]
+    [Header("Slot state")]
     public ItemData currentItem;
     public int currentCount = 0;
     public Image iconDisplay;
@@ -60,7 +60,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             {
                 this.currentCount += amountToAdd;
                 
-                if (oldSlot != null)
+                if (oldSlot != null && oldSlot != this && !droppedItemScript.isSplitDrag)
                 {
                     oldSlot.currentCount -= amountToAdd;
                     if (oldSlot.currentCount <= 0 && !oldSlot.lockContent)
@@ -72,7 +72,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                         oldSlot.UpdateUI();
                     }
                 }
-                else if (oldCraftingSlot != null)
+                else if (oldCraftingSlot != null && !droppedItemScript.isSplitDrag)
                 {
                     oldCraftingSlot.currentCount -= amountToAdd;
                     if (oldCraftingSlot.currentCount <= 0)
@@ -101,11 +101,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             this.currentCount = droppedItemScript.count;
             this.iconDisplay = droppedObj.GetComponent<Image>();
 
-            if (oldSlot != null && oldSlot != this)
+            if (oldSlot != null && oldSlot != this && !droppedItemScript.isSplitDrag)
             {
                 oldSlot.ClearSlot();
             }
-            else if (oldCraftingSlot != null)
+            else if (oldCraftingSlot != null && !droppedItemScript.isSplitDrag)
             {
                 oldCraftingSlot.currentItem = null;
                 oldCraftingSlot.currentCount = 0;
@@ -118,6 +118,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         else
         {
             if (transform.childCount == 0) return;
+            
+            if (droppedItemScript.isSplitDrag) return; 
 
             GameObject residentObj = transform.GetChild(0).gameObject;
             DraggableItem residentScript = residentObj.GetComponent<DraggableItem>();

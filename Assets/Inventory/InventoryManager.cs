@@ -5,7 +5,7 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
 
-    [Header("Konfiguracja")]
+    [Header("Configuration")]
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
 
@@ -54,7 +54,6 @@ public class InventoryManager : MonoBehaviour
                         
                         if (amount <= 0) 
                         {
-                            Debug.Log($"[Inventory] Dodano do stosu: {item.itemName}");
                             return true; 
                         }
                     }
@@ -76,7 +75,6 @@ public class InventoryManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("[Inventory] Brak miejsca w ekwipunku.");
                 return false; 
             }
         }
@@ -152,5 +150,84 @@ public class InventoryManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void DropItem(DraggableItem draggableItem)
+    {
+        if (draggableItem == null || draggableItem.itemData == null || draggableItem.itemData.dropPrefab == null)
+        {
+            return;
+        }
+
+        PlayerController player = Object.FindFirstObjectByType<PlayerController>();
+        if (player == null)
+        {
+            return;
+        }
+
+        Vector3 dropOffset = new Vector3(UnityEngine.Random.Range(-0.4f, 0.4f), UnityEngine.Random.Range(-0.4f, 0.4f), 0);
+        Vector3 dropPosition = player.transform.position + dropOffset;
+        dropPosition.z = player.transform.position.z; 
+
+        GameObject droppedObj = Instantiate(draggableItem.itemData.dropPrefab);
+        droppedObj.transform.position = dropPosition;
+        droppedObj.transform.rotation = Quaternion.identity;
+        droppedObj.name = draggableItem.itemData.itemName + " (Dropped)";
+        
+        C__Classes.Systems.LootTracker lootTracker = droppedObj.GetComponent<C__Classes.Systems.LootTracker>();
+        if (lootTracker != null)
+        {
+            lootTracker.isDynamicDrop = true;
+        }
+
+        droppedObj.SetActive(true);
+
+        PickableItem pickable = droppedObj.GetComponent<PickableItem>();
+        if (pickable != null)
+        {
+            pickable.amount = 1;
+            pickable.itemData = draggableItem.itemData;
+        }
+
+        Transform targetParent = draggableItem.parentAfterDrag != null ? draggableItem.parentAfterDrag : draggableItem.transform.parent;
+        InventorySlot slot = targetParent.GetComponent<InventorySlot>();
+        
+        draggableItem.count--;
+
+        if (slot != null)
+        {
+            slot.currentCount = draggableItem.count;
+        }
+
+        if (draggableItem.count <= 0)
+        {
+            if (TooltipManager.instance != null) TooltipManager.instance.HideTooltip();
+            
+            if (slot != null) slot.ClearSlot();
+            Destroy(draggableItem.gameObject);
+        }
+        else
+        {
+            draggableItem.RefreshCount(draggableItem.count);
+            if (slot != null) slot.UpdateUI();
+        }
+
+        if (C__Classes.Systems.PlayerNoiseSystem.Instance != null)
+        {
+            C__Classes.Systems.PlayerNoiseSystem.Instance.UpdateNoiseRadius();
+        }
+    }
+
+    public float GetTotalWeight()
+    {
+        float totalWeight = 0f;
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (slot.currentItem != null)
+            {
+                totalWeight += slot.currentItem.weight * slot.currentCount;
+            }
+        }
+        return totalWeight;
     }
 }

@@ -20,3 +20,4 @@ MonoBehaviour:
   description: nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.nails.
   isStackable: 1
   maxStackSize: 100
+  dropPrefab: {fileID: 6034283769294664867, guid: 2e91323745b9198459c11b87beb67e8f, type: 3}

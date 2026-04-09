@@ -20,3 +20,4 @@ MonoBehaviour:
   description: Just a tape
   isStackable: 1
   maxStackSize: 100
+  dropPrefab: {fileID: 9044937074433035260, guid: 0aa242010b8aefd43afd2f2b7afbbf3f, type: 3}

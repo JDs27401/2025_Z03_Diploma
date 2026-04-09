@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // Wymagane dla TextMeshPro
+using TMPro;
 
 public class TooltipManager : MonoBehaviour
 {

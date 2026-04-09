@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerController : Actor
 {
@@ -32,6 +33,10 @@ public class PlayerController : Actor
     [SerializeField] 
     private float sprintPower = 2; //multiplying speed by this while sprinting 
     
+    [Header("Weight & Equipment")]
+    [SerializeField] private float speedPenaltyPerPoint = 0.01f; // Speed penalty per 1 weight point (ex. 0.01 = 1% loss for 1 kg)
+    [SerializeField] private float minimumSpeedPercentage = 0.15f; // 15% of base movement speed
+    
     private Vector2 moveInput; 
     private Vector2 currentSpeed = Vector2.zero;
     private bool isRolling = false;
@@ -57,8 +62,7 @@ public class PlayerController : Actor
         {
             mainCam = FindFirstObjectByType<Camera>();    
         }
-        // speed /= 50; //To have nicer vales
-        // acceleration /= 10;
+        
         friction = 1-friction;
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -106,7 +110,6 @@ public class PlayerController : Actor
     {
         if (Mathf.Abs(currentHealth - _lastKnownHealth) > 0.01f)
         {
-            //We check if the health is lower than last known health so we can play hurt or death animation
             if (currentHealth < _lastKnownHealth)
             {
                 if (currentHealth <= 0)
@@ -119,16 +122,13 @@ public class PlayerController : Actor
                 }
             }
             
-            
             _lastKnownHealth = currentHealth;
-        
             float healthPercent = (maxHealth > 0) ? currentHealth / maxHealth : 0;
-            
             onHealthChanged?.Invoke(healthPercent);
         }
     }
     
-    public void WSADManagement(InputAction.CallbackContext context){ //getting directions from keys pressed
+    public void WSADManagement(InputAction.CallbackContext context){ 
         moveInput = context.ReadValue<Vector2>();
     }
     public void SpaceManagement(InputAction.CallbackContext context)
@@ -165,35 +165,43 @@ public class PlayerController : Actor
         PlayerNoiseSystem.Instance.UpdateNoiseRadius();
     }
     
-    
     void CalculateSpeed()
     {
-        //calculatoration
-        currentSpeed *= friction;
-        currentSpeed += moveInput * acceleration * Time.fixedDeltaTime; //Added delta
-        
-        //check for max speed
-        if (currentSpeed.x >= speed)
+        float weightPenaltyMultiplier = 1f;
+
+        if (InventoryManager.instance != null)
         {
-            currentSpeed.x = speed;
+            float currentWeight = InventoryManager.instance.GetTotalWeight();
+            
+            weightPenaltyMultiplier = Mathf.Max(minimumSpeedPercentage, 1f - (currentWeight * speedPenaltyPerPoint));
         }
 
-        if (currentSpeed.x <= -speed)
+        float currentEffectiveAcceleration = acceleration * weightPenaltyMultiplier;
+        float currentEffectiveSpeed = speed * weightPenaltyMultiplier;
+
+        currentSpeed *= friction;
+        currentSpeed += moveInput * currentEffectiveAcceleration * Time.fixedDeltaTime; 
+        
+        if (currentSpeed.x >= currentEffectiveSpeed)
         {
-            currentSpeed.x = -speed;
+            currentSpeed.x = currentEffectiveSpeed;
         }
-        if (currentSpeed.y >= speed)
+        if (currentSpeed.x <= -currentEffectiveSpeed)
         {
-            currentSpeed.y = speed;
+            currentSpeed.x = -currentEffectiveSpeed;
         }
-        if (currentSpeed.y <= -speed)
+        if (currentSpeed.y >= currentEffectiveSpeed)
         {
-            currentSpeed.y = -speed;
+            currentSpeed.y = currentEffectiveSpeed;
+        }
+        if (currentSpeed.y <= -currentEffectiveSpeed)
+        {
+            currentSpeed.y = -currentEffectiveSpeed;
         }
     }
-    void Move() //changing player position
+
+    void Move() 
     {
-        //Added delta
         Vector3 newPos = new Vector3(
             transform.position.x + currentSpeed.x * Time.fixedDeltaTime,
             transform.position.y + currentSpeed.y * Time.fixedDeltaTime,
@@ -205,21 +213,16 @@ public class PlayerController : Actor
     {
         if (mainCam == null || Mouse.current == null) return;
         
-        
         bool isMoving = Mathf.Abs(currentSpeed.x) > 1f || Mathf.Abs(currentSpeed.y) > 1f;
         animator.SetBool("isWalking", isMoving);
         
-        //Calculating where player is looking based on the mouse position
         Vector3 mouseScreenPos = (Vector3)Mouse.current.position.ReadValue();
         mouseScreenPos.z = Mathf.Abs(mainCam.transform.position.z - transform.position.z);
 
         Vector2 direction = (mainCam.ScreenToWorldPoint(mouseScreenPos) - transform.position).normalized;
-
         
         animator.SetFloat("XInput", direction.x);
         animator.SetFloat("YInput", direction.y);
-        
-        
     }
     
     void ManageRoll()

@@ -21,6 +21,56 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
 
         Transform oldSlotTransform = droppedItemScript.parentAfterDrag;
 
+        if (currentItem != null && currentItem == droppedItemScript.itemData && currentItem.isStackable)
+        {
+            if (oldSlotTransform == transform) return;
+
+            int spaceLeft = currentItem.maxStackSize - currentCount;
+            int amountToAdd = Mathf.Min(spaceLeft, droppedItemScript.count);
+
+            if (amountToAdd > 0)
+            {
+                this.currentCount += amountToAdd;
+
+                InventorySlot oldInvSlot = oldSlotTransform.GetComponent<InventorySlot>();
+                CraftingSlot oldCraftSlot = oldSlotTransform.GetComponent<CraftingSlot>();
+
+                if (oldInvSlot != null && !droppedItemScript.isSplitDrag)
+                {
+                    oldInvSlot.currentCount -= amountToAdd;
+                    if (oldInvSlot.currentCount <= 0 && !oldInvSlot.lockContent) oldInvSlot.ClearSlot();
+                    else oldInvSlot.UpdateUI();
+                }
+                else if (oldCraftSlot != null && !droppedItemScript.isSplitDrag)
+                {
+                    oldCraftSlot.currentCount -= amountToAdd;
+                    if (oldCraftSlot.currentCount <= 0)
+                    {
+                        oldCraftSlot.currentItem = null;
+                        oldCraftSlot.currentCount = 0;
+                        oldCraftSlot.iconDisplay = null;
+                    }
+                    
+                    // UI refresh for old inventory slot
+                    DraggableItem oldItemScript = oldCraftSlot.GetComponentInChildren<DraggableItem>();
+                    if (oldItemScript != null) oldItemScript.RefreshCount(oldCraftSlot.currentCount);
+                }
+
+                // UI refresh for current slot
+                DraggableItem residentScript = GetComponentInChildren<DraggableItem>();
+                if (residentScript != null)
+                {
+                    residentScript.RefreshCount(this.currentCount);
+                }
+
+                Destroy(droppedObj);
+
+                if (CraftingUI.instance != null) CraftingUI.instance.UpdateCraftingGrid();
+                TooltipManager.instance.HideTooltip();
+                return;
+            }
+        }
+
         if (transform.childCount == 0)
         {
             droppedItemScript.parentAfterDrag = transform;
@@ -29,10 +79,16 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
             this.currentCount = droppedItemScript.count; 
             this.iconDisplay = droppedObj.GetComponent<Image>();
 
-            UpdateOldSlot(oldSlotTransform, null, 0, null);
+            if (!droppedItemScript.isSplitDrag)
+            {
+                UpdateOldSlot(oldSlotTransform, null, 0, null);
+            }
         }
         else
         {
+            // Block for a case when you try to swap items while moving one item from a pile
+            if (droppedItemScript.isSplitDrag) return;
+
             GameObject residentObj = transform.GetChild(0).gameObject;
             DraggableItem residentItemScript = residentObj.GetComponent<DraggableItem>();
 
@@ -83,6 +139,10 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
             craftSlot.currentItem = newItem;
             craftSlot.currentCount = newCount;
             craftSlot.iconDisplay = newIcon;
+            
+            DraggableItem craftItem = craftSlot.GetComponentInChildren<DraggableItem>();
+            if (craftItem != null && newCount > 0) craftItem.RefreshCount(newCount);
+            
             return;
         }
     }

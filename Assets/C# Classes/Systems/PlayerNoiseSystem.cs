@@ -8,48 +8,52 @@ namespace C__Classes.Systems
         private PlayerController _playerController;
         [SerializeField] private CircleCollider2D noiseTrigger;
         
-        //temporary only, until proper Item data and inventory is implemented
-        [SerializeField] private float triggerSize;
+        [Header("Konfiguracja Hałasu")]
+        [SerializeField] private float baseTriggerSize = 5f;
+        [SerializeField] private float sprintMultiplier = 1.5f;
+        
+        [Header("Wpływ Wagi na Hałas")]
+        [SerializeField] private float weightNoiseMultiplier = 0.01f; // Noise penalty per 1 point (ex. 0.01 = +1% noise for 1 kg)
+
         
         private void Start()
         {
             _playerController = FindFirstObjectByType<PlayerController>();
             if (_playerController == null)
             {
-                print("Player Controller not found");
+                Debug.LogWarning("[PlayerNoiseSystem] Player Controller not found");
                 return;
             }
             if (noiseTrigger == null)
             {
-                print("Noise trigger is not set up in the Editor");
+                Debug.LogWarning("[PlayerNoiseSystem] Noise trigger is not set up in the Editor");
                 return;
             }
-            noiseTrigger.radius = triggerSize;
-        }
-
-        private void Update()
-        {
-            //@todo remove this as soon as we get a proper implementation. Change should only be called from UpdateNoiseRadius on weight changes
-            // UpdateNoiseRadius(triggerSize);
+            
+            UpdateNoiseRadius();
         }
 
         public void UpdateNoiseRadius()
         {
-            switch (_playerController.IsSprinting())
+            if (noiseTrigger == null || _playerController == null) return;
+
+            float calculatedRadius = baseTriggerSize;
+
+            if (_playerController.IsSprinting())
             {
-                case true:
-                    noiseTrigger.radius *= 1.5f;
-                    break;
-                case false:
-                    noiseTrigger.radius = triggerSize;
-                    break;
+                calculatedRadius *= sprintMultiplier;
             }
-            //@todo rest of the math involved related to equipment weight, or a completely different function for calculating it
+
+            if (global::InventoryManager.instance != null)
+            {
+                float currentWeight = global::InventoryManager.instance.GetTotalWeight();
+                
+                float weightFactor = 1f + (currentWeight * weightNoiseMultiplier);
+                
+                calculatedRadius *= weightFactor;
+            }
+
+            noiseTrigger.radius = calculatedRadius;
         }
-        
-        // public void UpdateNoiseRadius(float newRadius)
-        // {
-        //     noiseTrigger.radius = newRadius;
-        // }
     }
 }

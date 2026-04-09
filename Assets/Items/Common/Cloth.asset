@@ -20,3 +20,4 @@ MonoBehaviour:
   description: a piece of old cloth
   isStackable: 1
   maxStackSize: 100
+  dropPrefab: {fileID: 930304908882398284, guid: a5866354bb7e739429a0d811aca2eb14, type: 3}

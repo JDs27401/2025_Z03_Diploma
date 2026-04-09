@@ -11,11 +11,11 @@ public class CraftingUI : MonoBehaviour
         else instance = this;
     }
 
-    [Header("Główne Referencje")]
+    [Header("References")]
     public CraftingManager craftingManager; 
     public CraftingSlot[] gridSlots; 
 
-    [Header("Ustawienia Wyniku")]
+    [Header("Result Settings")]
     public Image resultSlotImage; 
     public Transform resultSlotContainer; 
     public Button craftButton; 

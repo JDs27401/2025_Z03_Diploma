@@ -5,6 +5,8 @@ using TMPro;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    public static bool isDraggingItem = false; 
+
     [Header("UI Components")]
     public Image image;
     public TextMeshProUGUI amountText; 
@@ -14,9 +16,11 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public int count = 1;
 
     [HideInInspector] public Transform parentAfterDrag;
+    [HideInInspector] public bool isSplitDrag = false; 
     
     private Transform startParent;
     private Transform rootCanvasTransform;
+    private bool isHovered = false;
 
     private void Awake()
     {
@@ -30,13 +34,25 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     private void Start()
     {
+        parentAfterDrag = transform.parent;
         UpdateTextPosition();
     }
 
-// Tooltip handler
+    private void Update()
+    {
+        if (isHovered && Input.GetKeyDown(KeyCode.G))
+        {
+            if (InventoryManager.instance != null)
+            {
+                InventoryManager.instance.DropItem(this);
+            }
+        }
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (itemData != null && TooltipManager.instance != null)
+        isHovered = true;
+        if (itemData != null && TooltipManager.instance != null && !isDraggingItem)
         {
             TooltipManager.instance.ShowTooltip(itemData); 
         }
@@ -44,19 +60,18 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        isHovered = false;
         if (TooltipManager.instance != null)
         {
             TooltipManager.instance.HideTooltip();
         }
     }
 
-// Count text position updater
     public void UpdateTextPosition()
     {
         if (itemData == null || amountText == null) return;
         RectTransform textRect = amountText.rectTransform;
 
-        // Check for ammo types to adjust text position and color
         if (itemData.itemType == ItemType.Ammo9mm || itemData.itemType == ItemType.Ammo12Gauge)
         {
             if (ColorUtility.TryParseHtmlString("#585248", out Color ammoColor))
@@ -81,7 +96,6 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    // Drag & Drop handlers
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (image == null) return;
@@ -90,12 +104,44 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         startParent = transform.parent;
         parentAfterDrag = transform.parent;
+        isSplitDrag = false;
 
         InventorySlot currentSlot = startParent.GetComponent<InventorySlot>();
         if (currentSlot != null && currentSlot.lockContent)
         {
              eventData.pointerDrag = null;
              return;
+        }
+
+        isDraggingItem = true;
+
+        if (eventData.button == PointerEventData.InputButton.Right && count > 1)
+        {
+            isSplitDrag = true;
+            
+            GameObject clone = Instantiate(gameObject, startParent);
+            DraggableItem cloneScript = clone.GetComponent<DraggableItem>();
+            
+            int remainingAmount = count - 1;
+            
+            cloneScript.count = remainingAmount;
+            cloneScript.RefreshCount(remainingAmount);
+            cloneScript.parentAfterDrag = startParent;
+            cloneScript.isSplitDrag = false;
+            
+            if (currentSlot != null)
+            {
+                currentSlot.currentCount = remainingAmount;
+                currentSlot.UpdateUI();
+            }
+            else
+            {
+                CraftingSlot cSlot = startParent.GetComponent<CraftingSlot>();
+                if (cSlot != null) cSlot.currentCount = remainingAmount;
+            }
+            
+            this.count = 1;
+            this.RefreshCount(1);
         }
 
         transform.SetParent(rootCanvasTransform);
@@ -118,6 +164,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         transform.SetParent(parentAfterDrag);
         image.raycastTarget = true;
+        isSplitDrag = false; 
+        
+        isDraggingItem = false;
         
         RectTransform rect = GetComponent<RectTransform>();
         if (rect != null)
@@ -132,10 +181,48 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
 
         InventorySlot slot = parentAfterDrag.GetComponent<InventorySlot>();
-        if (slot != null) slot.UpdateUI();
+        if (slot != null)
+        {
+            DraggableItem[] items = parentAfterDrag.GetComponentsInChildren<DraggableItem>();
+            if (items.Length > 1)
+            {
+                foreach (DraggableItem item in items)
+                {
+                    if (item != this && item.itemData == this.itemData)
+                    {
+                        item.count += this.count;
+                        item.RefreshCount(item.count);
+                        slot.currentCount = item.count;
+                        slot.UpdateUI();
+                        Destroy(this.gameObject);
+                        return;
+                    }
+                }
+            }
+            slot.UpdateUI();
+        }
         
         CraftingSlot cSlot = parentAfterDrag.GetComponent<CraftingSlot>();
-        if (cSlot != null && CraftingUI.instance != null) CraftingUI.instance.UpdateCraftingGrid();
+        if (cSlot != null)
+        {
+            DraggableItem[] items = parentAfterDrag.GetComponentsInChildren<DraggableItem>();
+            if (items.Length > 1)
+            {
+                foreach (DraggableItem item in items)
+                {
+                    if (item != this && item.itemData == this.itemData)
+                    {
+                        item.count += this.count;
+                        item.RefreshCount(item.count);
+                        cSlot.currentCount = item.count;
+                        if (CraftingUI.instance != null) CraftingUI.instance.UpdateCraftingGrid();
+                        Destroy(this.gameObject);
+                        return;
+                    }
+                }
+            }
+            if (CraftingUI.instance != null) CraftingUI.instance.UpdateCraftingGrid();
+        }
     }
 
     public void RefreshCount(int newCount)
@@ -152,6 +239,14 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                 else if (count > 1) showText = true;
             }
             amountText.gameObject.SetActive(showText);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (isDraggingItem && image != null && !image.raycastTarget)
+        {
+            isDraggingItem = false;
         }
     }
 }

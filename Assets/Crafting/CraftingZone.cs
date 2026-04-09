@@ -8,7 +8,6 @@ public class CraftingZone : MonoBehaviour
     {
         if (other.CompareTag("player"))
         {
-            Debug.Log("Wejście do strefy craftingu");
             if(craftingUI != null)
             {
                 craftingUI.SetActive(true);
@@ -20,7 +19,6 @@ public class CraftingZone : MonoBehaviour
     {
         if (other.CompareTag("player"))
         {
-            Debug.Log("Wyjście ze strefy craftingu");
             if (craftingUI != null)
             {
                 craftingUI.SetActive(false);
