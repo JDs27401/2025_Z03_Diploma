@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using Enemy.Scripts;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace C__Classes.Objects
@@ -46,44 +45,92 @@ namespace C__Classes.Objects
             _animator = GetComponent<Animator>();
             if (ReferenceEquals(_animator, null))
             {
-                #if UNITY_EDITOR
+                #if UNITY_EDITOR 
                 print("Animator not found");
                 #endif
                 return;
             }
         }
 
-        private IEnumerator OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        
+        if (damageTrigger.enabled)
         {
-            if (gameObject.GetComponent<ExplodingEnemy>() && !other.CompareTag("player"))
-            {
-                // print("bomba"); //@todo poprawić ten patologiczny fix na to żeby wybuchający nie wybuchał sam jak wejdzie w minę ^ tamto wyżej już powinno być git
-                yield break;
-            }
-            if (_triggered || other.CompareTag("projectile") || other.CompareTag("trap")|| other.gameObject.GetComponent<Actor>() == null)
-            {
-                yield break;
-            }
-            
-            _triggered = true;
-            #if UNITY_EDITOR
-            print("start");
-            #endif
-            
-            yield return new WaitForSeconds(explodeAfter);
-            #if UNITY_EDITOR
-            print("end");
-            #endif
-            _animator.SetTrigger("Explode");
-            
-            tag = "trap";
-            damageTrigger.enabled = true;
-            damageTrigger.radius = damageTriggerRadius;
-            
-            // print("boom"); //just a check if the mine works
-            // yield return new WaitForFixedUpdate();
-            Destroy(damageTrigger, destroyTriggerAfter);
-            Destroy(gameObject, _actor.GetWaitUntilDestroyed());
+            return;
         }
+        
+        if (other.gameObject == gameObject) return;
+        
+        HandleTrapTrigger(other);
+    }
+
+    private void HandleTrapTrigger(Collider2D other)
+    {
+        
+        if (!other.CompareTag("hostile"))
+        {
+            return;
+        }
+        
+        if (_triggered || other.CompareTag("projectile") || other.CompareTag("trap") || ReferenceEquals(other.gameObject.GetComponent<Actor>(), null))
+        {
+            return;
+        }
+
+        if (other.CompareTag("player") || other.CompareTag("Player"))
+        {
+            return;
+        }
+        
+        _triggered = true;
+        
+        StopProjectile();
+        
+        #if UNITY_EDITOR
+        #endif
+        
+        StartCoroutine(ExplodeCoroutine());
+    }
+
+    private void StopProjectile()
+    {
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+        
+        Projectile proj = GetComponent<Projectile>();
+        if (proj != null)
+        {
+            System.Type projType = proj.GetType();
+            projType.GetField("hasCollided", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(proj, true);
+        }
+    }
+
+
+    private IEnumerator ExplodeCoroutine()
+    {
+        yield return new WaitForSeconds(explodeAfter);
+        
+        #if UNITY_EDITOR
+        #endif
+        
+        if (!ReferenceEquals(_animator, null))
+        {
+            _animator.SetTrigger("Explode");
+        }
+        
+        tag = "trap";
+        damageTrigger.enabled = true;
+        damageTrigger.radius = damageTriggerRadius;
+        
+        Destroy(damageTrigger, destroyTriggerAfter);
+        Destroy(gameObject, _actor.GetWaitUntilDestroyed());
+    }
+
     }
 }

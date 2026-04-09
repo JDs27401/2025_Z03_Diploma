@@ -5,6 +5,12 @@ namespace Enemy.Scripts
 {
     public class ExplodingEnemy : NpcBase
     {
+        protected override void Start()
+        {
+            base.Start();
+            Aggravate(GameObject.FindWithTag("player").transform);
+        }
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("player"))
@@ -12,7 +18,7 @@ namespace Enemy.Scripts
                 return;
             }
             Pacify();
-            Agent.SetDestination(transform.position);
+            agent.SetDestination(transform.position);
             animator.SetTrigger("AboutToExplode"); 
         }
     }

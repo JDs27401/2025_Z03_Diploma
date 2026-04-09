@@ -14,7 +14,6 @@ TagManager:
   - groundTilemap
   - navmesh
   - PlayerNoiseComponent
-  - PlayerVisualComponent
   layers:
   - Default
   - TransparentFX
@@ -27,8 +26,8 @@ TagManager:
   - Player
   - Trap
   - PlayerNoiseComponent
-  - PlayerVisualComponent
-  - Attacks
+  - 
+  - 
   - 
   - 
   - 
