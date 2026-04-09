@@ -1,5 +1,6 @@
 using System;
 using C__Classes;
+using C__Classes.Systems;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -144,6 +145,7 @@ public class PlayerController : Actor
     public void CtrlManagement(InputAction.CallbackContext context)
     {
         isCrouching = !isCrouching;
+        PlayerVisualSystem.Instance.UpdateVisualRange(isCrouching);
     }
     public void ShiftManagement(InputAction.CallbackContext context)
     {
@@ -160,6 +162,7 @@ public class PlayerController : Actor
             speed /= sprintPower;
             acceleration /= sprintPower;
         }
+        PlayerNoiseSystem.Instance.UpdateNoiseRadius();
     }
     
     
@@ -271,4 +274,5 @@ public class PlayerController : Actor
     }
 
     public bool IsCrouching() => isCrouching;
+    public bool IsSprinting() => isSprinting;
 }

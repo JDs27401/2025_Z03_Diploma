@@ -109,7 +109,7 @@ namespace C__Classes
             {
                 currentHealth -= dmg;
             }
-            print("currentHealth: " + currentHealth);
+            // print("currentHealth: " + currentHealth);
             if (currentHealth <= 0)
             {
                 Kill();
@@ -180,11 +180,6 @@ namespace C__Classes
         public float GetWaitUntilDestroyed()
         {
             return waitUntilDestroyed;
-        }
-
-        public void SetWaitUntilDestroyed(float value)
-        {
-            waitUntilDestroyed = value;
         }
 
         public float GetDamage()
