@@ -1,12 +1,12 @@
 ﻿using System;
+using C__Classes.Managers;
+using C__Classes.Singletons;
 using UnityEngine;
 
 namespace C__Classes.Systems
 {
-    public class Universe : MonoBehaviour
+    public class Universe : SingletonPersistant<Universe>
     {
-        public static Universe Instance;
-        
         private static int Day = 1;
         [Range(0, 24)] private static int Hour = 0;
         [Range(0,60)] private static float Minute = 0;
@@ -24,19 +24,6 @@ namespace C__Classes.Systems
         [SerializeField] private int SundownThreshold = 18;
         [SerializeField] private int NightThreshold = 21;
 
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-            }
-            else
-            {
-                Instance = this;
-            }
-            DontDestroyOnLoad(this);
-        }
-
         private void Start()
         {
             Hour = StartingHour;
@@ -49,6 +36,7 @@ namespace C__Classes.Systems
             {
                 return;
             }
+            //@todo jakoś zaimplementować to że podczas nocy czas nie leciał -- można pewnie całe SetDayPhase wyjebać
             var increment = Time.deltaTime * Ratio;
             Minute += increment;
 
@@ -73,14 +61,32 @@ namespace C__Classes.Systems
 
         private void SetDayPhase()
         {
-            if (Hour >= NightThreshold || Hour < DayThreshold) 
+            if (Hour >= NightThreshold || Hour < DayThreshold)
+            {
+                if (WaveManager.Instance.AlreadyStarted) return;
                 TimeOfDay = Phase.Night;
-            else if (Hour >= SundownThreshold) 
-                TimeOfDay = Phase.Sundown;
-            else if (Hour >= DayThreshold) 
+                StartCoroutine(WaveManager.Instance.StartWave());
+                WaveManager.Instance.OnWaveCompleted += HandleWaveCompletion;
+            } 
+            else if (Hour >= SundownThreshold)
+            {
+                TimeOfDay = Phase.Sundown;    
+            } 
+            else if (Hour >= DayThreshold)
+            {
                 TimeOfDay = Phase.Day;
+            } 
         }
 
+        private void HandleWaveCompletion()
+        {
+            //@todo implement switching back to day
+            #if UNITY_EDITOR
+            print("Wave ended, starting day");
+            #endif
+            Hour = DayThreshold;
+        }
+        
         private static void PrintTime() //just a debug method
         {
             print($"Day: {Day} Hour: {Hour} Minute: {(int) Minute} Phase: {TimeOfDay} Realtime: {RealTime}");
@@ -116,6 +122,11 @@ namespace C__Classes.Systems
             Day,
             Sundown,
             Night,
+        }
+
+        private void OnDestroy()
+        {
+            WaveManager.Instance.OnWaveCompleted -= HandleWaveCompletion; 
         }
     }
 }

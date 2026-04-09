@@ -6,75 +6,42 @@ public class Projectile : MonoBehaviour
     private float damage;
     private float speed;
     private Vector2 direction;
-    private bool isExplosive;
-    private float explosionRadius;
-    private bool hasCollided;
 
-    public void Setup(float projectileSpeed, float projectileDamage, float projectileSize, bool explosive = false, float expRadius = 0f)
+    public void Setup(float projectileSpeed, float projectileDamage, float projectileSize)
     {
         speed = projectileSpeed;
         damage = projectileDamage;
-        isExplosive = explosive;
-        explosionRadius = expRadius;
         
+        // Ustawiamy skalę pocisku
         transform.localScale = new Vector3(projectileSize, projectileSize, 1);
         
+        // Usuń pocisk po 5 sekundach, żeby nie zaśmiecać pamięci, jeśli w nic nie trafi
         Destroy(gameObject, 5f);
     }
 
     void Update()
     {
-        if (hasCollided)
-        {
-            return;
-        }
-        
+        // Poruszanie się pocisku "do przodu" względem własnej rotacji
         transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 
-    private bool ShouldIgnoreCollision(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (isExplosive && !CompareTag("trap"))
-        {
-            if (other.CompareTag("player") || other.CompareTag("Player"))
-            {
-                return true;
-            }
+        // Ignorujemy kolizje z graczem i innymi pociskami/znajdźkami
+        if (other.CompareTag("Player") || other.CompareTag("projectile") || other.CompareTag("heal")) 
+            return;
 
-            Transform current = other.transform;
-            while (current != null)
-            {
-                if (current.CompareTag("player") || current.CompareTag("Player"))
-                {
-                    return true;
-                }
-                current = current.parent;
-            }
-            
+        // Jeśli trafiliśmy w coś, co jest ścianą (np. TilemapCollider) - niszczymy pocisk
+        if (!other.isTrigger && (other.gameObject.layer == LayerMask.NameToLayer("Ground") || other.CompareTag("Untagged")))
+        {
+            Destroy(gameObject);
+            return;
         }
 
-        return other.CompareTag("projectile") || other.CompareTag("heal");
-    }
-
-    private void StopProjectile()
-    {
-        hasCollided = true;
-        speed = 0f;
-
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        if (rb != null)
+        // Jeśli trafiliśmy w przeciwnika
+        if (other.CompareTag("hostile"))
         {
-            rb.linearVelocity = Vector2.zero;
-            rb.angularVelocity = 0f;
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (isExplosive)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, explosionRadius);
+            Destroy(gameObject); // Zniszcz pocisk po trafieniu
         }
     }
 }
