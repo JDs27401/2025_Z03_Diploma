@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Enemy.Scripts;
+using Player.scripts;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -55,6 +56,10 @@ namespace C__Classes.Objects
 
         private IEnumerator OnTriggerEnter2D(Collider2D other)
         {
+            if (gameObject.GetComponent<Projectile>() && other.CompareTag("player"))
+            {
+                yield break;
+            }
             if (gameObject.GetComponent<ExplodingEnemy>() && !other.CompareTag("player"))
             {
                 // print("bomba"); //@todo poprawić ten patologiczny fix na to żeby wybuchający nie wybuchał sam jak wejdzie w minę ^ tamto wyżej już powinno być git
@@ -67,12 +72,11 @@ namespace C__Classes.Objects
             
             _triggered = true;
             #if UNITY_EDITOR
-            print("start");
+            //print("start");
             #endif
-            
             yield return new WaitForSeconds(explodeAfter);
             #if UNITY_EDITOR
-            print("end");
+            //print("end");
             #endif
             _animator.SetTrigger("Explode");
             

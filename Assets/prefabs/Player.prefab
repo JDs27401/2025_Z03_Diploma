@@ -165,7 +165,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.PlayerNoiseSystem
   noiseTrigger: {fileID: 2961196786781959780}
-  triggerSize: 0.5
+  baseTriggerSize: 5
+  sprintMultiplier: 1.5
+  weightNoiseMultiplier: 0.01
+--- !u!1 &6404177328566394575
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3080126454660157894}
+  m_Layer: 8
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3080126454660157894
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404177328566394575}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4672375051657317503}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8292680892767096521
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,8 +215,8 @@ GameObject:
   - component: {fileID: 5025425033013735497}
   - component: {fileID: 5703000714113738365}
   - component: {fileID: 3562104371583064557}
-  - component: {fileID: 5160126871664793592}
   - component: {fileID: 5305719679199625660}
+  - component: {fileID: 2169036523233636875}
   m_Layer: 8
   m_Name: Player
   m_TagString: player
@@ -206,6 +239,7 @@ Transform:
   m_Children:
   - {fileID: 1086201876998197304}
   - {fileID: 8054489075748176644}
+  - {fileID: 3080126454660157894}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8362774847603796004
@@ -254,7 +288,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 123850683
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4292525099528768676, guid: 788863f44678cbb42a1d26aa1eff3cc3, type: 3}
@@ -325,6 +359,8 @@ MonoBehaviour:
   rollCoodownSeconds: 3
   rollDurationSeconds: 1
   sprintPower: 2
+  speedPenaltyPerPoint: 0.01
+  minimumSpeedPercentage: 0.15
   animator: {fileID: 5703000714113738365}
 --- !u!114 &6678964200872021751
 MonoBehaviour:
@@ -527,30 +563,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e73b9910bfa89f46a6e57d144b4ef0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawner
---- !u!114 &5160126871664793592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8292680892767096521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39dc6583dc66d824cb4979b12cef45cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Fight
-  firePoint: {fileID: 0}
-  projectilePrefab: {fileID: 8520928149139622634, guid: 37d1858775293e447afd48070baef938, type: 3}
-  meleeHitboxPrefab: {fileID: 0}
-  meleeSpeed: 2
-  meleeDamage: 25
-  meleeDuration: 1
-  meleeAngle: 120
-  meleeRange: 2.5
-  shootingSpeed: 4
-  projectileSpeed: 10
-  projectileDamage: 10
-  projectileSpread: 5
 --- !u!114 &5305719679199625660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,3 +575,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde1407d1c73472dacf0efc73a5392ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Pipelines.DamagePipeline
+--- !u!114 &2169036523233636875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292680892767096521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3904967f25004a6fbee33eae34d1774c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.Fight
+  firePoint: {fileID: 0}
+  availableWeapons:
+  - {fileID: 11400000, guid: 59c943aa43c5ee042b43395484eb6180, type: 2}
+  - {fileID: 11400000, guid: 37f1658553b06dd47905f07cd4fa1848, type: 2}
+  - {fileID: 11400000, guid: f5828f8be2c9c8a4fb51792c83ed514f, type: 2}
+  - {fileID: 11400000, guid: 094e5292fad49a3449efbca429a872b3, type: 2}
+  - {fileID: 11400000, guid: b466b589d08738c4c83f113fdffd6c7c, type: 2}
+  - {fileID: 11400000, guid: cc23820030442034b84c37287aeeb3a3, type: 2}
+  weaponHolder: {fileID: 3080126454660157894}
+  meleeHitboxPrefab: {fileID: 0}
+  meleeSpeed: 2
+  meleeDamage: 25
+  meleeDuration: 1
+  meleeAngle: 120
+  meleeRange: 1
+  shootingSpeed: 4
+  projectileSpeed: 10
+  projectileSpread: 5

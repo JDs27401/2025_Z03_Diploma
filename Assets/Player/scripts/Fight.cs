@@ -1,150 +1,165 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using C__Classes; // Potrzebne do dostępu do Actor
 
-public class Fight : MonoBehaviour
+namespace Player.scripts
 {
-    [Header("References")]
-    [SerializeField] private Transform firePoint; // Punkt wylotu pocisków/ataku
-    
-    [Header("Prefabs")]
-    [Tooltip("Prefab pocisku. Musi posiadać Collider2D(Trigger), Actor, DamagePipeline oraz tag 'projectile'.")]
-    [SerializeField] private GameObject projectilePrefab;
-    
-    [Tooltip("Prefab ataku wręcz. Musi posiadać Collider2D(Trigger), Actor, DamagePipeline oraz tag 'attack'.")]
-    [SerializeField] private GameObject meleeHitboxPrefab;
-
-    [Header("Melee Stats")]
-    [SerializeField] private float meleeSpeed = 2f; // ataki na sekundę
-    [SerializeField] private float meleeDamage = 25f;
-    [SerializeField] private float meleeDuration = 1f; // Jak długo hitbox istnieje na scenie
-    [SerializeField] private float meleeAngle = 120;
-    [SerializeField] private float meleeRange = 1f;
-
-    [Header("Ranged Stats")]
-    [SerializeField] private float shootingSpeed = 4f; // strzały na sekundę
-    [SerializeField] private float projectileSpeed = 10f;
-    [SerializeField] private float projectileDamage = 10f;
-    [SerializeField] private float projectileSpread = 5f; // rozrzut w stopniach
-
-    private float nextMeleeTime = 0f;
-    private float nextFireTime = 0f;
-
-    private Camera mainCam;
-    // private Animator animator; // Opcjonalnie, jeśli chcesz animować postać
-
-    void Start()
+    public class Fight : MonoBehaviour
     {
-        mainCam = Camera.main;
-        if (mainCam == null) mainCam = FindFirstObjectByType<Camera>();
+        [Header("References")]
+        [SerializeField] private Transform firePoint; // Punkt wylotu pocisków/ataku
         
-        // animator = GetComponent<Animator>();
-        if (firePoint == null) firePoint = transform;
-    }
+        [Header("Weapons")]
+        [Tooltip("Lista broni dostępnych dla gracza")]
+        public WeaponData[] availableWeapons;
+        [Tooltip("Punkt do którego będzie przyczepiany model broni (np. Ramię)")]
+        public Transform weaponHolder;
+        private WeaponController weaponController;
+        private int currentWeaponIndex = 0;
 
-    void Update()
-    {
-        if (Mouse.current == null) return;
+        [Header("Melee (Legayc)")]
+        [Tooltip("Prefab ataku wręcz. Musi posiadać Collider2D(Trigger), Actor, DamagePipeline oraz tag 'attack'.")]
+        [SerializeField] private GameObject meleeHitboxPrefab;
 
-        // Strzelanie (LPM)
-        if (Mouse.current.leftButton.isPressed)
+        [Header("Melee Stats")]
+        [SerializeField] private float meleeSpeed = 2f; // ataki na sekundę
+        [SerializeField] private float meleeDamage = 25f;
+        [SerializeField] private float meleeDuration = 1f; // Jak długo hitbox istnieje na scenie
+        [SerializeField] private float meleeAngle = 120;
+        [SerializeField] private float meleeRange = 1f;
+
+        [Header("Ranged Stats")]
+        [SerializeField] private float shootingSpeed = 4f; // strzały na sekundę
+        [SerializeField] private float projectileSpeed = 10f;
+        private float projectileDamage = 10f;
+        [SerializeField] private float projectileSpread = 5f; // rozrzut w stopniach
+
+        private float nextMeleeTime = 0f;
+
+        private Camera mainCam;
+
+        void Start()
         {
-            if (Time.time >= nextFireTime)
+            mainCam = Camera.main;
+            if (mainCam == null) mainCam = FindFirstObjectByType<Camera>();
+            
+            if (firePoint == null) firePoint = transform;
+            if (weaponHolder == null) weaponHolder = transform; 
+
+            weaponController = gameObject.AddComponent<WeaponController>();
+            weaponController.firePoint = this.firePoint;
+            weaponController.weaponHolder = this.weaponHolder; 
+            if (availableWeapons != null && availableWeapons.Length > 0)
             {
-                Shoot();
-                nextFireTime = Time.time + (1f / shootingSpeed);
+                EquipWeapon(0);
             }
         }
 
-        // Atak wręcz (PPM)
-        if (Mouse.current.rightButton.wasPressedThisFrame)
+        void Update()
         {
-            print("a");
-            if (Time.time >= nextMeleeTime)
+            if (Mouse.current == null) return;
+
+            Vector3 mouseWorldPos = GetMouseWorldPosition();
+            
+            if (weaponController != null)
             {
-                print("b");
-                MeleeAttack();
-                nextMeleeTime = Time.time + (1f / meleeSpeed);
+                weaponController.AimAt(mouseWorldPos);
+            }
+
+            Vector2 scroll = Mouse.current.scroll.ReadValue();
+            if (scroll.y > 0)
+            {
+                SwitchWeapon(1);
+            }
+            else if (scroll.y < 0)
+            {
+                SwitchWeapon(-1);
+            }
+
+            if (weaponController.currentWeapon != null)
+            {
+                bool wantsToShoot = false;
+                if (weaponController.currentWeapon.isAutomatic)
+                {
+                    wantsToShoot = Mouse.current.leftButton.isPressed;
+                }
+                else
+                {
+                    wantsToShoot = Mouse.current.leftButton.wasPressedThisFrame;
+                }
+
+                if (wantsToShoot)
+                {
+                    Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
+                    weaponController.TryShoot(direction);
+                }
+            }
+
+
+            if (Mouse.current.rightButton.wasPressedThisFrame)
+            {
+                if (Time.time >= nextMeleeTime)
+                {
+                    MeleeAttack();
+                    nextMeleeTime = Time.time + (1f / meleeSpeed);
+                }
             }
         }
-    }
 
-    void MeleeAttack()
-    {
-        if (meleeHitboxPrefab == null) return;
-
-        // 1. Oblicz rotację w stronę myszy
-        Vector3 mouseWorldPos = GetMouseWorldPosition();
-        Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
-        float rotZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-    
-        // Obiekt obracamy tak, aby jego "przód" (oś X) celował w myszkę
-        Quaternion rotation = Quaternion.Euler(0, 0, rotZ);
-
-        // 2. Instancjonuj
-        print("instantiate");
-        GameObject hitbox = Instantiate(meleeHitboxPrefab, firePoint.position, rotation);
-        hitbox.transform.SetParent(this.transform); // Przyczep do gracza
-
-        // 3. SKONFIGURUJ KSZTAŁT (To jest nowość)
-        ArcHitbox arcScript = hitbox.GetComponent<ArcHitbox>();
-        if (arcScript != null)
+        void MeleeAttack()
         {
-            // Przekazujemy parametry z Fight.cs do hitboxa
-            arcScript.SetArcShape(meleeAngle, meleeRange);
+            if (meleeHitboxPrefab == null) return;
+
+            Vector3 mouseWorldPos = GetMouseWorldPosition();
+            Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
+            float rotZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        
+            Quaternion rotation = Quaternion.Euler(0, 0, rotZ);
+
+            GameObject hitbox = Instantiate(meleeHitboxPrefab, firePoint.position, rotation);
+            hitbox.transform.SetParent(this.transform);
+
+            ArcHitbox arcScript = hitbox.GetComponent<ArcHitbox>();
+            if (arcScript != null)
+            {
+                arcScript.SetArcShape(meleeAngle, meleeRange);
+            }
+
+            Actor actorScript = hitbox.GetComponent<Actor>();
+            if (actorScript != null)
+            {
+                actorScript.SetDamage(meleeDamage);
+            }
+
+            Destroy(hitbox, meleeDuration);
         }
 
-        // 4. Skonfiguruj obrażenia
-        Actor actorScript = hitbox.GetComponent<Actor>();
-        if (actorScript != null)
+        private void SwitchWeapon(int dir)
         {
-            actorScript.SetDamage(meleeDamage);
+            if (availableWeapons == null || availableWeapons.Length == 0) return;
+
+            currentWeaponIndex += dir;
+            if (currentWeaponIndex >= availableWeapons.Length) currentWeaponIndex = 0;
+            if (currentWeaponIndex < 0) currentWeaponIndex = availableWeapons.Length - 1;
+
+            EquipWeapon(currentWeaponIndex);
         }
 
-        // 5. Zniszcz po czasie
-        Destroy(hitbox, meleeDuration);
-    }
-
-    void Shoot()
-    {
-        if (projectilePrefab == null) return;
-
-        Vector3 mouseWorldPos = GetMouseWorldPosition();
-        Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
-
-        // Oblicz rotację z rozrzutem
-        float rotZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        float randomSpread = Random.Range(-projectileSpread, projectileSpread);
-        Quaternion rotation = Quaternion.Euler(0, 0, rotZ + randomSpread);
-
-        // 1. Stwórz pocisk
-        GameObject bullet = Instantiate(projectilePrefab, firePoint.position, rotation);
-
-        // 2. Skonfiguruj obrażenia
-        SetupDamageOnObject(bullet, projectileDamage);
-
-        // 3. Nadaj prędkość (jeśli pocisk ma Rigidbody2D)
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        if (rb != null)
+        private void EquipWeapon(int index)
         {
-            rb.linearVelocity = bullet.transform.right * projectileSpeed; // lub bullet.transform.up zależnie od sprite'a
+            if (weaponController != null)
+            {
+                weaponController.EquipWeapon(availableWeapons[index]);
+                Debug.Log("Wybrano broń: " + availableWeapons[index].weaponName);
+            }
         }
-    }
 
-    // Pomocnicza funkcja do ustawiania obrażeń na komponencie Actor
-    private void SetupDamageOnObject(GameObject obj, float dmgValue)
-    {
-        Actor actorScript = obj.GetComponent<Actor>();
-        if (actorScript != null)
+
+        Vector3 GetMouseWorldPosition()
         {
-            actorScript.SetDamage(dmgValue);
+            Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
+            mouseScreenPos.z = Mathf.Abs(mainCam.transform.position.z - transform.position.z);
+            return mainCam.ScreenToWorldPoint(mouseScreenPos);
         }
-    }
-
-    Vector3 GetMouseWorldPosition()
-    {
-        Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
-        mouseScreenPos.z = Mathf.Abs(mainCam.transform.position.z - transform.position.z);
-        return mainCam.ScreenToWorldPoint(mouseScreenPos);
     }
 }
