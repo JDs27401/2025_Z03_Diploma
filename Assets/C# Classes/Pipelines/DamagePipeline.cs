@@ -42,7 +42,6 @@ namespace C__Classes.Pipelines
             {
                 return;
             }
-            
             //yes, the branches are the same, but this is on purpose for now, if we want to do different things depending on the trigger type
             switch (tag)
             {

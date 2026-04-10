@@ -181,6 +181,10 @@ namespace C__Classes
         {
             return waitUntilDestroyed;
         }
+        public void SetWaitUntilDestroyed(float wait)        
+        {
+            waitUntilDestroyed = wait;
+        }
 
         public float GetDamage()
         {

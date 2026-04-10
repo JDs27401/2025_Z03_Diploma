@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4249ec48299124c4993608ed71700d29, type: 3}
+  m_Name: shotgun
+  m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.WeaponData
+  weaponName: shotgun
+  fireRate: 4
+  damage: 10
+  projectileSpeed: 15
+  spread: 35
+  projectilesPerShot: 6
+  isAutomatic: 0
+  magazineSize: 6
+  reloadTime: 2
+  isExplosive: 0
+  explosionRadius: 3
+  weaponModelPrefab: {fileID: 1165157680205881631, guid: 51718ad86aaa52f45ac4a1ef0e960cb7, type: 3}
+  projectilePrefab: {fileID: 8520928149139622634, guid: 1e452a46a4ebe694d93ae933e12d45e0, type: 3}
