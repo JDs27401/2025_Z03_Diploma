@@ -36,6 +36,11 @@ namespace C__Classes.Systems
             {
                 return;
             }
+
+            if (TimeOfDay == Phase.Night)
+            {
+                return;
+            }
             //@todo jakoś zaimplementować to że podczas nocy czas nie leciał -- można pewnie całe SetDayPhase wyjebać
             var increment = Time.deltaTime * Ratio;
             Minute += increment;
@@ -85,6 +90,7 @@ namespace C__Classes.Systems
             print("Wave ended, starting day");
             #endif
             Hour = DayThreshold;
+            TimeOfDay = Phase.Day;
         }
         
         private static void PrintTime() //just a debug method

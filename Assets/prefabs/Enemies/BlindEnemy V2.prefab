@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6279547586492159850}
   - component: {fileID: 6304935952005111954}
   m_Layer: 7
-  m_Name: BlindEnemy  V2
+  m_Name: BlindEnemy V2
   m_TagString: hostile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
