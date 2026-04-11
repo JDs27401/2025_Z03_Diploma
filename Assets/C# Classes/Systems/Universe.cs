@@ -91,6 +91,7 @@ namespace C__Classes.Systems
             #endif
             Hour = DayThreshold;
             TimeOfDay = Phase.Day;
+            Day += 1;
         }
         
         private static void PrintTime() //just a debug method
