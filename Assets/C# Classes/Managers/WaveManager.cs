@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using C__Classes.Objects;
 using C__Classes.Singletons;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace C__Classes.Managers
         public event Action OnWaveCompleted;
         
         private float _aliveEnemies;
+        private List<GameObject> _enemies;
         public bool AlreadyStarted { get; private set; }  = false;
 
         [Header("Wave Settings")]
@@ -35,6 +37,7 @@ namespace C__Classes.Managers
                 yield return new WaitForSeconds(spawnDelta);
                 _aliveEnemies++;
                 enemy.GetComponent<WaveComponent>().OnDeath += HandleEnemyDeath;
+                _enemies.Add(enemy);
             }
             waveSize = (int) (waveSize * waveSizeMultiplier);
         }
@@ -56,6 +59,14 @@ namespace C__Classes.Managers
             #endif
             OnWaveCompleted?.Invoke();
             AlreadyStarted = false;
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var e in _enemies)
+            {
+                e.GetComponent<WaveComponent>().OnDeath -= HandleEnemyDeath;
+            }
         }
     }
 }
