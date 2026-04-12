@@ -610,8 +610,8 @@ MonoBehaviour:
     prefab: {fileID: 2372389308713444318, guid: f46073751e546074e96dea1ac82cae3a, type: 3}
     intensityCost: 10
     isEnabled: 1
-  minSpawnRadius: 10
-  maxSpawnRadius: 15
+  minSpawnRadius: 15
+  maxSpawnRadius: 20
 --- !u!4 &908829577
 Transform:
   m_ObjectHideFlags: 0

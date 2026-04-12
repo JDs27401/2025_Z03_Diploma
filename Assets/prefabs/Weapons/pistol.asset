@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.WeaponData
   weaponName: pistol
   fireRate: 4
-  damage: 1000
+  damage: 20
   projectileSpeed: 15
   spread: 0
   projectilesPerShot: 1

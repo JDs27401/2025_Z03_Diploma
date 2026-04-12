@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.WeaponData
   weaponName: assault riffle
   fireRate: 6
-  damage: 35
+  damage: 18
   projectileSpeed: 15
   spread: 25
   projectilesPerShot: 1

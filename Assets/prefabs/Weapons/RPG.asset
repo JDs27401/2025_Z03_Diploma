@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.WeaponData
   weaponName: RPG
   fireRate: 1
-  damage: 1000
+  damage: 100
   projectileSpeed: 10
   spread: 10
   projectilesPerShot: 1
