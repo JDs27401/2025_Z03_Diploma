@@ -482,7 +482,6 @@ GameObject:
   - component: {fileID: 860279405}
   - component: {fileID: 860279404}
   - component: {fileID: 860279403}
-  - component: {fileID: 860279406}
   m_Layer: 0
   m_Name: NavMesh Surface
   m_TagString: navmesh
@@ -536,7 +535,7 @@ MonoBehaviour:
   m_BuildHeightMesh: 0
   m_MinRegionArea: 0
   m_HideEditorLogs: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: b1df571d9e0e8418299d3b852450fa55, type: 2}
 --- !u!4 &860279405
 Transform:
   m_ObjectHideFlags: 0
@@ -552,19 +551,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &860279406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 860279402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e36a1cd67af944c1be80c8a32ad32dfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.NavMeshBaker
-  navmesh: {fileID: 0}
 --- !u!1 &908829575
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,9 +703,9 @@ MonoBehaviour:
   - {fileID: 4570721072878242866, guid: 531b1121588a75b43a2b5d106860208b, type: 3}
   - {fileID: 4570721072878242866, guid: 7a9a366a524380545b547353e420badb, type: 3}
   - {fileID: 4570721072878242866, guid: 967345cfa2627ec40b1346431bb0983d, type: 3}
-  numberOfCirclesDecorations: 55
+  numberOfCirclesDecorations: 85
   radiusDecorations: 20
-  radiusIncreaseDecorations: 5
+  radiusIncreaseDecorations: 3
 --- !u!483693784 &1270452877
 TilemapRenderer:
   serializedVersion: 2
