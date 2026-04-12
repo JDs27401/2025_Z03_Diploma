@@ -313,12 +313,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72eb4657e26e8fc4b965fcf9108b15d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Movement1
-  speed: 500
-  acceleration: 50
+  speed: 35
+  acceleration: 25
   friction: 0.1
   maxHealth: 100
   currentHealth: 50
-  damage: 50
+  damage: 10
   iFrameTime: 1
   checkTileProperties: 1
   waitUntilDestroyed: 1

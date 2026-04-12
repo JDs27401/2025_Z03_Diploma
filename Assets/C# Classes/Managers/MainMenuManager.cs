@@ -16,7 +16,7 @@ namespace C__Classes.Managers
         public void OnSubmitSeed()
         {
             Seed = inputField.text;
-            SceneManager.LoadScene("JD_Gym");
+            SceneManager.LoadScene("MERGED_SCENE");
             // print(_hash);
         } 
     }
