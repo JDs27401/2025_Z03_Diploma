@@ -1072,6 +1072,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1654424867364461960, guid: 5d67edf936bde60419c26c9f587917b7, type: 3}
+      propertyPath: amount
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1670133393884156148, guid: 5d67edf936bde60419c26c9f587917b7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0

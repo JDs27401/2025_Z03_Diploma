@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: barricade
   itemName: Barricade
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 12f9de9298b01d34b8db0b7bdbf00446, type: 3}
   rarity: 1
+  itemType: 0
   description: 
   isStackable: 0
+  maxStackSize: 100
+  dropPrefab: {fileID: 0}
+  fullSizeImage: {fileID: 0}
+  weight: 1
