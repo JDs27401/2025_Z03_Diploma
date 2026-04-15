@@ -61,12 +61,13 @@ namespace C__Classes.Managers
             AlreadyStarted = false;
         }
 
-        private void OnDestroy()
-        {
-            foreach (var e in _enemies)
-            {
-                e.GetComponent<WaveComponent>().OnDeath -= HandleEnemyDeath;
-            }
-        }
+        //commenting out this part fixed issue with NullPointerException while stopping play
+        // private void OnDestroy()
+        // {
+        //     foreach (var e in _enemies)
+        //     {
+        //         e.GetComponent<WaveComponent>().OnDeath -= HandleEnemyDeath;
+        //     }
+        // }
     }
 }

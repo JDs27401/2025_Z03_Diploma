@@ -11,6 +11,13 @@ namespace C__Classes.Objects
         private void Start()
         {
             _aiController = GetComponent<NpcBase>();
+            if (_aiController == null)
+            {
+                #if UNITY_EDITOR
+                print("No NPC Base component found");
+                #endif
+                return;
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)

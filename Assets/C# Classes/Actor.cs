@@ -116,6 +116,26 @@ namespace C__Classes
             }
         }
 
+        //function for starting the coroutine
+        public void StartDot(float dmg, float duration, float interval)
+        {
+            if (isDead)
+            {
+                return;
+            }
+            StartCoroutine(Dot(dmg, duration, interval));
+        }
+        
+        //Damage Over Time implementation, coroutine is being started by StartDot() which means it is started from this script, which will not result in Exception while being destroyed while still running
+        private IEnumerator Dot(float dmg, float duration, float interval)
+        {
+            for (float i = 0; i < duration; i += interval)
+            {
+                DealDamage(dmg);
+                yield return new WaitForSeconds(interval);
+            }
+        }
+
         public void Heal(float heal)
         {
             if (currentHealth + heal >= maxHealth)

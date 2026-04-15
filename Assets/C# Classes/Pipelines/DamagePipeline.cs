@@ -7,13 +7,15 @@ namespace C__Classes.Pipelines
 {
     public class DamagePipeline : MonoBehaviour
     {
-        private Actor self;
+        private Actor _self;
         
-        private GameObject lastMine = null;
+        private GameObject _lastMine = null;
+        private bool _canTakeDamageFromDot = true;
 
         private void Awake()
         {
-            self = GetComponent<Actor>();
+            _self = GetComponent<Actor>();
+            //@todo implement case for DOT effect in DMG pipeline - new tag required
         }
         
         private void OnTriggerEnter2D(Collider2D other)
@@ -38,7 +40,7 @@ namespace C__Classes.Pipelines
                 return;
             }
             
-            if (self.GetInvulnerable())
+            if (_self.GetInvulnerable())
             {
                 return;
             }
@@ -56,8 +58,8 @@ namespace C__Classes.Pipelines
                             {
                                 return;
                             }
-                            self.DealDamage(otherActor.GetDamage());
-                            self.StartInvulnerability();
+                            _self.DealDamage(otherActor.GetDamage());
+                            _self.StartInvulnerability();
                             break;
                         
                         //workaround for now, so that player does not get damaged from its own bullets
@@ -69,22 +71,31 @@ namespace C__Classes.Pipelines
                         
                         case "attack":
                             // movement.DealDamage(otherActor.GetDamage());
-                            self.DealDamage(otherActor.GetDamage());
-                            self.StartInvulnerability();
+                            _self.DealDamage(otherActor.GetDamage());
+                            _self.StartInvulnerability();
                             break;
                         
                         case "trap":
-                            if (lastMine == other.gameObject) return;
-                            lastMine = other.gameObject;
+                            if (_lastMine == other.gameObject) return;
+                            _lastMine = other.gameObject;
                             
                             // movement.DealDamage(otherActor.GetDamage());
-                            self.DealDamage(otherActor.GetDamage());
-                            self.StartInvulnerability();
+                            _self.DealDamage(otherActor.GetDamage());
+                            _self.StartInvulnerability();
                             break;
                         
                         case "heal":
                             // movement.DealDamage(otherActor.GetDamage());
-                            self.Heal(otherActor.GetDamage());
+                            _self.Heal(otherActor.GetDamage());
+                            break;
+                        
+                        case "dot":
+                            if (!_canTakeDamageFromDot)
+                            {
+                                return;
+                            }
+                            _self.DealDamage(otherActor.GetDamage());
+                            StartCoroutine(HandleDotCooldown());
                             break;
                     }
                     break;
@@ -93,18 +104,27 @@ namespace C__Classes.Pipelines
                     switch (other.tag)
                     {
                         case "projectile":
-                            self.DealDamage(otherActor.GetDamage());
+                            _self.DealDamage(otherActor.GetDamage());
                             break;
                         
                         case "attack":
-                            self.DealDamage(otherActor.GetDamage());
+                            _self.DealDamage(otherActor.GetDamage());
                             break;
                         
                         case "trap":
-                            if (lastMine == other.gameObject) return;
-                            lastMine = other.gameObject;
+                            if (_lastMine == other.gameObject) return;
+                            _lastMine = other.gameObject;
                             
-                            self.DealDamage(otherActor.GetDamage());
+                            _self.DealDamage(otherActor.GetDamage());
+                            break;
+                        
+                        case "dot":
+                            if (!_canTakeDamageFromDot)
+                            {
+                                return;
+                            }
+                            _self.DealDamage(otherActor.GetDamage());
+                            StartCoroutine(HandleDotCooldown());
                             break;
                     }
                     break;
@@ -113,15 +133,31 @@ namespace C__Classes.Pipelines
                     switch (other.tag)
                     {
                         case "projectile":
-                            self.DealDamage(otherActor.GetDamage());
+                            _self.DealDamage(otherActor.GetDamage());
                             break;
                         
                         case "attack":
-                            self.DealDamage(otherActor.GetDamage());
+                            _self.DealDamage(otherActor.GetDamage());
+                            break;
+                        
+                        case "dot":
+                            if (!_canTakeDamageFromDot)
+                            {
+                                return;
+                            }
+                            _self.DealDamage(otherActor.GetDamage());
+                            StartCoroutine(HandleDotCooldown());
                             break;
                     }
                     break;
             }
+        }
+
+        private IEnumerator HandleDotCooldown()
+        {
+            _canTakeDamageFromDot = false;
+            yield return new WaitForSeconds(1f);
+            _canTakeDamageFromDot = true;
         }
     }
 }

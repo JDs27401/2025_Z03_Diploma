@@ -15,6 +15,7 @@ TagManager:
   - navmesh
   - PlayerNoiseComponent
   - PlayerVisualComponent
+  - dot
   layers:
   - Default
   - TransparentFX

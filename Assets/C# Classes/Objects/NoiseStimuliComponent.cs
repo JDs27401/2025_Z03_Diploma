@@ -5,12 +5,12 @@ namespace C__Classes.Objects
 {
     public class NoiseStimuliComponent : MonoBehaviour
     {
-        private NpcBase _base;
+        private NpcBase _aiController;
 
         private void Start()
         {
-            _base = GetComponent<NpcBase>();
-            if (_base == null)
+            _aiController = GetComponent<NpcBase>();
+            if (_aiController == null)
             {
                 #if UNITY_EDITOR
                 print("No NPC Base component found");
@@ -27,7 +27,7 @@ namespace C__Classes.Objects
             #if UNITY_EDITOR
             print("Entered Noise Component");
             #endif
-            _base.Aggravate(FindFirstObjectByType<PlayerController>().transform);
+            _aiController.Aggravate(FindFirstObjectByType<PlayerController>().transform);
         }
 
         private void OnTriggerExit2D(Collider2D other)
@@ -40,8 +40,8 @@ namespace C__Classes.Objects
             print("Left Noise Component");
             #endif
             
-            _base.Pacify();
-            _base.Agent.SetDestination(transform.position);
+            _aiController.Pacify();
+            _aiController.Agent.SetDestination(transform.position);
         }
     }
 }

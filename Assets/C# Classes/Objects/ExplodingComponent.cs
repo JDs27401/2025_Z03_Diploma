@@ -25,27 +25,26 @@ namespace C__Classes.Objects
         
         private void Start()
         {
-            if (ReferenceEquals(trapTrigger, null) || ReferenceEquals(damageTrigger, null))
+            if (trapTrigger == null || damageTrigger == null)
             {
                 return;
             }
 
             _actor = GetComponent<Actor>();
-            if (ReferenceEquals(_actor, null))
+            if (_actor == null)
             {
                 _actor = GetComponentInParent<Actor>();
-            }
-
-            if (ReferenceEquals(_actor, null))
-            {
-                return;
+                if (_actor == null)
+                {
+                    return;
+                }
             }
             
             trapTrigger.radius = trapTriggerRadius;
             damageTrigger.enabled = false;
 
             _animator = GetComponent<Animator>();
-            if (ReferenceEquals(_animator, null))
+            if (_animator == null)
             {
                 #if UNITY_EDITOR
                 print("Animator not found");
@@ -84,8 +83,6 @@ namespace C__Classes.Objects
             damageTrigger.enabled = true;
             damageTrigger.radius = damageTriggerRadius;
             
-            // print("boom"); //just a check if the mine works
-            // yield return new WaitForFixedUpdate();
             Destroy(damageTrigger, destroyTriggerAfter);
             Destroy(gameObject, _actor.GetWaitUntilDestroyed());
         }
