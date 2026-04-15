@@ -37,7 +37,7 @@ namespace C__Classes.Objects
             tag = "";
         }
 
-        public void StartDot()
+        public void StartDotArea()
         {
             trigger.enabled = true;
             trigger.radius = area;
