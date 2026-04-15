@@ -11,7 +11,7 @@ namespace C__Classes.Managers
     {
         public event Action OnWaveCompleted;
         
-        private float _aliveEnemies;
+        private int _aliveEnemies;
         private List<GameObject> _enemies;
         public bool AlreadyStarted { get; private set; }  = false;
 
@@ -42,8 +42,10 @@ namespace C__Classes.Managers
             waveSize = (int) (waveSize * waveSizeMultiplier);
         }
         
-        private void HandleEnemyDeath()
+        private void HandleEnemyDeath(GameObject go)
         {
+            go.GetComponent<WaveComponent>().OnDeath -= HandleEnemyDeath;
+            _enemies.Remove(go);
             _aliveEnemies--;
 
             if (_aliveEnemies <= 0)
@@ -60,14 +62,5 @@ namespace C__Classes.Managers
             OnWaveCompleted?.Invoke();
             AlreadyStarted = false;
         }
-
-        //commenting out this part fixed issue with NullPointerException while stopping play
-        // private void OnDestroy()
-        // {
-        //     foreach (var e in _enemies)
-        //     {
-        //         e.GetComponent<WaveComponent>().OnDeath -= HandleEnemyDeath;
-        //     }
-        // }
     }
 }
