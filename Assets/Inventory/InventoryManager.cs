@@ -8,7 +8,24 @@ public class InventoryManager : MonoBehaviour
     [Header("Configuration")]
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
+    
+    [Header("Hotbar Settings")]
+    public int hotbarSlotsCount = 4;
+    public int selectedSlotIndex = 0;
+    
+    [HideInInspector] public DraggableItem currentlyHoveredItem;
 
+    private void Start()
+    {
+        SelectSlot(selectedSlotIndex);
+    }
+    
+    private void Update()
+    {
+        HandleHotbarInput();
+        HandleDropInput();
+    }
+    
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -125,7 +142,7 @@ public class InventoryManager : MonoBehaviour
         slot.UpdateUI();
     }
 
-    public InventorySlot FindFirstFreeSlot(ItemType typeToCheck)
+    private InventorySlot FindFirstFreeSlot(ItemType typeToCheck)
     {
         foreach (InventorySlot slot in inventorySlots)
         {
@@ -229,5 +246,81 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return totalWeight;
+    }
+    
+    private void HandleHotbarInput()
+    {
+        int previousSelected = selectedSlotIndex;
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) selectedSlotIndex = 0;
+        if (Input.GetKeyDown(KeyCode.Alpha2)) selectedSlotIndex = 1;
+        if (Input.GetKeyDown(KeyCode.Alpha3)) selectedSlotIndex = 2;
+        if (Input.GetKeyDown(KeyCode.Alpha4)) selectedSlotIndex = 3;
+
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (scroll > 0f)
+        {
+            selectedSlotIndex--;
+            if (selectedSlotIndex < 0) selectedSlotIndex = hotbarSlotsCount - 1;
+        }
+        else if (scroll < 0f)
+        {
+            selectedSlotIndex++;
+            if (selectedSlotIndex >= hotbarSlotsCount) selectedSlotIndex = 0;
+        }
+
+        selectedSlotIndex = Mathf.Clamp(selectedSlotIndex, 0, Mathf.Min(hotbarSlotsCount - 1, inventorySlots.Length - 1));
+
+        if (previousSelected != selectedSlotIndex)
+        {
+            SelectSlot(selectedSlotIndex);
+        }
+    }
+    
+    private void SelectSlot(int index)
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            inventorySlots[i].SetSelected(i == index);
+        }
+    }
+
+    public ItemData GetActiveItem()
+    {
+        if (inventorySlots.Length > selectedSlotIndex)
+        {
+            return inventorySlots[selectedSlotIndex].currentItem;
+        }
+        return null;
+    }
+    
+    private void HandleDropInput()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            if (currentlyHoveredItem != null)
+            {
+                DropItem(currentlyHoveredItem);
+            }
+            else
+            {
+                DropActiveSlotItem();
+            }
+        }
+    }
+
+    private void DropActiveSlotItem()
+    {
+        if (inventorySlots.Length > selectedSlotIndex)
+        {
+            InventorySlot activeSlot = inventorySlots[selectedSlotIndex];
+            
+            DraggableItem itemInSlot = activeSlot.GetComponentInChildren<DraggableItem>();
+            
+            if (itemInSlot != null)
+            {
+                DropItem(itemInSlot);
+            }
+        }
     }
 }

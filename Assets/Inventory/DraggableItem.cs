@@ -38,20 +38,15 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         UpdateTextPosition();
     }
 
-    private void Update()
-    {
-        if (isHovered && Input.GetKeyDown(KeyCode.G))
-        {
-            if (InventoryManager.instance != null)
-            {
-                InventoryManager.instance.DropItem(this);
-            }
-        }
-    }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         isHovered = true;
+        
+        if (InventoryManager.instance != null)
+        {
+            InventoryManager.instance.currentlyHoveredItem = this;
+        }
+
         if (itemData != null && TooltipManager.instance != null && !isDraggingItem)
         {
             TooltipManager.instance.ShowTooltip(itemData); 
@@ -61,6 +56,12 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnPointerExit(PointerEventData eventData)
     {
         isHovered = false;
+        
+        if (InventoryManager.instance != null && InventoryManager.instance.currentlyHoveredItem == this)
+        {
+            InventoryManager.instance.currentlyHoveredItem = null;
+        }
+
         if (TooltipManager.instance != null)
         {
             TooltipManager.instance.HideTooltip();

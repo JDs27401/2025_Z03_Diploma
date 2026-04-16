@@ -20,6 +20,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public ItemData currentItem;
     public int currentCount = 0;
     public Image iconDisplay;
+    
+    [Header("Selection UI")]
+    public Image highlightOutline;
 
     private void Start()
     {
@@ -200,5 +203,13 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         currentCount = 0;
         iconDisplay = null;
         UpdateUI();
+    }
+    
+    public void SetSelected(bool isSelected)
+    {
+        if (highlightOutline != null)
+        {
+            highlightOutline.enabled = isSelected;
+        }
     }
 }
