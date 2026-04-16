@@ -1,3 +1,4 @@
+using C__Classes.Managers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -65,8 +66,8 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
 
                 Destroy(droppedObj);
 
-                if (CraftingUI.instance != null) CraftingUI.instance.UpdateCraftingGrid();
-                TooltipManager.instance.HideTooltip();
+                if (CraftingUI.Instance != null) CraftingUI.Instance.UpdateCraftingGrid();
+                TooltipManager.Instance.HideTooltip();
                 return;
             }
         }
@@ -113,12 +114,12 @@ public class CraftingSlot : MonoBehaviour, IDropHandler
             }
         }
         
-        if (CraftingUI.instance != null)
+        if (CraftingUI.Instance != null)
         {
-            CraftingUI.instance.UpdateCraftingGrid();
+            CraftingUI.Instance.UpdateCraftingGrid();
         }
         
-        TooltipManager.instance.HideTooltip();
+        TooltipManager.Instance.HideTooltip();
     }
 
     private void UpdateOldSlot(Transform oldSlotTransform, ItemData newItem, int newCount, Image newIcon)

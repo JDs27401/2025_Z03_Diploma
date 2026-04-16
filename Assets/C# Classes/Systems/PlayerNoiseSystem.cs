@@ -1,3 +1,4 @@
+using C__Classes.Managers;
 using C__Classes.Singletons;
 using UnityEngine;
 
@@ -8,11 +9,9 @@ namespace C__Classes.Systems
         private PlayerController _playerController;
         [SerializeField] private CircleCollider2D noiseTrigger;
         
-        [Header("Konfiguracja Hałasu")]
+        [Header("Noise configuration")]
         [SerializeField] private float baseTriggerSize = 5f;
         [SerializeField] private float sprintMultiplier = 1.5f;
-        
-        [Header("Wpływ Wagi na Hałas")]
         [SerializeField] private float weightNoiseMultiplier = 0.01f; // Noise penalty per 1 point (ex. 0.01 = +1% noise for 1 kg)
 
         
@@ -44,9 +43,9 @@ namespace C__Classes.Systems
                 calculatedRadius *= sprintMultiplier;
             }
 
-            if (global::InventoryManager.instance != null)
+            if (InventoryManager.Instance != null)
             {
-                float currentWeight = global::InventoryManager.instance.GetTotalWeight();
+                float currentWeight = InventoryManager.Instance.GetTotalWeight();
                 
                 float weightFactor = 1f + (currentWeight * weightNoiseMultiplier);
                 

@@ -1,105 +1,102 @@
 using System.Collections.Generic;
+using C__Classes.Singletons;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class JournalManager : MonoBehaviour
+
+namespace C__Classes.Managers
 {
-    public static JournalManager Instance;
-
-    [Header("UI Panels")]
-    public GameObject journalPanel; 
-    public Transform gridContainer; 
-    public GameObject journalSlotPrefab; 
-
-    [Header("Inspect Panel")]
-    public GameObject inspectPanel; 
-    public Image inspectImage; 
-
-    [Header("Collectibles arrangement")]
-    public ItemData[] allCollectibles = new ItemData[16];
-
-    private HashSet<string> unlockedCollectibleIDs = new HashSet<string>();
-    private List<JournalSlot> uiSlots = new List<JournalSlot>();
-
-    private void Awake()
+    public class JournalManager : SingletonNonPersistant<JournalManager>
     {
-        if (Instance != null && Instance != this) Destroy(gameObject);
-        else Instance = this;
-    }
+        [Header("UI Panels")]
+        public GameObject journalPanel; 
+        public Transform gridContainer; 
+        public GameObject journalSlotPrefab; 
 
-    private void Start()
-    {
-        InitializeJournalUI();
-        journalPanel.SetActive(false); 
-        if(inspectPanel != null) inspectPanel.SetActive(false);
-    }
+        [Header("Inspect Panel")]
+        public GameObject inspectPanel; 
+        public Image inspectImage; 
 
-    private void InitializeJournalUI()
-    {
-        foreach (ItemData item in allCollectibles)
+        [Header("Collectibles arrangement")]
+        public ItemData[] allCollectibles = new ItemData[16];
+
+        private HashSet<string> unlockedCollectibleIDs = new HashSet<string>();
+        private List<JournalSlot> uiSlots = new List<JournalSlot>();
+
+        private void Start()
         {
-            GameObject newSlotObj = Instantiate(journalSlotPrefab, gridContainer);
-            JournalSlot slotScript = newSlotObj.GetComponent<JournalSlot>();
-            
-            if (slotScript != null)
+            InitializeJournalUI();
+            journalPanel.SetActive(false); 
+            if(inspectPanel != null) inspectPanel.SetActive(false);
+        }
+
+        private void InitializeJournalUI()
+        {
+            foreach (ItemData item in allCollectibles)
             {
-                slotScript.Setup(item);
-                slotScript.SetUnlocked(false); 
-                uiSlots.Add(slotScript);
+                GameObject newSlotObj = Instantiate(journalSlotPrefab, gridContainer);
+                JournalSlot slotScript = newSlotObj.GetComponent<JournalSlot>();
+                
+                if (slotScript != null)
+                {
+                    slotScript.Setup(item);
+                    slotScript.SetUnlocked(false); 
+                    uiSlots.Add(slotScript);
+                }
             }
         }
-    }
 
-    public void UnlockCollectible(string itemID)
-    {
-        if (!unlockedCollectibleIDs.Contains(itemID))
+        public void UnlockCollectible(string itemID)
         {
-            unlockedCollectibleIDs.Add(itemID);
-            RefreshJournalUI();
-        }
-    }
-
-    private void RefreshJournalUI()
-    {
-        for (int i = 0; i < allCollectibles.Length; i++)
-        {
-            if (allCollectibles[i] != null)
+            if (!unlockedCollectibleIDs.Contains(itemID))
             {
-                bool isUnlocked = unlockedCollectibleIDs.Contains(allCollectibles[i].id);
-                uiSlots[i].SetUnlocked(isUnlocked);
+                unlockedCollectibleIDs.Add(itemID);
+                RefreshJournalUI();
             }
         }
-    }
 
-    public void ToggleJournal()
-    {
-        bool isActive = !journalPanel.activeSelf;
-        journalPanel.SetActive(isActive);
-
-        if (isActive) RefreshJournalUI();
-    }
-
-    public void CloseJournal()
-    {
-        journalPanel.SetActive(false);
-    }
-
-    public void ShowInspectPanel(ItemData item)
-    {
-        if (inspectPanel == null || inspectImage == null) return;
-
-        Sprite imageToShow = item.fullSizeImage != null ? item.fullSizeImage : item.icon;
-
-        if (imageToShow != null)
+        private void RefreshJournalUI()
         {
-            inspectImage.sprite = imageToShow;
-            inspectImage.preserveAspect = true; 
-            inspectPanel.SetActive(true);
+            for (int i = 0; i < allCollectibles.Length; i++)
+            {
+                if (allCollectibles[i] != null)
+                {
+                    bool isUnlocked = unlockedCollectibleIDs.Contains(allCollectibles[i].id);
+                    uiSlots[i].SetUnlocked(isUnlocked);
+                }
+            }
         }
-    }
 
-    public void CloseInspectPanel()
-    {
-        if (inspectPanel != null) inspectPanel.SetActive(false);
+        public void ToggleJournal()
+        {
+            bool isActive = !journalPanel.activeSelf;
+            journalPanel.SetActive(isActive);
+
+            if (isActive) RefreshJournalUI();
+        }
+
+        public void CloseJournal()
+        {
+            journalPanel.SetActive(false);
+        }
+
+        public void ShowInspectPanel(ItemData item)
+        {
+            if (inspectPanel == null || inspectImage == null) return;
+
+            Sprite imageToShow = item.fullSizeImage != null ? item.fullSizeImage : item.icon;
+
+            if (imageToShow != null)
+            {
+                inspectImage.sprite = imageToShow;
+                inspectImage.preserveAspect = true; 
+                inspectPanel.SetActive(true);
+            }
+        }
+
+        public void CloseInspectPanel()
+        {
+            if (inspectPanel != null) inspectPanel.SetActive(false);
+        }
     }
 }

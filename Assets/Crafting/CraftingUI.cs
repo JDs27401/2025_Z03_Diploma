@@ -1,16 +1,10 @@
+using C__Classes.Managers;
+using C__Classes.Singletons;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CraftingUI : MonoBehaviour
+public class CraftingUI : SingletonNonPersistant<CraftingUI>
 {
-    public static CraftingUI instance;
-
-    private void Awake()
-    {
-        if (instance != null && instance != this) Destroy(this.gameObject);
-        else instance = this;
-    }
-
     [Header("References")]
     public CraftingManager craftingManager; 
     public CraftingSlot[] gridSlots; 

@@ -1,3 +1,4 @@
+using C__Classes.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -42,14 +43,14 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         isHovered = true;
         
-        if (InventoryManager.instance != null)
+        if (InventoryManager.Instance != null)
         {
-            InventoryManager.instance.currentlyHoveredItem = this;
+            InventoryManager.Instance.currentlyHoveredItem = this;
         }
 
-        if (itemData != null && TooltipManager.instance != null && !isDraggingItem)
+        if (itemData != null && TooltipManager.Instance != null && !isDraggingItem)
         {
-            TooltipManager.instance.ShowTooltip(itemData); 
+            TooltipManager.Instance.ShowTooltip(itemData); 
         }
     }
 
@@ -57,14 +58,14 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         isHovered = false;
         
-        if (InventoryManager.instance != null && InventoryManager.instance.currentlyHoveredItem == this)
+        if (InventoryManager.Instance != null && InventoryManager.Instance.currentlyHoveredItem == this)
         {
-            InventoryManager.instance.currentlyHoveredItem = null;
+            InventoryManager.Instance.currentlyHoveredItem = null;
         }
 
-        if (TooltipManager.instance != null)
+        if (TooltipManager.Instance != null)
         {
-            TooltipManager.instance.HideTooltip();
+            TooltipManager.Instance.HideTooltip();
         }
     }
 
@@ -101,7 +102,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         if (image == null) return;
 
-        if (TooltipManager.instance != null) TooltipManager.instance.HideTooltip();
+        if (TooltipManager.Instance != null) TooltipManager.Instance.HideTooltip();
 
         startParent = transform.parent;
         parentAfterDrag = transform.parent;
@@ -216,13 +217,13 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                         item.count += this.count;
                         item.RefreshCount(item.count);
                         cSlot.currentCount = item.count;
-                        if (CraftingUI.instance != null) CraftingUI.instance.UpdateCraftingGrid();
+                        if (CraftingUI.Instance != null) CraftingUI.Instance.UpdateCraftingGrid();
                         Destroy(this.gameObject);
                         return;
                     }
                 }
             }
-            if (CraftingUI.instance != null) CraftingUI.instance.UpdateCraftingGrid();
+            if (CraftingUI.Instance != null) CraftingUI.Instance.UpdateCraftingGrid();
         }
     }
 

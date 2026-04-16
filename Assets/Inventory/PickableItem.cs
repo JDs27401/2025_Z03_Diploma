@@ -1,3 +1,4 @@
+using C__Classes.Managers;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -35,9 +36,9 @@ public class PickableItem : MonoBehaviour
                 return;
             }
 
-            if (InventoryManager.instance != null)
+            if (InventoryManager.Instance != null)
             {
-                bool wasPickedUp = InventoryManager.instance.AddItem(itemData, amount);
+                bool wasPickedUp = InventoryManager.Instance.AddItem(itemData, amount);
 
                 if (wasPickedUp)
                 {

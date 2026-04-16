@@ -1,5 +1,6 @@
 using System;
 using C__Classes;
+using C__Classes.Managers;
 using C__Classes.Systems;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -169,9 +170,9 @@ public class PlayerController : Actor
     {
         float weightPenaltyMultiplier = 1f;
 
-        if (InventoryManager.instance != null)
+        if (InventoryManager.Instance != null)
         {
-            float currentWeight = InventoryManager.instance.GetTotalWeight();
+            float currentWeight = InventoryManager.Instance.GetTotalWeight();
             
             weightPenaltyMultiplier = Mathf.Max(minimumSpeedPercentage, 1f - (currentWeight * speedPenaltyPerPoint));
         }

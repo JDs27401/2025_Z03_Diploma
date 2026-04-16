@@ -1,3 +1,4 @@
+using C__Classes.Managers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -26,9 +27,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     private void Start()
     {
-        if (dedicatedItem != null && InventoryManager.instance != null)
+        if (dedicatedItem != null && InventoryManager.Instance != null)
         {
-            InventoryManager.instance.InitializeStaticSlot(this, dedicatedItem);
+            InventoryManager.Instance.InitializeStaticSlot(this, dedicatedItem);
         }
         UpdateUI();
     }
@@ -89,7 +90,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 Destroy(droppedObj);
                 UpdateUI();
                 
-                if (CraftingUI.instance != null) CraftingUI.instance.UpdateCraftingGrid();
+                if (CraftingUI.Instance != null) CraftingUI.Instance.UpdateCraftingGrid();
                 return;
             }
         }
@@ -169,7 +170,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             UpdateUI();
         }
         
-        if (CraftingUI.instance != null) CraftingUI.instance.UpdateCraftingGrid();
+        if (CraftingUI.Instance != null) CraftingUI.Instance.UpdateCraftingGrid();
     }
 
     public void UpdateUI()
