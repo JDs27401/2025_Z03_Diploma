@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: emergency_radio
   itemName: Emergency Radio
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: a4b6dd9b2ec6963498eb7158a3dfad19, type: 3}
   rarity: 3
+  itemType: 0
   description: 
   isStackable: 0
+  maxStackSize: 100
+  dropPrefab: {fileID: 0}
+  fullSizeImage: {fileID: 0}
+  weight: 1

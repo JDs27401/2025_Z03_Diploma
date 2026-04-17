@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: electronics
   itemName: Electronics
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: f365ff5342a5ca44dafa50d7f8cadd13, type: 3}
   rarity: 3
+  itemType: 0
   description: 
   isStackable: 0
+  maxStackSize: 100
+  dropPrefab: {fileID: 0}
+  fullSizeImage: {fileID: 0}
+  weight: 1

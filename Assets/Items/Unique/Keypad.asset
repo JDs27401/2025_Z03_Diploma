@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: keypad
   itemName: Keypad
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 653f97a1e823ca74db49e1289f65c585, type: 3}
   rarity: 3
+  itemType: 0
   description: 
   isStackable: 0
+  maxStackSize: 100
+  dropPrefab: {fileID: 0}
+  fullSizeImage: {fileID: 0}
+  weight: 1

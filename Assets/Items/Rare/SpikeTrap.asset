@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: spike_trap
   itemName: Spike trap
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: a5cea6b7fd9d83045af59a82cd018302, type: 3}
   rarity: 1
+  itemType: 0
   description: 
   isStackable: 0
+  maxStackSize: 100
+  dropPrefab: {fileID: 0}
+  fullSizeImage: {fileID: 0}
+  weight: 1

@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: first_aid_kit
   itemName: First Aid Kit
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: bc172a920a344354092b41a5b38df881, type: 3}
   rarity: 2
+  itemType: 0
   description: 
   isStackable: 0
+  maxStackSize: 2
+  dropPrefab: {fileID: 0}
+  fullSizeImage: {fileID: 0}
+  weight: 1
