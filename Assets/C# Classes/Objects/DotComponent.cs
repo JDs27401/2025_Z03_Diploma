@@ -34,7 +34,7 @@ namespace C__Classes.Objects
 
             trigger.radius = 0f;
             trigger.enabled = false;
-            tag = "";
+            // tag = "";
         }
 
         public void StartDotArea()
