@@ -21,7 +21,7 @@ namespace C__Classes.Systems
         [SerializeField] private Tilemap waterTilemap;
         [SerializeField] private Tilemap groundTilemap;
         [SerializeField] private Tilemap cropTilemap;
-        private Rigidbody2D rigidBody2D;
+        // private Rigidbody2D rigidBody2D;
         private EdgeCollider2D edgeCollider2D;
         
         [Header("Tiles")]
@@ -31,7 +31,6 @@ namespace C__Classes.Systems
         [SerializeField] private TileBase[] groundTilesDark;
         [SerializeField] private TileBase[] cropTiles;
         [SerializeField] private TileBase highValueTile;
-        [SerializeField] private NavMeshSurface navmesh;
 
         [Header("Buildings")] 
         private GameObject buildingsParent;
@@ -61,11 +60,6 @@ namespace C__Classes.Systems
             decorationsParent = new GameObject("Decorations");
             RunProceduralGeneration();
         }
-
-        private void Start()
-        {
-            StartCoroutine(BakeNavMesh());
-        }
         
         private void RunProceduralGeneration() //maybe this whole shit ass method should be removed
         {
@@ -91,6 +85,9 @@ namespace C__Classes.Systems
             // edgeCollider2D = tilemap.AddComponent<EdgeCollider2D>();
             //
             // tilemap.CompressBounds();
+            waterTilemap.CompressBounds();
+            groundTilemap.CompressBounds();
+            cropTilemap.CompressBounds();
             //
             // BoundsInt bounds = tilemap.cellBounds;
             // Vector3 min = tilemap.CellToWorld(bounds.min);
@@ -113,9 +110,9 @@ namespace C__Classes.Systems
         {
             float[,] tileValues = MapGenerationSystem.GenerateMap(mapSize, chunkSize, hash);
 
-            for (int y = 0; y < tileValues.GetLength(1); y++)
+            for (int y = 0; y < mapSize; y++)
             {
-                for (int x = 0; x < tileValues.GetLength(0); x++)
+                for (int x = 0; x < mapSize; x++)
                 {
                     // tilemap.SetTile(new Vector3Int(x, y, 0), SelectTile(tileValues[x,y], x, y));
                     PlaceTile(tileValues[x, y], x, y);
@@ -148,12 +145,6 @@ namespace C__Classes.Systems
                 tileProperties[x,y] = new TileProperties(x, y, TileType.CropField);
                 cropTilemap.SetTile(pos, GenerateRandomTile(cropTiles, x, y));
             }
-        }
-        
-        IEnumerator BakeNavMesh()
-        {
-            yield return null; // poczekaj aż collidery się ogarną
-            navmesh.BuildNavMesh();
         }
         
         /*private TileBase SelectTile(float value, int x, int y)

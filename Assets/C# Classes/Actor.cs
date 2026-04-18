@@ -31,8 +31,7 @@ namespace C__Classes
         protected TilemapGenerationSystem.TileProperties currentTile;
         protected TilemapGenerationSystem tilemapGenerationSystem;
         protected TileType tileType = TileType.Ground;
-        [SerializeField] 
-        protected bool checkTileProperties = true;
+        // [SerializeField] protected bool checkTileProperties = true;
 
         //Bartek - this is for animator issues, as everything should inherit from Actor class
         //we want to be able how long we want to wait until deleting this object by "kill" method
@@ -42,20 +41,20 @@ namespace C__Classes
         {
             currentHealth = maxHealth;
             
-            tilemap = GameObject.FindWithTag("groundTilemap").GetComponent<Tilemap>();
-            if (ReferenceEquals(tilemap, null))
-            {
-                return;
-            }
-
-            tilemapGenerationSystem = tilemap.GetComponent<TilemapGenerationSystem>();
-            if (ReferenceEquals(tilemapGenerationSystem, null))
-            {
-                return;
-            }
-            
-            currentTile = tilemapGenerationSystem
-                .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
+            // tilemap = GameObject.FindWithTag("groundTilemap").GetComponent<Tilemap>();
+            // if (ReferenceEquals(tilemap, null))
+            // {
+            //     return;
+            // }
+            //
+            // tilemapGenerationSystem = tilemap.GetComponent<TilemapGenerationSystem>();
+            // if (ReferenceEquals(tilemapGenerationSystem, null))
+            // {
+            //     return;
+            // }
+            //
+            // currentTile = tilemapGenerationSystem
+            //     .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
         }
 
         protected virtual void Update()
@@ -64,44 +63,63 @@ namespace C__Classes
             {
                 return;
             }
-            
-            if (checkTileProperties)
+            //
+            // if (checkTileProperties)
+            // {
+            //     GetActorTileType();
+            // }
+        }
+
+        protected void OnTriggerEnter2D(Collider2D other)
+        {
+            switch (other.tag)
             {
-                GetActorTileType();
+                case "groundTilemap":
+                    tileType = TileType.Ground;
+                    print("ground");
+                    break;
+                case "waterTilemap":
+                    tileType = TileType.Water;
+                    print("water");
+                    break;
+                case "cropTilemap":
+                    tileType = TileType.CropField;
+                    print("crop");
+                    break;
             }
         }
 
-        protected void GetActorTileType()
-        {
-            if (ReferenceEquals(tilemap, null) || ReferenceEquals(tilemapGenerationSystem, null))
-            {
-                return;
-            }
-            // worldPosition = tilemap.WorldToCell(transform.position);
-
-            TilemapGenerationSystem.TileProperties newTile;
-            
-            try
-            {
-                newTile = tilemapGenerationSystem
-                    .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
-
-            }
-            catch (Exception)
-            {
-                return;
-            }
-            
-            if (newTile.type == currentTile.type)
-            {
-                return;
-            }
-            
-            currentTile = newTile;
-            tileType = currentTile.type;
+        // protected void GetActorTileType()
+        // {
+        //     if (ReferenceEquals(tilemap, null) || ReferenceEquals(tilemapGenerationSystem, null))
+        //     {
+        //         return;
+        //     }
+        //     // worldPosition = tilemap.WorldToCell(transform.position);
+        //
+        //     TilemapGenerationSystem.TileProperties newTile;
+        //     
+        //     try
+        //     {
+        //         newTile = tilemapGenerationSystem
+        //             .GetTileProperties(tilemap.WorldToCell(transform.position).x, tilemap.WorldToCell(transform.position).y);
+        //
+        //     }
+        //     catch (Exception)
+        //     {
+        //         return;
+        //     }
+        //     
+        //     if (newTile.type == currentTile.type)
+        //     {
+        //         return;
+        //     }
+        //     
+        //     currentTile = newTile;
+        //     tileType = currentTile.type;
             //reszta kodu odpowiedzialnego za movement
              //print(tileType); //debug
-        }
+        // }
 
         public void DealDamage(float dmg)
         {
