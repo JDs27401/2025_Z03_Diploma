@@ -12,12 +12,12 @@ namespace C__Classes.Systems
 
         private IEnumerator Start()
         {
-            if (ReferenceEquals(navmesh, null))
+            if (navmesh == null)
             {
                 navmesh = GameObject.FindWithTag("navmesh").GetComponent<NavMeshSurface>();
             }
 
-            if (ReferenceEquals(navmesh, null))
+            if (navmesh == null)
             {
                 Debug.LogError("NavMeshSurface not found");
                 yield break;

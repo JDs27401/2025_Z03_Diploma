@@ -190,6 +190,7 @@ GameObject:
   - component: {fileID: 112423885}
   - component: {fileID: 112423884}
   - component: {fileID: 112423883}
+  - component: {fileID: 112423888}
   m_Layer: 6
   m_Name: CropTilemap
   m_TagString: cropTilemap
@@ -418,6 +419,22 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &112423888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112423881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshModifier
+  m_OverrideArea: 1
+  m_Area: 5
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &343887004
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,6 +741,7 @@ GameObject:
   - component: {fileID: 860279405}
   - component: {fileID: 860279404}
   - component: {fileID: 860279403}
+  - component: {fileID: 860279406}
   m_Layer: 0
   m_Name: NavMesh Surface
   m_TagString: navmesh
@@ -793,6 +811,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &860279406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860279402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e36a1cd67af944c1be80c8a32ad32dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.NavMeshBaker
+  navmesh: {fileID: 860279404}
 --- !u!1 &908829575
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,6 +1008,7 @@ GameObject:
   - component: {fileID: 1117650434}
   - component: {fileID: 1117650433}
   - component: {fileID: 1117650432}
+  - component: {fileID: 1117650437}
   m_Layer: 6
   m_Name: WaterTilemap
   m_TagString: waterTilemap
@@ -1205,6 +1237,22 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1117650437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117650430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshModifier
+  m_OverrideArea: 1
+  m_Area: 3
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1001 &1306615221
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2154,6 +2202,7 @@ GameObject:
   - component: {fileID: 1682230489}
   - component: {fileID: 1682230488}
   - component: {fileID: 1682230487}
+  - component: {fileID: 1682230492}
   m_Layer: 6
   m_Name: GroundTilemap
   m_TagString: groundTilemap
@@ -2382,6 +2431,22 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1682230492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682230485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshModifier
+  m_OverrideArea: 1
+  m_Area: 4
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1001 &1824470181
 PrefabInstance:
   m_ObjectHideFlags: 0
