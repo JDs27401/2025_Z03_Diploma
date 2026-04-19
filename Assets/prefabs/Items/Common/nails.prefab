@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.13, y: 4.67, z: 0}
-  m_LocalScale: {x: 2.1200414, y: 1.9071407, z: 0.29427075}
+  m_LocalScale: {x: 1, y: 0.8995771, z: 0.13880424}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -127,6 +127,7 @@ MonoBehaviour:
   itemData: {fileID: 11400000, guid: c94cb10fe4fd9e249afdaaba9d5c54c2, type: 2}
   count: 1
   parentAfterDrag: {fileID: 0}
+  isSplitDrag: 0
 --- !u!61 &3657771498517449575
 BoxCollider2D:
   m_ObjectHideFlags: 0

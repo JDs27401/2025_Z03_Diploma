@@ -20,6 +20,6 @@ MonoBehaviour:
   description: 
   isStackable: 0
   maxStackSize: 100
-  dropPrefab: {fileID: 0}
+  dropPrefab: {fileID: 4733928515101151917, guid: 16ff255104c3a69459cbb81dad81750d, type: 3}
   fullSizeImage: {fileID: 0}
   weight: 1

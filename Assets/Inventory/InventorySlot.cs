@@ -125,8 +125,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             
             if (droppedItemScript.isSplitDrag) return; 
 
-            GameObject residentObj = transform.GetChild(0).gameObject;
-            DraggableItem residentScript = residentObj.GetComponent<DraggableItem>();
+            DraggableItem residentScript = GetComponentInChildren<DraggableItem>();
+
+            if (residentScript == null) return; 
+
+            GameObject residentObj = residentScript.gameObject;
             
             if (oldSlot != null && oldSlot.allowedType != ItemType.General)
             {
