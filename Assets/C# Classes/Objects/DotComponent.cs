@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace C__Classes.Objects
@@ -31,14 +29,27 @@ namespace C__Classes.Objects
                 #endif
                 return;       
             }
-
-            trigger.radius = 0f;
-            trigger.enabled = false;
+            //
+            // trigger.radius = 0f;
+            // trigger.enabled = false;
             // tag = "";
+        }
+
+        public void Configure(CircleCollider2D areaTrigger, float areaRadius, float dotDuration, float dotInterval)
+        {
+            // print("trigger = " + areaTrigger + " areaRadius = " + areaRadius + " dotDuration = " + dotDuration + " dotInterval = " + dotInterval);
+            trigger = areaTrigger;
+            area = areaRadius;
+            duration = dotDuration;
+            interval = dotInterval;
+            _actor = GetComponent<Actor>();
         }
 
         public void StartDotArea()
         {
+            // print("Starting DOT area");
+            // print(trigger.radius);
+            // print(area);
             trigger.enabled = true;
             trigger.radius = area;
             tag = "dot";

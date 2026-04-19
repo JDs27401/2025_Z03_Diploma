@@ -1,65 +1,57 @@
 ﻿using C__Classes; // Do dostępu do klasy Actor
 using UnityEngine;
+using C__Classes.Objects;
 namespace Player.scripts
 {
     public class Projectile : MonoBehaviour
     {
-        private float damage;
-        private float speed;
-        private Vector2 direction;
-        private bool isExplosive;
-        private float explosionRadius;
-        private bool hasCollided;
+        private WeaponData weaponSettings;
+        private float _speed;
+        private bool _isExplosive;
+        private bool isMolotov;
+        private float _explosionRadius;
+        private float dotAreaRadius;
+        private float dotDamage;
+        private float dotDuration;
+        private float dotInterval;
+        private float dotAreaLifetime;
+        private bool _hasCollided;
 
-        public void Setup(float projectileSpeed, float projectileDamage, float projectileSize, bool explosive = false, float expRadius = 0f)
+        public void Setup(WeaponData settings)
         {
-            speed = projectileSpeed;
-            damage = projectileDamage;
-            isExplosive = explosive;
-            explosionRadius = expRadius;
-            
-            transform.localScale = new Vector3(projectileSize, projectileSize, 1);
+            weaponSettings = settings;
+
+            if (weaponSettings == null)
+            {
+                return;
+            }
+
+            _speed = weaponSettings.projectileSpeed;
+            _isExplosive = weaponSettings.isExplosive;
+            isMolotov = weaponSettings.isMolotov;
+            _explosionRadius = weaponSettings.explosionRadius;
+            dotAreaRadius = weaponSettings.dotAreaRadius;
+            dotDamage = weaponSettings.dotDamage;
+            dotDuration = weaponSettings.dotDuration;
+            dotInterval = weaponSettings.dotInterval;
+            dotAreaLifetime = weaponSettings.dotAreaLifetime;
             
             Destroy(gameObject, 5f);
         }
 
         void Update()
         {
-            if (hasCollided)
+            if (_hasCollided)
             {
                 return;
             }
             
-            transform.Translate(Vector3.right * speed * Time.deltaTime);
+            transform.Translate(Vector3.right * Time.deltaTime * _speed);
         }
-
-        // private bool ShouldIgnoreCollision(Collider2D other)
-        // {
-        //     if (isExplosive && !CompareTag("trap"))
-        //     {
-        //         if (other.CompareTag("player") || other.CompareTag("Player"))
-        //         {
-        //             return true;
-        //         }
-        //
-        //         Transform current = other.transform;
-        //         while (current != null)
-        //         {
-        //             if (current.CompareTag("player") || current.CompareTag("Player"))
-        //             {
-        //                 return true;
-        //             }
-        //             current = current.parent;
-        //         }
-        //         
-        //     }
-        //
-        //     return other.CompareTag("projectile") || other.CompareTag("heal");
-        // }
 
         private void StopProjectile()
         {
-            hasCollided = true;
+            _hasCollided = true;
 
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             if (rb != null)
@@ -71,30 +63,59 @@ namespace Player.scripts
 
         private void OnDrawGizmosSelected()
         {
-            if (isExplosive)
+            if (_isExplosive)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(transform.position, explosionRadius);
+                Gizmos.DrawWireSphere(transform.position, _explosionRadius);
             }
         }
         private void OnTriggerEnter2D(Collider2D other)
         {
-            HandleCollision(other.gameObject);
+            HandleCollision(other);
         }
 
-        private void HandleCollision(GameObject other)
+        private void HandleCollision(Collider2D other)
         {
-            if (hasCollided) return;
-            if (!other.CompareTag("hostile")) return;
-            StopProjectile();
+            if (_hasCollided) return;
 
-            // Dla wybuchowych daj szansę ExplodingComponent dokończyć logikę.
-            if (isExplosive && GetComponent<C__Classes.Objects.ExplodingComponent>() != null)
+            if (other.CompareTag("hostile") || other.CompareTag("destructible"))
             {
-                return;
-            }
+                StopProjectile();
 
-            Destroy(gameObject);
+                if (_isExplosive && GetComponent<ExplodingComponent>() != null)
+                {
+                    return;
+                }
+
+                if (isMolotov)
+                {
+                    SpawnDotArea(other.ClosestPoint(transform.position));
+                }
+
+                Destroy(gameObject);
+            }
+            
+        }
+
+        private void SpawnDotArea(Vector3 position)
+        {
+            GameObject dotArea = new GameObject("MolotovDotArea");
+            dotArea.transform.position = position;
+            
+            Rigidbody2D rb = dotArea.AddComponent<Rigidbody2D>();
+            rb.gravityScale = 0;
+            
+            CircleCollider2D trigger = dotArea.AddComponent<CircleCollider2D>();
+            trigger.isTrigger = true;
+            trigger.radius = dotAreaRadius;
+
+            Actor areaActor = dotArea.AddComponent<Actor>();
+            areaActor.SetDamage(dotDamage);
+            areaActor.SetWaitUntilDestroyed(dotAreaLifetime);
+
+            DotComponent dotComponent = dotArea.AddComponent<DotComponent>();
+            dotComponent.Configure(trigger, dotAreaRadius, dotDuration, dotInterval);
+            dotComponent.StartDotArea();
         }
 
     }

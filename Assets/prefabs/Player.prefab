@@ -595,6 +595,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 094e5292fad49a3449efbca429a872b3, type: 2}
   - {fileID: 11400000, guid: b466b589d08738c4c83f113fdffd6c7c, type: 2}
   - {fileID: 11400000, guid: cc23820030442034b84c37287aeeb3a3, type: 2}
+  - {fileID: 11400000, guid: 710577bae06049c9a91b6e1f7092d45e, type: 2}
   weaponHolder: {fileID: 3080126454660157894}
   meleeHitboxPrefab: {fileID: 0}
   meleeSpeed: 2
