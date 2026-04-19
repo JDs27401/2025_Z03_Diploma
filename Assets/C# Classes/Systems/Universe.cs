@@ -133,7 +133,7 @@ namespace C__Classes.Systems
 
         private void OnDestroy()
         {
-            WaveManager.Instance.OnWaveCompleted -= HandleWaveCompletion; 
+            WaveManager.Instance.OnWaveCompleted -= HandleWaveCompletion;
         }
     }
 }

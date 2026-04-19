@@ -7,44 +7,62 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using NavMeshPlus.Components;
-// using NavMeshSurface = Unity.AI.Navigation.NavMeshSurface;
+using NavMeshSurface = Unity.AI.Navigation.NavMeshSurface;
 
 namespace C__Classes.Systems
 {
     public class TilemapGenerationSystem : MonoBehaviour
     {
         [Header("Tilemap Generation System")]
-        [SerializeField] private string hash;
-        [SerializeField] private int mapSize = 1024;
-        [SerializeField] private int chunkSize = 128;
-        // [SerializeField] private Tilemap tilemap;
-        [SerializeField] private Tilemap waterTilemap;
-        [SerializeField] private Tilemap groundTilemap;
-        [SerializeField] private Tilemap cropTilemap;
-        // private Rigidbody2D rigidBody2D;
+        [SerializeField] 
+        private string hash;
+        [SerializeField] 
+        private int mapSize = 1024;
+        [SerializeField]
+        private int chunkSize = 128;
+        [SerializeField]
+        private Tilemap tilemap;
+        private Rigidbody2D rigidBody2D;
         private EdgeCollider2D edgeCollider2D;
-        
         [Header("Tiles")]
-        [SerializeField] private TileBase waterTile;
-        [SerializeField] private TileBase[] groundTilesLight;
-        [SerializeField] private TileBase[] groundTilesMed;
-        [SerializeField] private TileBase[] groundTilesDark;
-        [SerializeField] private TileBase[] cropTiles;
-        [SerializeField] private TileBase highValueTile;
+        [SerializeField]
+        private TileBase waterTile;
+        [SerializeField]
+        private TileBase[] groundTilesLight;
+        [SerializeField]
+        private TileBase[] groundTilesMed;
+        [SerializeField]
+        private TileBase[] groundTilesDark;
+        [SerializeField] 
+        private TileBase[] cropTiles;
+        [SerializeField]
+        private TileBase highValueTile;
+        [SerializeField]
+        private NavMeshSurface navmesh;
 
         [Header("Buildings")] 
         private GameObject buildingsParent;
-        [SerializeField] private GameObject[] buildingPrefabs;
-        [SerializeField] private int numberOfCirclesBuildings;
-        [SerializeField] private int radiusBuildings;
-        [SerializeField] private int radiusIncreaseBuildings;
+        [SerializeField]
+        private GameObject[] buildingPrefabs;
+        // [SerializeField] 
+        // private Vector2 circleCenter;
+        [SerializeField]
+        private int numberOfCirclesBuildings;
+        [SerializeField]
+        private int radiusBuildings;
+        [SerializeField]
+        private int radiusIncreaseBuildings;
 
         [Header("Decorations")] 
         private GameObject decorationsParent;
-        [SerializeField] private GameObject[] decorationPrefabs;
-        [SerializeField] private int numberOfCirclesDecorations;
-        [SerializeField] private int radiusDecorations;
-        [SerializeField] private int radiusIncreaseDecorations;
+        [SerializeField]
+        private GameObject[] decorationPrefabs;
+        [SerializeField]
+        private int numberOfCirclesDecorations;
+        [SerializeField]
+        private int radiusDecorations;
+        [SerializeField]
+        private int radiusIncreaseDecorations;
         
         private TileProperties[,] tileProperties;
 
@@ -79,35 +97,27 @@ namespace C__Classes.Systems
                 return;
             }*/
 
-            // rigidBody2D = tilemap.AddComponent<Rigidbody2D>();
-            // rigidBody2D.bodyType = RigidbodyType2D.Static;
-            //
-            edgeCollider2D = groundTilemap.AddComponent<EdgeCollider2D>();
-            //
-            // tilemap.CompressBounds();
-            waterTilemap.CompressBounds();
-            groundTilemap.CompressBounds();
-            cropTilemap.CompressBounds();
-            //
-            // BoundsInt bounds = tilemap.cellBounds;
-            // Vector3 min = tilemap.CellToWorld(bounds.min);
-            // Vector3 max = tilemap.CellToWorld(bounds.max);
-            //
-            // //Punkty ramki (zgodnie z ruchem wskazówek)
+            rigidBody2D = tilemap.AddComponent<Rigidbody2D>();
+            rigidBody2D.bodyType = RigidbodyType2D.Static;
+
+            edgeCollider2D = tilemap.AddComponent<EdgeCollider2D>();
+            
+            tilemap.CompressBounds();
+            
+            BoundsInt bounds = tilemap.cellBounds;
+            Vector3 min = tilemap.CellToWorld(bounds.min);
+            Vector3 max = tilemap.CellToWorld(bounds.max);
+
+            //Punkty ramki (zgodnie z ruchem wskazówek)
             Vector2[] points =
             {
-                // new Vector2(min.x, min.y),
-                new Vector2(0, 0),
-                // new Vector2(min.x, max.y),
-                new Vector2(0, mapSize),
-                // new Vector2(max.x, max.y),
-                new Vector2(mapSize, mapSize),
-                // new Vector2(max.x, min.y),
-                new Vector2(mapSize, 0),
-                // new Vector2(min.x, min.y) // zamknięcie
-                new Vector2(0, 0) // zamknięcie
+                new Vector2(min.x, min.y),
+                new Vector2(min.x, max.y),
+                new Vector2(max.x, max.y),
+                new Vector2(max.x, min.y),
+                new Vector2(min.x, min.y) // zamknięcie
             };
-            
+
             edgeCollider2D.points = points;
         }
 
@@ -115,44 +125,16 @@ namespace C__Classes.Systems
         {
             float[,] tileValues = MapGenerationSystem.GenerateMap(mapSize, chunkSize, hash);
 
-            for (int y = 0; y < mapSize; y++)
+            for (int y = 0; y < tileValues.GetLength(1); y++)
             {
-                for (int x = 0; x < mapSize; x++)
+                for (int x = 0; x < tileValues.GetLength(0); x++)
                 {
-                    // tilemap.SetTile(new Vector3Int(x, y, 0), SelectTile(tileValues[x,y], x, y));
-                    PlaceTile(tileValues[x, y], x, y);
+                    tilemap.SetTile(new Vector3Int(x, y, 0), SelectTile(tileValues[x,y], x, y));
                 }    
             }
         }
 
-        private void PlaceTile(float value, int x, int y)
-        {
-            Vector3Int pos = new Vector3Int(x, y, 0);
- 
-            if (value < 0.15f)
-            {
-                tileProperties[x,y] = new TileProperties(x, y, TileType.Water);
-                waterTilemap.SetTile(pos, waterTile);
-            }
-            else if (value < 0.95f)
-            {
-                tileProperties[x,y] = new TileProperties(x, y, TileType.Ground);
- 
-                TileBase tile =
-                    value < 0.45f ? GenerateRandomTile(groundTilesLight, x, y) :
-                    value < 0.75f ? GenerateRandomTile(groundTilesMed, x, y) :
-                    GenerateRandomTile(groundTilesDark, x, y);
- 
-                groundTilemap.SetTile(pos, tile);
-            }
-            else
-            {
-                tileProperties[x,y] = new TileProperties(x, y, TileType.CropField);
-                cropTilemap.SetTile(pos, GenerateRandomTile(cropTiles, x, y));
-            }
-        }
-        
-        /*private TileBase SelectTile(float value, int x, int y)
+        private TileBase SelectTile(float value, int x, int y)
         {
             if (value < 0.15f)
             {
@@ -176,7 +158,7 @@ namespace C__Classes.Systems
             }
             tileProperties[x,y] = new TileProperties(x, y, TileType.CropField);
             return GenerateRandomTile(cropTiles, x, y);
-        }*/
+        }
 
         private TileBase GenerateRandomTile(TileBase[] tiles, int x, int y)
         {
