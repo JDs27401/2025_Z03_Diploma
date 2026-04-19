@@ -10,54 +10,69 @@ namespace Player.scripts
         public Transform firePoint;
         public Transform weaponHolder;
 
-        private GameObject currentWeaponModel;
-        private float nextFireTime = 0f;
+        private GameObject _currentWeaponModel;
+        private float _nextFireTime;
 
         // Przeładowanie
-        private Dictionary<string, int> ammoState = new Dictionary<string, int>();
-        private bool isReloading = false;
-        private float reloadTimer = 0f;
+        private Dictionary<string, int> _ammoState = new Dictionary<string, int>();
+        private bool _isReloading;
+        private float _reloadTimer;
 
-        private bool weaponDebug = true;
+        private bool _weaponDebug = true;
+        private int _attacksLayer = -1;
+
+        private void Awake()
+        {
+            _attacksLayer = LayerMask.NameToLayer("Attacks");
+        }
+
+        private void SetLayerRecursively(GameObject obj, int layer)
+        {
+            obj.layer = layer;
+            foreach (Transform child in obj.transform)
+            {
+                SetLayerRecursively(child.gameObject, layer);
+            }
+        }
 
         private void Update()
         {
-            if (isReloading && currentWeapon != null)
+            if (_isReloading && currentWeapon != null)
             {
-                reloadTimer -= Time.deltaTime;
-                if (reloadTimer <= 0f)
+                _reloadTimer -= Time.deltaTime;
+                if (_reloadTimer <= 0f)
                 {
-                    isReloading = false;
-                    ammoState[currentWeapon.weaponName] = currentWeapon.magazineSize;
-					if(weaponDebug) Debug.Log($"Przeładowano {currentWeapon.weaponName}! (Magazynek powraca do {currentWeapon.magazineSize})");
+					_isReloading = false;
+					_ammoState[currentWeapon.weaponName] = currentWeapon.magazineSize;
+          if(_weaponDebug) Debug.Log($"Przeładowano {currentWeapon.weaponName}! (Magazynek powraca do {currentWeapon.magazineSize})");
                 }
             }
         }
 
         public void EquipWeapon(WeaponData newWeapon)
         {
-            isReloading = false;
-            reloadTimer = 0f;
+            _isReloading = false;
+            _reloadTimer = 0f;
 
             currentWeapon = newWeapon;
 
-            if (currentWeapon != null && !ammoState.ContainsKey(currentWeapon.weaponName))
+            if (currentWeapon != null && !_ammoState.ContainsKey(currentWeapon.weaponName))
             {
-                ammoState[currentWeapon.weaponName] = currentWeapon.magazineSize;
+                _ammoState[currentWeapon.weaponName] = currentWeapon.magazineSize;
             }
 
-            if (currentWeaponModel != null)
+            if (_currentWeaponModel != null)
             {
-                Destroy(currentWeaponModel);
+                Destroy(_currentWeaponModel);
             }
 
             if (currentWeapon != null && currentWeapon.weaponModelPrefab != null && weaponHolder != null)
             {
-                currentWeaponModel = Instantiate(currentWeapon.weaponModelPrefab, weaponHolder.position, weaponHolder.rotation);
-                currentWeaponModel.transform.SetParent(weaponHolder);
+                _currentWeaponModel = Instantiate(currentWeapon.weaponModelPrefab, weaponHolder.position, weaponHolder.rotation);
+                _currentWeaponModel.transform.SetParent(weaponHolder);
                 
-                currentWeaponModel.transform.localPosition = Vector3.zero;
-                currentWeaponModel.transform.localRotation = Quaternion.identity;
+                _currentWeaponModel.transform.localPosition = Vector3.zero;
+                _currentWeaponModel.transform.localRotation = Quaternion.identity;
             }
         }
 
@@ -87,19 +102,24 @@ namespace Player.scripts
 
         private void StartReload()
         {
-            isReloading = true;
-            reloadTimer = currentWeapon.reloadTime;
-            if(weaponDebug) Debug.Log($"reloading ({currentWeapon.reloadTime})");
+            _isReloading = true;
+            _reloadTimer = currentWeapon.reloadTime;
+            if(_weaponDebug) Debug.Log($"reloading ({currentWeapon.reloadTime})");
         }
 
         private void ConfigureProjectile(GameObject bullet, WeaponData weaponSettings)
         {
+            if (weaponSettings == null)
+            {
+                return;
+            }
+
             Actor actorScript = bullet.GetComponent<Actor>();
             if (actorScript == null) 
             {
                 actorScript = bullet.AddComponent<Actor>();
             }
-            actorScript.SetDamage(weaponSettings.damage);
+            actorScript.SetDamage(weaponSettings.isMolotov ? 0f : weaponSettings.damage);
 
             bullet.tag = "projectile";
             
@@ -114,13 +134,9 @@ namespace Player.scripts
                 damageTrigger.isTrigger = true;
                 damageTrigger.enabled = false;
 
-                Animator animator = bullet.GetComponent<Animator>();
-                if (animator == null) animator = bullet.AddComponent<Animator>();
-
                 C__Classes.Objects.ExplodingComponent explodingComp = bullet.GetComponent<C__Classes.Objects.ExplodingComponent>();
                 if (explodingComp == null) explodingComp = bullet.AddComponent<C__Classes.Objects.ExplodingComponent>();
 
-                C__Classes.Objects.ExplodingComponent explodingComponent = bullet.GetComponent<C__Classes.Objects.ExplodingComponent>();
                 System.Type type = explodingComp.GetType();
                 
                 type.GetField("trapTrigger", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
@@ -138,27 +154,27 @@ namespace Player.scripts
                 type.GetField("destroyTriggerAfter", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                     ?.SetValue(explodingComp, 0.25f);
                 
-                bullet.GetComponent<Actor>().SetWaitUntilDestroyed(0.25f);
+                actorScript.SetWaitUntilDestroyed(0.25f);
             }
         }
 
         public void TryShoot(Vector2 targetDirection)
         {
             if (currentWeapon == null || firePoint == null) return;
-            if (isReloading) return;
-            if (ammoState[currentWeapon.weaponName] <= 0)
+            if (_isReloading) return;
+            if (_ammoState[currentWeapon.weaponName] <= 0)
             {
                 StartReload();
                 return;
             }
-            if (Time.time < nextFireTime) return;
+            if (Time.time < _nextFireTime) return;
 
-            nextFireTime = Time.time + (1f / currentWeapon.fireRate);
+            _nextFireTime = Time.time + (1f / currentWeapon.fireRate);
             
-            ammoState[currentWeapon.weaponName]--;
-            if(weaponDebug) Debug.Log($"Ammo: {ammoState[currentWeapon.weaponName]}");
+            _ammoState[currentWeapon.weaponName]--;
+            if(_weaponDebug) Debug.Log($"Ammo: {_ammoState[currentWeapon.weaponName]}");
             
-            if (ammoState[currentWeapon.weaponName] == 0)
+            if (_ammoState[currentWeapon.weaponName] == 0)
             {
                 StartReload();
             }
@@ -169,11 +185,16 @@ namespace Player.scripts
                 float randomSpread = Random.Range(-currentWeapon.spread, currentWeapon.spread);
                 Quaternion rotation = Quaternion.Euler(0, 0, rotZ + randomSpread);
                 GameObject bullet = Instantiate(currentWeapon.projectilePrefab, firePoint.position, rotation);
+
+                if (_attacksLayer >= 0)
+                {
+                    SetLayerRecursively(bullet, _attacksLayer);
+                }
                 
                 Projectile proj = bullet.GetComponent<Projectile>();
                 if (proj != null)
                 {
-                    proj.Setup(currentWeapon.projectileSpeed, currentWeapon.damage, 1f, currentWeapon.isExplosive, currentWeapon.explosionRadius);
+                    proj.Setup(currentWeapon);
                 }
                 
                 ConfigureProjectile(bullet, currentWeapon);
