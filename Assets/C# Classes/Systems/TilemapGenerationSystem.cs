@@ -82,7 +82,7 @@ namespace C__Classes.Systems
             // rigidBody2D = tilemap.AddComponent<Rigidbody2D>();
             // rigidBody2D.bodyType = RigidbodyType2D.Static;
             //
-            // edgeCollider2D = tilemap.AddComponent<EdgeCollider2D>();
+            edgeCollider2D = groundTilemap.AddComponent<EdgeCollider2D>();
             //
             // tilemap.CompressBounds();
             waterTilemap.CompressBounds();
@@ -94,16 +94,21 @@ namespace C__Classes.Systems
             // Vector3 max = tilemap.CellToWorld(bounds.max);
             //
             // //Punkty ramki (zgodnie z ruchem wskazówek)
-            // Vector2[] points =
-            // {
-            //     new Vector2(min.x, min.y),
-            //     new Vector2(min.x, max.y),
-            //     new Vector2(max.x, max.y),
-            //     new Vector2(max.x, min.y),
-            //     new Vector2(min.x, min.y) // zamknięcie
-            // };
-            //
-            // edgeCollider2D.points = points;
+            Vector2[] points =
+            {
+                // new Vector2(min.x, min.y),
+                new Vector2(0, 0),
+                // new Vector2(min.x, max.y),
+                new Vector2(0, mapSize),
+                // new Vector2(max.x, max.y),
+                new Vector2(mapSize, mapSize),
+                // new Vector2(max.x, min.y),
+                new Vector2(mapSize, 0),
+                // new Vector2(min.x, min.y) // zamknięcie
+                new Vector2(0, 0) // zamknięcie
+            };
+            
+            edgeCollider2D.points = points;
         }
 
         private void GenerateTilemap()
