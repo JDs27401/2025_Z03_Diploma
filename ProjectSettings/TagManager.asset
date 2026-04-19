@@ -16,6 +16,8 @@ TagManager:
   - PlayerNoiseComponent
   - PlayerVisualComponent
   - dot
+  - waterTilemap
+  - cropTilemap
   layers:
   - Default
   - TransparentFX
