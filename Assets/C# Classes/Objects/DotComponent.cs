@@ -10,8 +10,6 @@ namespace C__Classes.Objects
         [SerializeField] private float duration;
         [SerializeField] private float interval;
         private Actor _actor;
-        private readonly HashSet<int> _affectedActors = new HashSet<int>();
-        private readonly Collider2D[] _overlapBuffer = new Collider2D[32];
         
         private void Start()
         {
@@ -39,7 +37,7 @@ namespace C__Classes.Objects
 
         public void Configure(CircleCollider2D areaTrigger, float areaRadius, float dotDuration, float dotInterval)
         {
-            print("trigger = " + areaTrigger + " areaRadius = " + areaRadius + " dotDuration = " + dotDuration + " dotInterval = " + dotInterval);
+            // print("trigger = " + areaTrigger + " areaRadius = " + areaRadius + " dotDuration = " + dotDuration + " dotInterval = " + dotInterval);
             trigger = areaTrigger;
             area = areaRadius;
             duration = dotDuration;
@@ -49,9 +47,9 @@ namespace C__Classes.Objects
 
         public void StartDotArea()
         {
-            print("Starting DOT area");
-            print(trigger.radius);
-            print(area);
+            // print("Starting DOT area");
+            // print(trigger.radius);
+            // print(area);
             trigger.enabled = true;
             trigger.radius = area;
             tag = "dot";
