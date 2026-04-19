@@ -357,7 +357,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 123850683
   m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
 --- !u!61 &3904314079713730930
