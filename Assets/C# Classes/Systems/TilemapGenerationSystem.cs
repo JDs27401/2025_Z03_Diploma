@@ -7,7 +7,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using NavMeshPlus.Components;
-// using NavMeshSurface = Unity.AI.Navigation.NavMeshSurface;
 
 namespace C__Classes.Systems
 {
@@ -17,11 +16,9 @@ namespace C__Classes.Systems
         [SerializeField] private string hash;
         [SerializeField] private int mapSize = 1024;
         [SerializeField] private int chunkSize = 128;
-        // [SerializeField] private Tilemap tilemap;
         [SerializeField] private Tilemap waterTilemap;
         [SerializeField] private Tilemap groundTilemap;
         [SerializeField] private Tilemap cropTilemap;
-        // private Rigidbody2D rigidBody2D;
         private EdgeCollider2D edgeCollider2D;
         
         [Header("Tiles")]
@@ -65,46 +62,25 @@ namespace C__Classes.Systems
         {
             GenerateTilemap();
             GenerateMapBoundaries(); //dunno, this has to be b4 RunBuildingGeneration() method for some reason 
-            // RunBuildingGeneration();
-            // RunDecorationGeneration();
             RunCircularGeneration(radiusBuildings, radiusIncreaseBuildings, numberOfCirclesBuildings, 0, false, buildingPrefabs, buildingsParent);
             RunCircularGeneration(radiusDecorations, radiusIncreaseDecorations, numberOfCirclesDecorations, 30, true, decorationPrefabs, decorationsParent);
         }
 
         private void GenerateMapBoundaries()
         {
-            /*rigidBody2D = tilemap.GetComponent<Rigidbody2D>();
-            if (ReferenceEquals(rigidBody2D, null))
-            {
-                return;
-            }*/
-
-            // rigidBody2D = tilemap.AddComponent<Rigidbody2D>();
-            // rigidBody2D.bodyType = RigidbodyType2D.Static;
-            //
             edgeCollider2D = groundTilemap.AddComponent<EdgeCollider2D>();
-            //
-            // tilemap.CompressBounds();
+            
             waterTilemap.CompressBounds();
             groundTilemap.CompressBounds();
             cropTilemap.CompressBounds();
-            //
-            // BoundsInt bounds = tilemap.cellBounds;
-            // Vector3 min = tilemap.CellToWorld(bounds.min);
-            // Vector3 max = tilemap.CellToWorld(bounds.max);
-            //
+            
             // //Punkty ramki (zgodnie z ruchem wskazówek)
             Vector2[] points =
             {
-                // new Vector2(min.x, min.y),
                 new Vector2(0, 0),
-                // new Vector2(min.x, max.y),
                 new Vector2(0, mapSize),
-                // new Vector2(max.x, max.y),
                 new Vector2(mapSize, mapSize),
-                // new Vector2(max.x, min.y),
                 new Vector2(mapSize, 0),
-                // new Vector2(min.x, min.y) // zamknięcie
                 new Vector2(0, 0) // zamknięcie
             };
             
@@ -119,7 +95,6 @@ namespace C__Classes.Systems
             {
                 for (int x = 0; x < mapSize; x++)
                 {
-                    // tilemap.SetTile(new Vector3Int(x, y, 0), SelectTile(tileValues[x,y], x, y));
                     PlaceTile(tileValues[x, y], x, y);
                 }    
             }
@@ -287,8 +262,6 @@ namespace C__Classes.Systems
             h = Mathf.Abs(h);
             return h % prefabs.Length;
         }
-
-
         
         public TileProperties GetTileProperties(int x, int y)
         {
