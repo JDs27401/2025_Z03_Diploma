@@ -12,7 +12,7 @@ namespace C__Classes.Managers
         public event Action OnWaveCompleted;
         
         private int _aliveEnemies;
-        private List<GameObject> _enemies;
+        private List<GameObject> _enemies = new List<GameObject>();
         public bool AlreadyStarted { get; private set; }  = false;
 
         [Header("Wave Settings")]
