@@ -1,4 +1,5 @@
 using C__Classes.Managers;
+using Player.scripts;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -15,6 +16,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [Header("Item Data")]
     public ItemData itemData;
     public int count = 1;
+    public WeaponInstanceState weaponInstanceState;
 
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public bool isSplitDrag = false; 
@@ -36,7 +38,31 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private void Start()
     {
         parentAfterDrag = transform.parent;
+        EnsureWeaponStateInitialized();
         UpdateTextPosition();
+    }
+
+    public void EnsureWeaponStateInitialized()
+    {
+        if (itemData is WeaponItemData weaponItemData && weaponItemData.weaponData != null)
+        {
+            if (weaponInstanceState == null)
+            {
+                weaponInstanceState = new WeaponInstanceState(weaponItemData.weaponData.magazineSize);
+            }
+            else
+            {
+                weaponInstanceState.currentMagazineAmmo = Mathf.Clamp(
+                    weaponInstanceState.currentMagazineAmmo,
+                    0,
+                    weaponItemData.weaponData.magazineSize
+                );
+            }
+        }
+        else
+        {
+            weaponInstanceState = null;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -130,6 +156,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             cloneScript.RefreshCount(remainingAmount);
             cloneScript.parentAfterDrag = startParent;
             cloneScript.isSplitDrag = false;
+            cloneScript.weaponInstanceState = weaponInstanceState != null ? weaponInstanceState.Clone() : null;
             
             if (currentSlot != null)
             {
@@ -230,6 +257,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void RefreshCount(int newCount)
     {
         count = newCount;
+        EnsureWeaponStateInitialized();
         if (amountText != null)
         {
             amountText.text = count.ToString();

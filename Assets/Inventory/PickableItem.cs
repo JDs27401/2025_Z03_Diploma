@@ -1,4 +1,5 @@
 using C__Classes.Managers;
+using Player.scripts;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -6,6 +7,7 @@ public class PickableItem : MonoBehaviour
 {
     public ItemData itemData;
     public int amount = 1; 
+    public WeaponInstanceState droppedWeaponState;
 
     private bool isPlayerInRange = false;
     private bool isBeingPickedUp = false;
@@ -38,7 +40,8 @@ public class PickableItem : MonoBehaviour
 
             if (InventoryManager.Instance != null)
             {
-                bool wasPickedUp = InventoryManager.Instance.AddItem(itemData, amount);
+                WeaponInstanceState stateToTransfer = droppedWeaponState != null ? droppedWeaponState.Clone() : null;
+                bool wasPickedUp = InventoryManager.Instance.AddItem(itemData, amount, stateToTransfer);
 
                 if (wasPickedUp)
                 {

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using C__Classes;
-using System.Collections.Generic;
 
 namespace Player.scripts
 {
@@ -14,7 +13,7 @@ namespace Player.scripts
         private float _nextFireTime;
 
         // Przeładowanie
-        private Dictionary<string, int> _ammoState = new Dictionary<string, int>();
+        private WeaponInstanceState _currentWeaponState;
         private bool _isReloading;
         private float _reloadTimer;
 
@@ -42,28 +41,38 @@ namespace Player.scripts
                 _reloadTimer -= Time.deltaTime;
                 if (_reloadTimer <= 0f)
                 {
-					_isReloading = false;
-					_ammoState[currentWeapon.weaponName] = currentWeapon.magazineSize;
-          if(_weaponDebug) Debug.Log($"Przeładowano {currentWeapon.weaponName}! (Magazynek powraca do {currentWeapon.magazineSize})");
+                    _isReloading = false;
+                    EnsureCurrentStateInitialized();
+                    _currentWeaponState.currentMagazineAmmo = currentWeapon.magazineSize;
+                    if(_weaponDebug) Debug.Log($"Przeładowano {currentWeapon.weaponName}! (Magazynek powraca do {currentWeapon.magazineSize})");
                 }
             }
         }
 
         public void EquipWeapon(WeaponData newWeapon)
         {
+            EquipWeapon(newWeapon, null);
+        }
+
+        public void EquipWeapon(WeaponData newWeapon, WeaponInstanceState state)
+        {
+            _currentWeaponState = state;
+            EquipWeaponInternal(newWeapon);
+        }
+
+        private void EquipWeaponInternal(WeaponData newWeapon)
+        {
             _isReloading = false;
             _reloadTimer = 0f;
 
             currentWeapon = newWeapon;
 
-            if (currentWeapon != null && !_ammoState.ContainsKey(currentWeapon.weaponName))
-            {
-                _ammoState[currentWeapon.weaponName] = currentWeapon.magazineSize;
-            }
+            EnsureCurrentStateInitialized();
 
             if (_currentWeaponModel != null)
             {
                 Destroy(_currentWeaponModel);
+                _currentWeaponModel = null;
             }
 
             if (currentWeapon != null && currentWeapon.weaponModelPrefab != null && weaponHolder != null)
@@ -74,6 +83,23 @@ namespace Player.scripts
                 _currentWeaponModel.transform.localPosition = Vector3.zero;
                 _currentWeaponModel.transform.localRotation = Quaternion.identity;
             }
+        }
+
+        private void EnsureCurrentStateInitialized()
+        {
+            if (currentWeapon == null)
+            {
+                _currentWeaponState = null;
+                return;
+            }
+
+            if (_currentWeaponState == null)
+            {
+                _currentWeaponState = new WeaponInstanceState(currentWeapon.magazineSize);
+                return;
+            }
+
+            _currentWeaponState.currentMagazineAmmo = Mathf.Clamp(_currentWeaponState.currentMagazineAmmo, 0, currentWeapon.magazineSize);
         }
 
         public void AimAt(Vector2 targetPos)
@@ -161,8 +187,9 @@ namespace Player.scripts
         public void TryShoot(Vector2 targetDirection)
         {
             if (currentWeapon == null || firePoint == null) return;
+            EnsureCurrentStateInitialized();
             if (_isReloading) return;
-            if (_ammoState[currentWeapon.weaponName] <= 0)
+            if (_currentWeaponState.currentMagazineAmmo <= 0)
             {
                 StartReload();
                 return;
@@ -171,10 +198,10 @@ namespace Player.scripts
 
             _nextFireTime = Time.time + (1f / currentWeapon.fireRate);
             
-            _ammoState[currentWeapon.weaponName]--;
-            if(_weaponDebug) Debug.Log($"Ammo: {_ammoState[currentWeapon.weaponName]}");
+            _currentWeaponState.currentMagazineAmmo--;
+            if(_weaponDebug) Debug.Log($"Ammo: {_currentWeaponState.currentMagazineAmmo}");
             
-            if (_ammoState[currentWeapon.weaponName] == 0)
+            if (_currentWeaponState.currentMagazineAmmo == 0)
             {
                 StartReload();
             }

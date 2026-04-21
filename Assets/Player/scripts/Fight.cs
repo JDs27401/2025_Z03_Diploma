@@ -16,6 +16,7 @@ namespace Player.scripts
         public Transform weaponHolder;
         private WeaponController weaponController;
         private int currentWeaponIndex = 0;
+        [SerializeField] private bool useInventoryWeaponSelection = true;
 
         [Header("Melee (Legayc)")]
         [Tooltip("Prefab ataku wręcz. Musi posiadać Collider2D(Trigger), Actor, DamagePipeline oraz tag 'attack'.")]
@@ -46,10 +47,20 @@ namespace Player.scripts
             if (firePoint == null) firePoint = transform;
             if (weaponHolder == null) weaponHolder = transform; 
 
-            weaponController = gameObject.AddComponent<WeaponController>();
+            weaponController = GetComponent<WeaponController>();
+            if (weaponController == null)
+            {
+                weaponController = gameObject.AddComponent<WeaponController>();
+            }
             weaponController.firePoint = this.firePoint;
             weaponController.weaponHolder = this.weaponHolder; 
-            if (availableWeapons != null && availableWeapons.Length > 0)
+
+            if (useInventoryWeaponSelection && GetComponent<WeaponInventoryBridge>() == null)
+            {
+                gameObject.AddComponent<WeaponInventoryBridge>();
+            }
+
+            if (!useInventoryWeaponSelection && availableWeapons != null && availableWeapons.Length > 0)
             {
                 EquipWeapon(0);
             }
@@ -66,14 +77,17 @@ namespace Player.scripts
                 weaponController.AimAt(mouseWorldPos);
             }
 
-            Vector2 scroll = Mouse.current.scroll.ReadValue();
-            if (scroll.y > 0)
+            if (!useInventoryWeaponSelection)
             {
-                SwitchWeapon(1);
-            }
-            else if (scroll.y < 0)
-            {
-                SwitchWeapon(-1);
+                Vector2 scroll = Mouse.current.scroll.ReadValue();
+                if (scroll.y > 0)
+                {
+                    SwitchWeapon(1);
+                }
+                else if (scroll.y < 0)
+                {
+                    SwitchWeapon(-1);
+                }
             }
 
             if (weaponController.currentWeapon != null)

@@ -34,7 +34,6 @@ namespace C__Classes.Objects
                 return;
             }
             actor.TileType = _dict[_ownTag];
-            print(actor.TileType);
         }
     }
 }
