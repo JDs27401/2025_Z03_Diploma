@@ -108,8 +108,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cfa82b09f5f55543b4833c111a8b51e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickableItem
-  itemData: {fileID: 11400000, guid: 3e3b3dff93d976d48ac1e13c02c0d0de, type: 2}
+  itemData: {fileID: 11400000, guid: 37280ef4e16a17d46afbfda4c2978afe, type: 2}
   amount: 1
+  droppedWeaponState:
+    currentMagazineAmmo: 0
 --- !u!114 &1527126082778640659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,8 +126,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DraggableItem
   image: {fileID: 0}
   amountText: {fileID: 0}
-  itemData: {fileID: 11400000, guid: 3e3b3dff93d976d48ac1e13c02c0d0de, type: 2}
+  itemData: {fileID: 11400000, guid: 37280ef4e16a17d46afbfda4c2978afe, type: 2}
   count: 1
+  weaponInstanceState:
+    currentMagazineAmmo: 0
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &4544097837935957270

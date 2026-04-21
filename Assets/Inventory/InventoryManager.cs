@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using C__Classes.Singletons;
+using Player.scripts;
 
 
 namespace C__Classes.Managers
@@ -40,6 +41,11 @@ namespace C__Classes.Managers
 
         public bool AddItem(ItemData item, int amount = 1)
         {
+            return AddItem(item, amount, null);
+        }
+
+        public bool AddItem(ItemData item, int amount, WeaponInstanceState weaponState)
+        {
             if (item.isStackable)
             {
                 foreach (InventorySlot slot in inventorySlots)
@@ -76,7 +82,8 @@ namespace C__Classes.Managers
                 {
                     int amountToAdd = item.isStackable ? Mathf.Min(item.maxStackSize, amount) : 1;
                     
-                    SpawnNewItemInSlot(emptySlot, item, amountToAdd);
+                    WeaponInstanceState stateForNewItem = weaponState != null ? weaponState.Clone() : null;
+                    SpawnNewItemInSlot(emptySlot, item, amountToAdd, stateForNewItem);
                     
                     amount -= amountToAdd;
                 }
@@ -89,7 +96,7 @@ namespace C__Classes.Managers
             return true;
         }
 
-        private void SpawnNewItemInSlot(InventorySlot slot, ItemData item, int amount)
+        private void SpawnNewItemInSlot(InventorySlot slot, ItemData item, int amount, WeaponInstanceState weaponState = null)
         {
             GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
             
@@ -110,6 +117,8 @@ namespace C__Classes.Managers
             {
                 dragItem.itemData = item;
                 dragItem.count = amount;
+                dragItem.weaponInstanceState = weaponState != null ? weaponState.Clone() : null;
+                dragItem.EnsureWeaponStateInitialized();
             }
 
             Image image = newItemGo.GetComponent<Image>();
@@ -194,6 +203,7 @@ namespace C__Classes.Managers
             {
                 pickable.amount = 1;
                 pickable.itemData = draggableItem.itemData;
+                pickable.droppedWeaponState = draggableItem.weaponInstanceState != null ? draggableItem.weaponInstanceState.Clone() : null;
             }
 
             Transform targetParent = draggableItem.parentAfterDrag != null ? draggableItem.parentAfterDrag : draggableItem.transform.parent;
@@ -281,6 +291,16 @@ namespace C__Classes.Managers
             {
                 return inventorySlots[selectedSlotIndex].currentItem;
             }
+            return null;
+        }
+
+        public DraggableItem GetActiveDraggableItem()
+        {
+            if (inventorySlots.Length > selectedSlotIndex)
+            {
+                return inventorySlots[selectedSlotIndex].GetComponentInChildren<DraggableItem>();
+            }
+
             return null;
         }
         
