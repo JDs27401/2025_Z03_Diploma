@@ -18,6 +18,8 @@ TagManager:
   - dot
   - waterTilemap
   - cropTilemap
+  - interiorTilemap
+  - roadTilemap
   layers:
   - Default
   - TransparentFX

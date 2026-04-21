@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 286039196}
   - component: {fileID: 286039191}
   - component: {fileID: 286039197}
+  - component: {fileID: 286039198}
   m_Layer: 6
   m_Name: CropTilemap
   m_TagString: cropTilemap
@@ -427,6 +428,18 @@ MonoBehaviour:
   m_Area: 5
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &286039198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 286039188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9de94ff26f94c1ca87badfe50577977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.TilemapComponent
 --- !u!224 &569052786 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9096132895758331009, guid: 5d67edf936bde60419c26c9f587917b7, type: 3}
@@ -754,6 +767,7 @@ GameObject:
   - component: {fileID: 1111437790}
   - component: {fileID: 1111437785}
   - component: {fileID: 1111437791}
+  - component: {fileID: 1111437792}
   m_Layer: 6
   m_Name: GroundTilemap
   m_TagString: groundTilemap
@@ -998,6 +1012,18 @@ MonoBehaviour:
   m_Area: 4
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &1111437792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111437782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9de94ff26f94c1ca87badfe50577977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.TilemapComponent
 --- !u!1001 &1305338246
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1964,6 +1990,7 @@ GameObject:
   - component: {fileID: 1789669638}
   - component: {fileID: 1789669633}
   - component: {fileID: 1789669639}
+  - component: {fileID: 1789669640}
   m_Layer: 6
   m_Name: WaterTilemap
   m_TagString: waterTilemap
@@ -2208,6 +2235,18 @@ MonoBehaviour:
   m_Area: 3
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &1789669640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1789669630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9de94ff26f94c1ca87badfe50577977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.TilemapComponent
 --- !u!1001 &2012404435
 PrefabInstance:
   m_ObjectHideFlags: 0
