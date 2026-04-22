@@ -6,6 +6,7 @@
     public class WeaponData : ScriptableObject
     {
         public string weaponName = "New Weapon";
+        public int animationID;
     
         [Header("Shooting Stats")]
         public float fireRate = 4f; // Strzały na sekundę

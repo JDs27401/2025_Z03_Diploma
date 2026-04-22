@@ -19,10 +19,15 @@ namespace Player.scripts
 
         private bool _weaponDebug = true;
         private int _attacksLayer = -1;
+        
+        //animacje
+        private PlayerController _playerController;
 
         private void Awake()
         {
             _attacksLayer = LayerMask.NameToLayer("Attacks");
+            
+            _playerController = GetComponent<PlayerController>();
         }
 
         private void SetLayerRecursively(GameObject obj, int layer)
@@ -66,6 +71,12 @@ namespace Player.scripts
             _reloadTimer = 0f;
 
             currentWeapon = newWeapon;
+
+            if (_playerController != null)
+            {
+                int animID = (currentWeapon != null) ? currentWeapon.animationID : 0;
+                _playerController.SetWeaponAnimation(animID);
+            }
 
             EnsureCurrentStateInitialized();
 

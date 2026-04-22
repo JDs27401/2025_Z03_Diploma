@@ -225,6 +225,14 @@ public class PlayerController : Actor
         animator.SetFloat("XInput", direction.x);
         animator.SetFloat("YInput", direction.y);
     }
+
+    public void SetWeaponAnimation(int weaponID)
+    {
+        if (animator != null)
+        {
+            animator.SetInteger("WeaponID", weaponID);
+        }
+    }
     
     void ManageRoll()
     {
