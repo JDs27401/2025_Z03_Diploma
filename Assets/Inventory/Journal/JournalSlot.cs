@@ -7,7 +7,6 @@ public class JournalSlot : MonoBehaviour
 {
     [Header("UI Elements")]
     public Image iconImage;
-    public Outline itemOutline;
     
     private ItemData assignedItem;
     private bool isUnlocked = false;
@@ -50,17 +49,11 @@ public class JournalSlot : MonoBehaviour
         {
             // Unlocked: full color, no outline
             iconImage.color = Color.white; 
-            if (itemOutline != null) itemOutline.enabled = false; 
         }
         else
         {
             // Locked: grayed out, white outline
-            iconImage.color = new Color(0.2f, 0.2f, 0.2f, 1f); 
-            if (itemOutline != null) 
-            {
-                itemOutline.enabled = true;
-                itemOutline.effectColor = Color.white; 
-            }
+            iconImage.color = new Color(0.2f, 0.2f, 0.2f, 1f);
         }
     }
 
