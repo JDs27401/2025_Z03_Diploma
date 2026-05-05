@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using C__Classes.Objects;
 using C__Classes.Singletons;
+using C__Classes.Systems;
 using UnityEngine;
 
 namespace C__Classes.Managers
@@ -15,10 +16,14 @@ namespace C__Classes.Managers
         private List<GameObject> _enemies = new List<GameObject>();
         public bool AlreadyStarted { get; private set; }  = false;
 
+        [Header("Max enemies spawned at the same time")] 
+        [SerializeField] private int mesatst = 500;
+        private int _remainingEnemiesToSpawn = 0;
+        
         [Header("Wave Settings")]
         [SerializeField] private GameObject[] spawnpoints;
         [SerializeField] private int waveSize = 0;
-        [SerializeField] private float waveSizeMultiplier = 1.5f;
+        [SerializeField] private float waveSizeMultiplier = 5f;
         [SerializeField] private float spawnDelta = 1.0f;
 
         [Header("Enemy Prefab List")]
@@ -30,16 +35,19 @@ namespace C__Classes.Managers
             print("Wave started");
             #endif
             AlreadyStarted = true;
+            waveSize += CalculateAdditionalEnemies();
+            if (waveSize > mesatst)
+            {
+                waveSize = mesatst;
+                _remainingEnemiesToSpawn = waveSize - mesatst;
+            }
+            
             for (int i = 0; i < waveSize; i++)
             {
-                var random = new System.Random();
-                GameObject enemy = Instantiate(enemies[random.Next(enemies.Length)], spawnpoints[random.Next(spawnpoints.Length)].transform.position, Quaternion.identity);
+                SpawnEnemy();
                 yield return new WaitForSeconds(spawnDelta);
-                _aliveEnemies++;
-                enemy.GetComponent<WaveComponent>().OnDeath += HandleEnemyDeath;
-                _enemies.Add(enemy);
             }
-            waveSize = (int) (waveSize * waveSizeMultiplier);
+            // waveSize = (int) (waveSize * waveSizeMultiplier);
         }
         
         private void HandleEnemyDeath(GameObject go)
@@ -47,6 +55,13 @@ namespace C__Classes.Managers
             go.GetComponent<WaveComponent>().OnDeath -= HandleEnemyDeath;
             _enemies.Remove(go);
             _aliveEnemies--;
+
+            if (_remainingEnemiesToSpawn != 0)
+            {
+                SpawnEnemy();
+                _remainingEnemiesToSpawn--;
+                return;
+            }
 
             if (_aliveEnemies <= 0)
             {
@@ -61,6 +76,20 @@ namespace C__Classes.Managers
             #endif
             OnWaveCompleted?.Invoke();
             AlreadyStarted = false;
+        }
+
+        private void SpawnEnemy()
+        {
+            var random = new System.Random();
+            GameObject enemy = Instantiate(enemies[random.Next(enemies.Length)], spawnpoints[random.Next(spawnpoints.Length)].transform.position, Quaternion.identity);
+            _aliveEnemies++;
+            enemy.GetComponent<WaveComponent>().OnDeath += HandleEnemyDeath;
+            _enemies.Add(enemy);
+        }
+
+        private int CalculateAdditionalEnemies()
+        {
+            return (int) (waveSizeMultiplier * Math.Pow(Universe.GetDay(), 1.75));
         }
     }
 }
