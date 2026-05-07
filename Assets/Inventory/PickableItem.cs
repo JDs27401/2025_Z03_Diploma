@@ -11,6 +11,8 @@ public class PickableItem : MonoBehaviour
 
     private bool isPlayerInRange = false;
     private bool isBeingPickedUp = false;
+    
+    private PlayerInteractionUI playerUI;
 
     private void Start()
     {
@@ -24,17 +26,15 @@ public class PickableItem : MonoBehaviour
 
     private void Update()
     {
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E) && !isBeingPickedUp)
         {
             if (itemData.itemType == ItemType.Collectible)
             {
                 if (JournalManager.Instance != null)
                 {
-                    JournalManager.Instance.UnlockCollectible(itemData.id); // Adding only to the journal
-                    isBeingPickedUp = true;
-                    Destroy(gameObject);
+                    JournalManager.Instance.UnlockCollectible(itemData.id); 
+                    PickupItem();
                 }
-                
                 return;
             }
 
@@ -45,11 +45,20 @@ public class PickableItem : MonoBehaviour
 
                 if (wasPickedUp)
                 {
-                    isBeingPickedUp = true;
-                    Destroy(gameObject);
+                    PickupItem();
                 }
             }
         }
+    }
+
+    private void PickupItem()
+    {
+        isBeingPickedUp = true;
+        if (playerUI != null)
+        {
+            playerUI.RemoveInteractable(gameObject);
+        }
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -57,14 +66,11 @@ public class PickableItem : MonoBehaviour
         if (other.CompareTag("player"))
         {
             isPlayerInRange = true;
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("player"))
-        {
-            isPlayerInRange = true;
+            playerUI = other.GetComponent<PlayerInteractionUI>();
+            if (playerUI != null)
+            {
+                playerUI.AddInteractable(gameObject);
+            }
         }
     }
 
@@ -73,6 +79,11 @@ public class PickableItem : MonoBehaviour
         if (other.CompareTag("player"))
         {
             isPlayerInRange = false;
+            if (playerUI != null)
+            {
+                playerUI.RemoveInteractable(gameObject);
+                playerUI = null; // Czyścimy referencję po wyjściu z zasięgu
+            }
         }
     }
 }
