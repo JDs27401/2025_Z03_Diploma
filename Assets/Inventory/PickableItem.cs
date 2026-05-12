@@ -9,10 +9,20 @@ public class PickableItem : MonoBehaviour
     public int amount = 1; 
     public WeaponInstanceState droppedWeaponState;
 
+    [Header("Shadow Settings")]
+    public bool enableShadow = true;
+    public Vector3 shadowOffset = new Vector3(0.075f, -0.075f, 0f);
+    [Range(0f, 1f)] public float shadowAlpha = 0.4f; 
+    
+    [Header("Shadow Blur (Softness)")]
+    public bool enableBlur = true;
+    [Range(0.01f, 0.2f)] public float blurSpread = 0.04f;
+
     private bool isPlayerInRange = false;
     private bool isBeingPickedUp = false;
     
     private PlayerInteractionUI playerUI;
+    private SpriteRenderer mainSpriteRenderer;
 
     private void Start()
     {
@@ -22,6 +32,53 @@ public class PickableItem : MonoBehaviour
             rb.gravityScale = 0;
             rb.linearVelocity = Vector2.zero;
         }
+
+        mainSpriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (mainSpriteRenderer != null && enableShadow)
+        {
+            CreateShadow();
+        }
+    }
+
+    private void CreateShadow()
+    {
+        GameObject shadowParent = new GameObject("DropShadow");
+        shadowParent.transform.SetParent(transform);
+        shadowParent.transform.localPosition = shadowOffset;
+        shadowParent.transform.localRotation = Quaternion.identity;
+        shadowParent.transform.localScale = Vector3.one;
+
+        if (enableBlur)
+        {
+            CreateShadowLayer(shadowParent.transform, Vector3.zero, shadowAlpha);
+
+            float blurAlpha = shadowAlpha * 0.35f;
+            
+            CreateShadowLayer(shadowParent.transform, new Vector3(blurSpread, 0, 0), blurAlpha);
+            CreateShadowLayer(shadowParent.transform, new Vector3(-blurSpread, 0, 0), blurAlpha);
+            CreateShadowLayer(shadowParent.transform, new Vector3(0, blurSpread, 0), blurAlpha);
+            CreateShadowLayer(shadowParent.transform, new Vector3(0, -blurSpread, 0), blurAlpha);
+        }
+        else
+        {
+            CreateShadowLayer(shadowParent.transform, Vector3.zero, shadowAlpha);
+        }
+    }
+
+    private void CreateShadowLayer(Transform parent, Vector3 localPosition, float alpha)
+    {
+        GameObject layer = new GameObject("ShadowLayer");
+        layer.transform.SetParent(parent);
+        layer.transform.localPosition = localPosition;
+        layer.transform.localRotation = Quaternion.identity;
+        layer.transform.localScale = Vector3.one;
+
+        SpriteRenderer shadowRenderer = layer.AddComponent<SpriteRenderer>();
+        shadowRenderer.sprite = mainSpriteRenderer.sprite;
+        shadowRenderer.color = new Color(0f, 0f, 0f, alpha);
+        shadowRenderer.sortingLayerID = mainSpriteRenderer.sortingLayerID;
+        shadowRenderer.sortingOrder = mainSpriteRenderer.sortingOrder - 1;
     }
 
     private void Update()
@@ -82,7 +139,7 @@ public class PickableItem : MonoBehaviour
             if (playerUI != null)
             {
                 playerUI.RemoveInteractable(gameObject);
-                playerUI = null; // Czyścimy referencję po wyjściu z zasięgu
+                playerUI = null;
             }
         }
     }

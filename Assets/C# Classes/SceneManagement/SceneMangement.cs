@@ -17,6 +17,8 @@ public class SceneManagement : MonoBehaviour
     public string myUniqueID;
     
     private bool isPlayerInRange = false;
+    
+    private PlayerInteractionUI playerUI;
 
     private void Awake()
     {
@@ -28,6 +30,11 @@ public class SceneManagement : MonoBehaviour
     {
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
+            if (playerUI != null)
+            {
+                playerUI.RemoveInteractable(gameObject);
+            }
+            
             StartCoroutine(EnterDoor());
         }
     }
@@ -47,7 +54,6 @@ public class SceneManagement : MonoBehaviour
             if (!SceneManager.GetSceneByName(sceneToLoad).isLoaded)
             {
                 AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
-                
                 
                 while (!asyncLoad.isDone)
                 {
@@ -117,6 +123,12 @@ public class SceneManagement : MonoBehaviour
         if (collision.CompareTag("player"))
         {
             isPlayerInRange = true;
+            
+            playerUI = collision.GetComponent<PlayerInteractionUI>();
+            if (playerUI != null)
+            {
+                playerUI.AddInteractable(gameObject);
+            }
         }
     }
 
@@ -125,6 +137,12 @@ public class SceneManagement : MonoBehaviour
         if (collision.CompareTag("player"))
         {
             isPlayerInRange = false;
+            
+            if (playerUI != null)
+            {
+                playerUI.RemoveInteractable(gameObject);
+                playerUI = null;
+            }
         }
     }
 }

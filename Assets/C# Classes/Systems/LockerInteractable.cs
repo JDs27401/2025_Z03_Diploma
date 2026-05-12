@@ -12,6 +12,10 @@ public class LockerInteractable : MonoBehaviour
     
     private string lockerUniqueID;
     private bool isPlayerInRange = false;
+    
+    private bool isUIOpen = false; 
+    
+    private PlayerInteractionUI playerUI;
 
     private void Start()
     {
@@ -48,13 +52,35 @@ public class LockerInteractable : MonoBehaviour
     {
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            LockerUIManager.Instance.OpenLockerUI(this);
+            if (isUIOpen)
+            {
+                if (LockerUIManager.Instance != null) LockerUIManager.Instance.CloseUI();
+                isUIOpen = false;
+                
+                if (playerUI != null) playerUI.AddInteractable(gameObject);
+            }
+            else
+            {
+                LockerUIManager.Instance.OpenLockerUI(this);
+                isUIOpen = true;
+                
+                if (playerUI != null) playerUI.RemoveInteractable(gameObject);
+            }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("player")) isPlayerInRange = true;
+        if (other.CompareTag("player"))
+        {
+            isPlayerInRange = true;
+            
+            playerUI = other.GetComponent<PlayerInteractionUI>();
+            if (playerUI != null)
+            {
+                playerUI.AddInteractable(gameObject);
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -62,7 +88,18 @@ public class LockerInteractable : MonoBehaviour
         if (other.CompareTag("player"))
         {
             isPlayerInRange = false;
-            if (LockerUIManager.Instance != null) LockerUIManager.Instance.CloseUI();
+            
+            if (isUIOpen)
+            {
+                if (LockerUIManager.Instance != null) LockerUIManager.Instance.CloseUI();
+                isUIOpen = false;
+            }
+            
+            if (playerUI != null)
+            {
+                playerUI.RemoveInteractable(gameObject);
+                playerUI = null; 
+            }
         }
     }
     
