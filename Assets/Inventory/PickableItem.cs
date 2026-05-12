@@ -11,7 +11,7 @@ public class PickableItem : MonoBehaviour
 
     [Header("Shadow Settings")]
     public bool enableShadow = true;
-    public Vector3 shadowOffset = new Vector3(0.075f, -0.075f, 0f);
+    public Vector3 shadowOffset = new Vector3(0.05f, -0.05f, 0f);
     [Range(0f, 1f)] public float shadowAlpha = 0.4f; 
     
     [Header("Shadow Blur (Softness)")]

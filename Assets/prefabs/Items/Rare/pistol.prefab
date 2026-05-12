@@ -112,6 +112,11 @@ MonoBehaviour:
   amount: 1
   droppedWeaponState:
     currentMagazineAmmo: 0
+  enableShadow: 1
+  shadowOffset: {x: 0.05, y: -0.05, z: 0}
+  shadowAlpha: 0.4
+  enableBlur: 1
+  blurSpread: 0.04
 --- !u!114 &1527126082778640659
 MonoBehaviour:
   m_ObjectHideFlags: 0

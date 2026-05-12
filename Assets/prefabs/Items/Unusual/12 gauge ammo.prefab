@@ -110,6 +110,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PickableItem
   itemData: {fileID: 11400000, guid: f9a4ad47b60a73142b3486f0a39902f7, type: 2}
   amount: 1
+  droppedWeaponState:
+    currentMagazineAmmo: 0
+  enableShadow: 1
+  shadowOffset: {x: 0.05, y: -0.05, z: 0}
+  shadowAlpha: 0.4
+  enableBlur: 1
+  blurSpread: 0.04
 --- !u!114 &1527126082778640659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +133,8 @@ MonoBehaviour:
   amountText: {fileID: 0}
   itemData: {fileID: 11400000, guid: f9a4ad47b60a73142b3486f0a39902f7, type: 2}
   count: 1
+  weaponInstanceState:
+    currentMagazineAmmo: 0
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &4544097837935957270
