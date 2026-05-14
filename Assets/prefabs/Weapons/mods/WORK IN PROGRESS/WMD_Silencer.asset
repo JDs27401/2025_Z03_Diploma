@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef02a6eb7ea64d56a706f6dca724875e, type: 3}
+  m_Name: WMD_Silencer
+  m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.WeaponModData
+  modName: Weapon Mod 1
+  icon: {fileID: 21300000, guid: caeccb8d9e02edc478f48a1743cb1a8a, type: 3}
+  modType: 0
+  description: wm1
+  fireRateBonus: -0.2
+  damageBonus: -10
+  projectileSpeedBonus: 0
+  spreadBonus: 0
+  projectilesPerShotBonus: 0
+  magazineSizeBonus: 0
+  reloadTimeBonus: 0
+  overrideIsAutomatic: 1
+  isAutomaticValue: 1
+  overrideIsExplosive: 0
+  isExplosiveValue: 0
+  explosionRadiusBonus: 0
+  overrideIsMolotov: 0
+  isMolotovValue: 0
+  dotAreaRadiusBonus: 0
+  dotDamageBonus: 0
+  dotDurationBonus: 0
+  dotIntervalBonus: 0
+  dotAreaLifetimeBonus: 0
+  weightPercentBonus: 0

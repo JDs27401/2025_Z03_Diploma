@@ -95,7 +95,7 @@ namespace Player.scripts
             if (weaponController.currentWeapon != null)
             {
                 bool wantsToShoot = false;
-                if (weaponController.currentWeapon.isAutomatic)
+                if (weaponController.CurrentWeaponIsAutomatic)
                 {
                     wantsToShoot = Mouse.current.leftButton.isPressed;
                 }

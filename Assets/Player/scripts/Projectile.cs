@@ -5,7 +5,7 @@ namespace Player.scripts
 {
     public class Projectile : MonoBehaviour
     {
-        private WeaponData weaponSettings;
+        private WeaponRuntimeStats weaponSettings;
         private float _speed;
         private bool _isExplosive;
         private bool isMolotov;
@@ -17,7 +17,7 @@ namespace Player.scripts
         private float dotAreaLifetime;
         private bool _hasCollided;
 
-        public void Setup(WeaponData settings)
+        public void Setup(WeaponRuntimeStats settings)
         {
             weaponSettings = settings;
 
