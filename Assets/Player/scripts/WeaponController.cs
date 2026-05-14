@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using C__Classes;
+using UnityEngine.InputSystem;
 
 namespace Player.scripts
 {
@@ -22,12 +23,54 @@ namespace Player.scripts
         
         //animacje
         private PlayerController _playerController;
+        private PlayerInput _playerInput;
+
+        public WeaponRuntimeStats CurrentWeaponStats
+        {
+            get
+            {
+                if (_currentWeaponState == null)
+                {
+                    return null;
+                }
+
+                return _currentWeaponState.GetRuntimeStats();
+            }
+        }
+
+        public bool CurrentWeaponIsAutomatic
+        {
+            get
+            {
+                WeaponRuntimeStats stats = CurrentWeaponStats;
+                if (stats != null)
+                {
+                    return stats.isAutomatic;
+                }
+
+                return currentWeapon != null && currentWeapon.isAutomatic;
+            }
+        }
 
         private void Awake()
         {
             _attacksLayer = LayerMask.NameToLayer("Attacks");
             
             _playerController = GetComponent<PlayerController>();
+            _playerInput = GetComponent<PlayerInput>();
+            
+            if (_playerInput != null)
+            {
+                var playerMap = _playerInput.actions.FindActionMap("Player");
+                if (playerMap != null)
+                {
+                    var toggleLightsAction = playerMap.FindAction("ToggleLights");
+                    if (toggleLightsAction != null)
+                    {
+                        toggleLightsAction.performed += OnToggleLights;
+                    }
+                }
+            }
         }
 
         private void SetLayerRecursively(GameObject obj, int layer)
@@ -43,13 +86,17 @@ namespace Player.scripts
         {
             if (_isReloading && currentWeapon != null)
             {
+                WeaponRuntimeStats stats = CurrentWeaponStats;
                 _reloadTimer -= Time.deltaTime;
                 if (_reloadTimer <= 0f)
                 {
                     _isReloading = false;
                     EnsureCurrentStateInitialized();
-                    _currentWeaponState.currentMagazineAmmo = currentWeapon.magazineSize;
-                    if(_weaponDebug) Debug.Log($"Przeładowano {currentWeapon.weaponName}! (Magazynek powraca do {currentWeapon.magazineSize})");
+                    if (_currentWeaponState != null && stats != null)
+                    {
+                        _currentWeaponState.currentMagazineAmmo = stats.magazineSize;
+                    }
+                    if(_weaponDebug && stats != null) Debug.Log($"Przeładowano {stats.weaponName}! (Magazynek powraca do {stats.magazineSize})");
                 }
             }
         }
@@ -107,10 +154,18 @@ namespace Player.scripts
             if (_currentWeaponState == null)
             {
                 _currentWeaponState = new WeaponInstanceState(currentWeapon.magazineSize);
-                return;
             }
 
-            _currentWeaponState.currentMagazineAmmo = Mathf.Clamp(_currentWeaponState.currentMagazineAmmo, 0, currentWeapon.magazineSize);
+            _currentWeaponState.InitializeFromWeaponData(currentWeapon);
+
+            if (_currentWeaponState.runtimeStats != null)
+            {
+                _currentWeaponState.currentMagazineAmmo = Mathf.Clamp(
+                    _currentWeaponState.currentMagazineAmmo,
+                    0,
+                    _currentWeaponState.runtimeStats.magazineSize
+                );
+            }
         }
 
         public void AimAt(Vector2 targetPos)
@@ -139,12 +194,56 @@ namespace Player.scripts
 
         private void StartReload()
         {
+            WeaponRuntimeStats stats = CurrentWeaponStats;
+            if (stats == null)
+            {
+                return;
+            }
+
             _isReloading = true;
-            _reloadTimer = currentWeapon.reloadTime;
-            if(_weaponDebug) Debug.Log($"reloading ({currentWeapon.reloadTime})");
+            _reloadTimer = stats.reloadTime;
+            if(_weaponDebug) Debug.Log($"reloading ({stats.reloadTime})");
         }
 
-        private void ConfigureProjectile(GameObject bullet, WeaponData weaponSettings)
+        public void OnToggleLights(InputAction.CallbackContext context)
+        {
+            if (currentWeapon == null || _currentWeaponState == null)
+            {
+                if (_weaponDebug) Debug.Log("Nie można włączyć światła - brak wyekwipowanej broni");
+                return;
+            }
+
+            bool hasFlashlight = _currentWeaponState.HasModType(WeaponModType.Flashlight);
+            bool hasLaserSight = _currentWeaponState.HasModType(WeaponModType.LaserSight);
+
+            if (!hasFlashlight && !hasLaserSight)
+            {
+                if (_weaponDebug) Debug.Log("Nie można włączyć światła - brak zainstalowanych modów");
+                return;
+            }
+
+            if (hasFlashlight)
+            {
+                WeaponModInstanceState flashlight = _currentWeaponState.GetModByType(WeaponModType.Flashlight);
+                if (flashlight != null)
+                {
+                    flashlight.isActive = !flashlight.isActive;
+                    if (_weaponDebug) Debug.Log($"Latarka: {(flashlight.isActive ? "WŁĄCZONA" : "WYŁĄCZONA")}");
+                }
+            }
+
+            if (hasLaserSight)
+            {
+                WeaponModInstanceState laser = _currentWeaponState.GetModByType(WeaponModType.LaserSight);
+                if (laser != null)
+                {
+                    laser.isActive = !laser.isActive;
+                    if (_weaponDebug) Debug.Log($"Laser: {(laser.isActive ? "WŁĄCZONY" : "WYŁĄCZONY")}");
+                }
+            }
+        }
+
+        private void ConfigureProjectile(GameObject bullet, WeaponRuntimeStats weaponSettings)
         {
             if (weaponSettings == null)
             {
@@ -199,6 +298,8 @@ namespace Player.scripts
         {
             if (currentWeapon == null || firePoint == null) return;
             EnsureCurrentStateInitialized();
+            WeaponRuntimeStats weaponStats = CurrentWeaponStats;
+            if (weaponStats == null) return;
             if (_isReloading) return;
             if (_currentWeaponState.currentMagazineAmmo <= 0)
             {
@@ -207,7 +308,7 @@ namespace Player.scripts
             }
             if (Time.time < _nextFireTime) return;
 
-            _nextFireTime = Time.time + (1f / currentWeapon.fireRate);
+            _nextFireTime = Time.time + (1f / weaponStats.fireRate);
             
             _currentWeaponState.currentMagazineAmmo--;
             if(_weaponDebug) Debug.Log($"Ammo: {_currentWeaponState.currentMagazineAmmo}");
@@ -217,10 +318,10 @@ namespace Player.scripts
                 StartReload();
             }
 
-            for (int i = 0; i < currentWeapon.projectilesPerShot; i++)
+            for (int i = 0; i < weaponStats.projectilesPerShot; i++)
             {
                 float rotZ = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
-                float randomSpread = Random.Range(-currentWeapon.spread, currentWeapon.spread);
+                float randomSpread = Random.Range(-weaponStats.spread, weaponStats.spread);
                 Quaternion rotation = Quaternion.Euler(0, 0, rotZ + randomSpread);
                 GameObject bullet = Instantiate(currentWeapon.projectilePrefab, firePoint.position, rotation);
 
@@ -232,15 +333,31 @@ namespace Player.scripts
                 Projectile proj = bullet.GetComponent<Projectile>();
                 if (proj != null)
                 {
-                    proj.Setup(currentWeapon);
+                    proj.Setup(weaponStats);
                 }
                 
-                ConfigureProjectile(bullet, currentWeapon);
+                ConfigureProjectile(bullet, weaponStats);
 
                 Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
-                    rb.linearVelocity = bullet.transform.right * currentWeapon.projectileSpeed;
+                    rb.linearVelocity = bullet.transform.right * weaponStats.projectileSpeed;
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_playerInput != null)
+            {
+                var playerMap = _playerInput.actions.FindActionMap("Player");
+                if (playerMap != null)
+                {
+                    var toggleLightsAction = playerMap.FindAction("ToggleLights");
+                    if (toggleLightsAction != null)
+                    {
+                        toggleLightsAction.performed -= OnToggleLights;
+                    }
                 }
             }
         }

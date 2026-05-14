@@ -18,12 +18,18 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public int count = 1;
     public WeaponInstanceState weaponInstanceState;
 
+    [Header("Weapon Mod Attachment")]
+    public bool isWeaponModAttachment = false;
+    public WeaponModInstanceState weaponModInstanceState;
+    public DraggableItem attachedWeaponItemRoot;
+
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public bool isSplitDrag = false; 
     
     private Transform startParent;
     private Transform rootCanvasTransform;
     private bool isHovered = false;
+    private bool weaponModTransferCommitted = false;
 
     private void Awake()
     {
@@ -39,6 +45,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         parentAfterDrag = transform.parent;
         EnsureWeaponStateInitialized();
+        RefreshWeaponModVisuals();
         UpdateTextPosition();
     }
 
@@ -52,17 +59,144 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             }
             else
             {
-                weaponInstanceState.currentMagazineAmmo = Mathf.Clamp(
-                    weaponInstanceState.currentMagazineAmmo,
-                    0,
-                    weaponItemData.weaponData.magazineSize
-                );
+                weaponInstanceState.currentMagazineAmmo = Mathf.Clamp(weaponInstanceState.currentMagazineAmmo, 0, weaponItemData.weaponData.magazineSize);
             }
+
+            weaponInstanceState.InitializeFromWeaponData(weaponItemData.weaponData);
         }
         else
         {
             weaponInstanceState = null;
         }
+    }
+
+    public bool IsWeaponModAttachment => isWeaponModAttachment && attachedWeaponItemRoot != null && weaponModInstanceState != null;
+
+    public void BindWeaponModAttachment(DraggableItem weaponItemRoot, WeaponModInstanceState modState)
+    {
+        attachedWeaponItemRoot = weaponItemRoot;
+        weaponModInstanceState = modState;
+        isWeaponModAttachment = true;
+        weaponModTransferCommitted = false;
+
+        if (modState != null && modState.itemData != null)
+        {
+            itemData = modState.itemData;
+        }
+
+        weaponInstanceState = null;
+        RefreshWeaponModVisuals();
+        UpdateTextPosition();
+    }
+
+    public void RefreshWeaponModVisuals(DraggableItem excludedItem = null)
+    {
+        if (!(itemData is WeaponItemData) || weaponInstanceState == null)
+        {
+            return;
+        }
+
+        DraggableItem[] childItems = GetComponentsInChildren<DraggableItem>(true);
+        for (int i = 0; i < childItems.Length; i++)
+        {
+            if (childItems[i] != null && childItems[i] != this && childItems[i] != excludedItem)
+            {
+                Destroy(childItems[i].gameObject);
+            }
+        }
+
+        if (InventoryManager.Instance == null || InventoryManager.Instance.inventoryItemPrefab == null || weaponInstanceState.installedMods == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < weaponInstanceState.installedMods.Count; i++)
+        {
+            WeaponModInstanceState modState = weaponInstanceState.installedMods[i];
+            if (modState == null || modState.itemData == null)
+            {
+                continue;
+            }
+
+            GameObject modGo = Instantiate(InventoryManager.Instance.inventoryItemPrefab, transform);
+            DraggableItem modItem = modGo.GetComponent<DraggableItem>();
+            if (modItem == null)
+            {
+                continue;
+            }
+
+            modItem.itemData = modState.itemData;
+            modItem.count = 1;
+            modItem.weaponInstanceState = null;
+            modItem.BindWeaponModAttachment(this, modState);
+
+            RectTransform rect = modGo.GetComponent<RectTransform>();
+            if (rect != null)
+            {
+                rect.anchorMin = new Vector2(1f, 1f);
+                rect.anchorMax = new Vector2(1f, 1f);
+                rect.pivot = new Vector2(1f, 1f);
+                rect.sizeDelta = new Vector2(18f, 18f);
+                rect.anchoredPosition = new Vector2(-6f - (i * 20f), -6f);
+                rect.localScale = Vector3.one;
+            }
+
+            if (modItem.image != null)
+            {
+                Sprite icon = modState.itemData.icon;
+                if (icon == null && modState.modData != null)
+                {
+                    icon = modState.modData.icon;
+                }
+
+                if (icon != null)
+                {
+                    modItem.image.sprite = icon;
+                    modItem.image.color = Color.white;
+                }
+            }
+
+            if (modItem.amountText != null)
+            {
+                modItem.amountText.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public void DetachWeaponModFromWeapon()
+    {
+        if (!IsWeaponModAttachment)
+        {
+            return;
+        }
+
+        if (attachedWeaponItemRoot != null && attachedWeaponItemRoot.weaponInstanceState != null)
+        {
+            attachedWeaponItemRoot.weaponInstanceState.RemoveMod(weaponModInstanceState);
+            attachedWeaponItemRoot.RefreshWeaponModVisuals(this);
+        }
+    }
+
+    public void RestoreWeaponModToWeapon()
+    {
+        if (!IsWeaponModAttachment)
+        {
+            return;
+        }
+
+        if (attachedWeaponItemRoot != null && attachedWeaponItemRoot.weaponInstanceState != null)
+        {
+            attachedWeaponItemRoot.weaponInstanceState.RestoreMod(weaponModInstanceState);
+            attachedWeaponItemRoot.RefreshWeaponModVisuals();
+        }
+    }
+
+    public void CommitWeaponModTransfer()
+    {
+        weaponModTransferCommitted = true;
+        isWeaponModAttachment = false;
+        attachedWeaponItemRoot = null;
+        weaponModInstanceState = null;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -143,6 +277,11 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         isDraggingItem = true;
 
+        if (IsWeaponModAttachment)
+        {
+            DetachWeaponModFromWeapon();
+        }
+
         if (eventData.button == PointerEventData.InputButton.Right && count > 1)
         {
             isSplitDrag = true;
@@ -209,6 +348,14 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             rect.offsetMax = Vector2.zero;
         }
 
+        if (weaponModTransferCommitted)
+        {
+            isDraggingItem = false;
+            image.raycastTarget = true;
+            weaponModTransferCommitted = false;
+            return;
+        }
+
         InventorySlot slot = parentAfterDrag.GetComponent<InventorySlot>();
         if (slot != null)
         {
@@ -217,7 +364,12 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             {
                 foreach (DraggableItem item in items)
                 {
-                    if (item != this && item.itemData == this.itemData)
+                    if (item == null || item == this || item.transform.parent != parentAfterDrag)
+                    {
+                        continue;
+                    }
+
+                    if (item.itemData == this.itemData && this.itemData != null && this.itemData.isStackable)
                     {
                         item.count += this.count;
                         item.RefreshCount(item.count);
@@ -230,6 +382,13 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             }
             slot.UpdateUI();
         }
+
+        if (IsWeaponModAttachment && parentAfterDrag != null && parentAfterDrag.GetComponent<InventorySlot>() != null)
+        {
+            isWeaponModAttachment = false;
+            attachedWeaponItemRoot = null;
+            weaponModInstanceState = null;
+        }
         
         CraftingSlot cSlot = parentAfterDrag.GetComponent<CraftingSlot>();
         if (cSlot != null)
@@ -239,7 +398,12 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             {
                 foreach (DraggableItem item in items)
                 {
-                    if (item != this && item.itemData == this.itemData)
+                    if (item == null || item == this || item.transform.parent != parentAfterDrag)
+                    {
+                        continue;
+                    }
+
+                    if (item.itemData == this.itemData && this.itemData != null && this.itemData.isStackable)
                     {
                         item.count += this.count;
                         item.RefreshCount(item.count);
@@ -251,6 +415,21 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                 }
             }
             if (CraftingUI.Instance != null) CraftingUI.Instance.UpdateCraftingGrid();
+        }
+
+        if (IsWeaponModAttachment && (slot == null && cSlot == null))
+        {
+            RestoreWeaponModToWeapon();
+            transform.SetParent(startParent);
+            parentAfterDrag = startParent;
+
+            RectTransform restoreRect = GetComponent<RectTransform>();
+            if (restoreRect != null)
+            {
+                restoreRect.localPosition = Vector3.zero;
+                restoreRect.anchoredPosition = Vector2.zero;
+                restoreRect.localScale = Vector3.one;
+            }
         }
     }
 
@@ -265,8 +444,18 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
             if (itemData != null)
             {
-                if (itemData.itemType != ItemType.General) showText = true;
-                else if (count > 1) showText = true;
+                if (itemData.itemType == ItemType.WeaponMod)
+                {
+                    showText = false;
+                }
+                else if (itemData.itemType != ItemType.General)
+                {
+                    showText = true;
+                }
+                else if (count > 1)
+                {
+                    showText = true;
+                }
             }
             amountText.gameObject.SetActive(showText);
         }

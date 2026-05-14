@@ -13,7 +13,8 @@ public enum ItemType
     General,    
     Ammo9mm,    
     Ammo12Gauge,
-    Collectible
+    Collectible,
+    WeaponMod
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item")]

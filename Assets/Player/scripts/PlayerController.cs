@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerController : Actor
 {
     // Lukasz, health bar event
@@ -19,10 +20,10 @@ public class PlayerController : Actor
     private int _lastKnownStamina;
     
     [Header("Keys management")]
-    [SerializeField] 
-    private InputActionReference moveAction;
-    [SerializeField] 
-    private InputActionReference sprintAction;
+    private PlayerInput playerInput;
+    private InputActionMap playerActionMap;
+    private InputAction moveAction;
+    private InputAction sprintAction;
     
     [Header("Movement stats")]
     [SerializeField]
@@ -44,7 +45,6 @@ public class PlayerController : Actor
     [SerializeField] private float speedPenaltyPerPoint = 0.01f; // Speed penalty per 1 weight point (ex. 0.01 = 1% loss for 1 kg)
     [SerializeField] private float minimumSpeedPercentage = 0.15f; // 15% of base movement speed
     
-    private PlayerInput playerInput;
     private Vector2 moveInput; 
     private Vector2 currentSpeed = Vector2.zero;
     private bool isRolling = false;
@@ -63,25 +63,25 @@ public class PlayerController : Actor
     private Vector3 mousePos;
     
     
+            private void Awake()
+            {
+                playerInput = GetComponent<PlayerInput>();
+                CacheInputActions();
+            }
+
     protected override void Start(){
         base.Start();
-        
-        playerInput = GetComponent<PlayerInput>();
-        if (playerInput != null)
-        {
-            var playerMap = playerInput.actions.FindActionMap("Player");
-            if (playerMap != null)
-            {
-                var action = playerMap.FindAction("Jump");
-                if (action != null) action.performed += SpaceManagement; else {
-                    Debug.LogWarning("Jump action not found in Player action map.");
+                if (playerInput != null && playerActionMap != null)
+                {
+                    var action = playerActionMap.FindAction("Jump");
+                    if (action != null) action.performed += SpaceManagement; else {
+                        Debug.LogWarning("Jump action not found in Player action map.");
+                    }
+                    var findAction = playerActionMap.FindAction("Crouch");
+                    if (findAction != null) findAction.performed += CtrlManagement;
                 }
-                var findAction = playerMap.FindAction("Crouch");
-                if (findAction != null) findAction.performed += CtrlManagement;
-            }else{
-                Debug.LogWarning("Player action map not found in PlayerInput.");
-            }
-        }else{
+                else if (playerInput == null)
+                {
             Debug.LogWarning("PlayerInput component not found on PlayerController.");
         }
         
@@ -105,7 +105,7 @@ public class PlayerController : Actor
 
     new void Update()
     {
-        moveInput = moveAction.action.ReadValue<Vector2>();
+        moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
         UpdateSprintInput();
     }
     
@@ -164,12 +164,12 @@ public class PlayerController : Actor
 
     private void UpdateSprintInput()
     {
-        if (Keyboard.current == null)
+        if (sprintAction == null)
         {
             return;
         }
 
-        var sprintHeld = sprintAction?.action != null && sprintAction.action.IsPressed();
+        var sprintHeld = sprintAction.IsPressed();
 
         switch (sprintHeld)
         {
@@ -187,6 +187,36 @@ public class PlayerController : Actor
 
         PlayerNoiseSystem.Instance.UpdateNoiseRadius();
     }
+
+    private void CacheInputActions()
+    {
+        if (playerInput == null || playerInput.actions == null)
+        {
+            Debug.LogWarning("PlayerInput albo InputActionAsset nie są ustawione na PlayerController.");
+            return;
+        }
+
+        playerActionMap = playerInput.actions.FindActionMap("Player", false);
+        if (playerActionMap == null)
+        {
+            Debug.LogWarning("Player action map not found in PlayerInput.");
+            return;
+        }
+
+        moveAction = playerActionMap.FindAction("Move", false);
+        sprintAction = playerActionMap.FindAction("Sprint", false);
+
+        if (moveAction == null)
+        {
+            Debug.LogWarning("Move action not found in Player action map.");
+        }
+
+        if (sprintAction == null)
+        {
+            Debug.LogWarning("Sprint action not found in Player action map.");
+        }
+    }
+
     public void SpaceManagement(InputAction.CallbackContext context)
     {
         if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
