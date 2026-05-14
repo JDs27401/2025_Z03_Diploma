@@ -25,6 +25,7 @@ namespace C__Classes.Managers
         
         private void Update()
         {
+            if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
             HandleHotbarInput();
             HandleDropInput();
         }
