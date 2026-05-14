@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using C__Classes; // Potrzebne do dostępu do Actor
+using C__Classes.Managers;
 
 namespace Player.scripts
 {
@@ -68,6 +69,7 @@ namespace Player.scripts
 
         void Update()
         {
+            if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
             if (Mouse.current == null) return;
 
             Vector3 mouseWorldPos = GetMouseWorldPosition();

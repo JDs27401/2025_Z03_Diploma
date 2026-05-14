@@ -17,8 +17,14 @@ public class PlayerController : Actor
     
     private float _lastKnownHealth;
     private int _lastKnownStamina;
-
-    //Wiktor
+    
+    [Header("Keys management")]
+    [SerializeField] 
+    private InputActionReference moveAction;
+    [SerializeField] 
+    private InputActionReference sprintAction;
+    
+    [Header("Movement stats")]
     [SerializeField]
     private int maxStamina = 100;
     [SerializeField] //true if you want to know all the stuff
@@ -38,11 +44,12 @@ public class PlayerController : Actor
     [SerializeField] private float speedPenaltyPerPoint = 0.01f; // Speed penalty per 1 weight point (ex. 0.01 = 1% loss for 1 kg)
     [SerializeField] private float minimumSpeedPercentage = 0.15f; // 15% of base movement speed
     
+    private PlayerInput playerInput;
     private Vector2 moveInput; 
     private Vector2 currentSpeed = Vector2.zero;
     private bool isRolling = false;
     private bool rollCooldown = false;
-    private long lastRollTime = 0;
+    private float lastRollTime = 0f;
     private bool isCrouching = false;
     private SpriteRenderer spriteRenderer;
     private float playerColorAlpha = 1;
@@ -58,6 +65,26 @@ public class PlayerController : Actor
     
     protected override void Start(){
         base.Start();
+        
+        playerInput = GetComponent<PlayerInput>();
+        if (playerInput != null)
+        {
+            var playerMap = playerInput.actions.FindActionMap("Player");
+            if (playerMap != null)
+            {
+                var action = playerMap.FindAction("Jump");
+                if (action != null) action.performed += SpaceManagement; else {
+                    Debug.LogWarning("Jump action not found in Player action map.");
+                }
+                var findAction = playerMap.FindAction("Crouch");
+                if (findAction != null) findAction.performed += CtrlManagement;
+            }else{
+                Debug.LogWarning("Player action map not found in PlayerInput.");
+            }
+        }else{
+            Debug.LogWarning("PlayerInput component not found on PlayerController.");
+        }
+        
         mainCam = Camera.main;
         if (mainCam == null)
         {
@@ -74,6 +101,12 @@ public class PlayerController : Actor
         _lastKnownStamina = stamina;
         float staminaPercent = (maxStamina > 0) ? (float)stamina / maxStamina : 0;
         onStaminaChanged?.Invoke(staminaPercent);
+    }
+
+    new void Update()
+    {
+        moveInput = moveAction.action.ReadValue<Vector2>();
+        UpdateSprintInput();
     }
     
     void FixedUpdate()
@@ -128,42 +161,47 @@ public class PlayerController : Actor
             onHealthChanged?.Invoke(healthPercent);
         }
     }
-    
-    public void WSADManagement(InputAction.CallbackContext context){ 
-        moveInput = context.ReadValue<Vector2>();
+
+    private void UpdateSprintInput()
+    {
+        if (Keyboard.current == null)
+        {
+            return;
+        }
+
+        var sprintHeld = sprintAction?.action != null && sprintAction.action.IsPressed();
+
+        switch (sprintHeld)
+        {
+            case true when !isSprinting && stamina > 20:
+                isSprinting = true;
+                speed *= sprintPower;
+                acceleration *= sprintPower;
+                break;
+            case false when isSprinting:
+                isSprinting = false;
+                speed /= sprintPower;
+                acceleration /= sprintPower;
+                break;
+        }
+
+        PlayerNoiseSystem.Instance.UpdateNoiseRadius();
     }
     public void SpaceManagement(InputAction.CallbackContext context)
     {
-        if (!rollCooldown && !isRolling)
-        {
-            stamina -= rollStaminaCost;
-            isRolling = true;
-            rollCooldown = true;
-            lastRollTime = DateTime.Now.Ticks;
-            currentSpeed *= rollPower;
-        }
+        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
+        if (rollCooldown || isRolling) return;
+        stamina -= rollStaminaCost;
+        isRolling = true;
+        rollCooldown = true;
+        lastRollTime = Time.time;
+        currentSpeed *= rollPower;
     }
     public void CtrlManagement(InputAction.CallbackContext context)
     {
+        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
         isCrouching = !isCrouching;
         PlayerVisualSystem.Instance.UpdateVisualRange(isCrouching);
-    }
-    public void ShiftManagement(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Started && stamina > 20)
-        {
-            isSprinting = true;
-            speed *= sprintPower;
-            acceleration *= sprintPower;
-        }
-
-        if (context.phase == InputActionPhase.Canceled && isSprinting)
-        {
-            isSprinting = false;
-            speed /= sprintPower;
-            acceleration /= sprintPower;
-        }
-        PlayerNoiseSystem.Instance.UpdateNoiseRadius();
     }
     
     void CalculateSpeed()
@@ -181,7 +219,7 @@ public class PlayerController : Actor
         float currentEffectiveSpeed = speed * weightPenaltyMultiplier;
 
         currentSpeed *= friction;
-        currentSpeed += moveInput * currentEffectiveAcceleration * Time.fixedDeltaTime; 
+        currentSpeed += moveInput * (currentEffectiveAcceleration * Time.fixedDeltaTime); 
         
         if (currentSpeed.x >= currentEffectiveSpeed)
         {
@@ -236,11 +274,11 @@ public class PlayerController : Actor
     
     void ManageRoll()
     {
-        if (DateTime.Now.Ticks - lastRollTime >= rollCoodownSeconds * 10000000)
+        if (Time.time - lastRollTime >= rollCoodownSeconds)
         {
             rollCooldown = false;
         }
-        if (DateTime.Now.Ticks - lastRollTime >= rollDurationSeconds * 10000000)
+        if (Time.time - lastRollTime >= rollDurationSeconds)
         {
             isRolling = false;
         }
@@ -283,6 +321,13 @@ public class PlayerController : Actor
                 stamina += 1;
             }
         }
+    }
+    
+    public void ClearInputState()
+    {
+        moveInput = Vector2.zero;
+        currentSpeed = Vector2.zero;
+        isSprinting = false;
     }
 
     public bool IsCrouching() => isCrouching;

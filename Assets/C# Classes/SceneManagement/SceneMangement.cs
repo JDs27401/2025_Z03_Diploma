@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using C__Classes.Managers;
 using UnityEngine.SceneManagement;
 
 public class SceneManagement : MonoBehaviour
@@ -28,6 +29,7 @@ public class SceneManagement : MonoBehaviour
     
     private void Update()
     {
+        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
             if (playerUI != null)
