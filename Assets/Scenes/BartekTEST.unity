@@ -824,7 +824,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1851,6 +1851,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b08a6b4db93c9d4caedb0cba25d433b, type: 3}
+--- !u!114 &1055537168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Sprint
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_ActionId: 641cd816-40e6-41b4-8c3d-04687c349290
 --- !u!1001 &1092684733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3161,6 +3175,120 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8019110a9902f5342b301375d63234bd, type: 3}
+--- !u!1001 &1552944194
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1178991078661343176, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 489.1633
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 532.4876
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178991078661343176, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4570721072878242866, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+      propertyPath: m_Name
+      value: GreenBarn
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e43ebbdc80b1b1142bcf9107aa5a6617, type: 3}
+--- !u!1001 &1631741974
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 521.92017
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 514.68884
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788337189267415676, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8344336692475606003, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
+      propertyPath: m_Name
+      value: Gas Station Building
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 39a45c6a214cb2c4ab35a141ae19a0a8, type: 3}
 --- !u!1001 &1659556074
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3389,6 +3517,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a9a366a524380545b547353e420badb, type: 3}
+--- !u!114 &1824504481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Move
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
 --- !u!1 &1913414923
 GameObject:
   m_ObjectHideFlags: 0
@@ -3770,6 +3912,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 267857309854984112, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
+      propertyPath: moveAction
+      value: 
+      objectReference: {fileID: 1824504481}
+    - target: {fileID: 267857309854984112, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
+      propertyPath: sprintAction
+      value: 
+      objectReference: {fileID: 1055537168}
     - target: {fileID: 4672375051657317503, guid: e89a3afaff2f22944b186154b6094d5e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 512
@@ -3852,3 +4002,5 @@ SceneRoots:
   - {fileID: 1523719051}
   - {fileID: 1277205272}
   - {fileID: 1092684733}
+  - {fileID: 1552944194}
+  - {fileID: 1631741974}
