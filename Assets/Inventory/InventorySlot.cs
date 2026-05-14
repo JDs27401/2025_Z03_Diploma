@@ -1,4 +1,5 @@
 using C__Classes.Managers;
+using Player.scripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -52,6 +53,44 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         
         InventorySlot oldSlot = oldSlotTransform.GetComponent<InventorySlot>();
         CraftingSlot oldCraftingSlot = oldSlotTransform.GetComponent<CraftingSlot>(); 
+
+        if (currentItem is WeaponItemData && droppedItemScript.itemData is WeaponModItemData modItemData)
+        {
+            DraggableItem weaponItemScript = GetMainDraggableItem();
+            if (weaponItemScript == null || weaponItemScript.weaponInstanceState == null || modItemData.weaponModData == null)
+            {
+                return;
+            }
+
+            WeaponModInstanceState installedMod = weaponItemScript.weaponInstanceState.InstallMod(modItemData);
+            if (installedMod == null)
+            {
+                return;
+            }
+
+            weaponItemScript.RefreshWeaponModVisuals();
+
+            if (droppedItemScript.IsWeaponModAttachment)
+            {
+                droppedItemScript.CommitWeaponModTransfer();
+            }
+
+            if (oldSlot != null && oldSlot != this && !droppedItemScript.isSplitDrag)
+            {
+                oldSlot.ClearSlot();
+            }
+            else if (oldCraftingSlot != null && !droppedItemScript.isSplitDrag)
+            {
+                oldCraftingSlot.currentItem = null;
+                oldCraftingSlot.currentCount = 0;
+                oldCraftingSlot.iconDisplay = null;
+            }
+
+            Destroy(droppedObj);
+            UpdateUI();
+            if (CraftingUI.Instance != null) CraftingUI.Instance.UpdateCraftingGrid();
+            return;
+        }
         
         if (currentItem != null && currentItem == droppedItemScript.itemData && currentItem.isStackable)
         {
@@ -125,7 +164,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             
             if (droppedItemScript.isSplitDrag) return; 
 
-            DraggableItem residentScript = GetComponentInChildren<DraggableItem>();
+            DraggableItem residentScript = GetMainDraggableItem();
 
             if (residentScript == null) return; 
 
@@ -178,7 +217,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public void UpdateUI()
     {
-        DraggableItem itemScript = GetComponentInChildren<DraggableItem>();
+        DraggableItem itemScript = GetMainDraggableItem();
 
         if (itemScript != null)
         {
@@ -191,7 +230,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 bool showText = false;
                 if (currentItem != null)
                 {
-                    if (currentItem.itemType != ItemType.General) showText = true;
+                    if (currentItem.itemType != ItemType.General && currentItem.itemType != ItemType.WeaponMod) showText = true;
+                    else if (currentItem.itemType == ItemType.WeaponMod) showText = false;
                     else if (currentCount > 1) showText = true;
                 }
 
@@ -215,5 +255,19 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             highlightOutline.enabled = isSelected;
         }
+    }
+
+    public DraggableItem GetMainDraggableItem()
+    {
+        DraggableItem[] items = GetComponentsInChildren<DraggableItem>(true);
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] != null && items[i].transform.parent == transform)
+            {
+                return items[i];
+            }
+        }
+
+        return null;
     }
 }

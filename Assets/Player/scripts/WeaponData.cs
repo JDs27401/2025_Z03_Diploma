@@ -39,6 +39,10 @@
 
         [Header("Prefabs")]
         public GameObject projectilePrefab;
+
+        [Header("Physics")]
+        // Base weight of the weapon (used as starting point for runtime weight calculations)
+        public float weight = 1.0f;
     }
 
 }

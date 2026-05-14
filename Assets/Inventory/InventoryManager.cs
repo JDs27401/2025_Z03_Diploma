@@ -241,11 +241,27 @@ namespace C__Classes.Managers
             float totalWeight = 0f;
             foreach (InventorySlot slot in inventorySlots)
             {
-                if (slot.currentItem != null)
+                if (slot.currentItem == null) continue;
+
+                float itemWeight = slot.currentItem.weight;
+
+                // If the item is a weapon, prefer the runtime weight stored in its WeaponInstanceState
+                DraggableItem draggable = slot.GetComponentInChildren<DraggableItem>();
+                if (draggable != null && draggable.itemData is WeaponItemData)
                 {
-                    totalWeight += slot.currentItem.weight * slot.currentCount;
+                    if (draggable.weaponInstanceState != null)
+                    {
+                        WeaponRuntimeStats runtime = draggable.weaponInstanceState.GetRuntimeStats();
+                        if (runtime != null)
+                        {
+                            itemWeight = runtime.weight;
+                        }
+                    }
                 }
+
+                totalWeight += itemWeight * slot.currentCount;
             }
+
             return totalWeight;
         }
         

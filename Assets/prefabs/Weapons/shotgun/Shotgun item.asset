@@ -22,5 +22,5 @@ MonoBehaviour:
   maxStackSize: 1
   dropPrefab: {fileID: 4733928515101151917, guid: 9b08a6b4db93c9d4caedb0cba25d433b, type: 3}
   fullSizeImage: {fileID: 5693247247877351285, guid: 598cf6d4f30333f4b9608938966806fb, type: 3}
-  weight: 1
+  weight: 8
   weaponData: {fileID: 11400000, guid: 094e5292fad49a3449efbca429a872b3, type: 2}

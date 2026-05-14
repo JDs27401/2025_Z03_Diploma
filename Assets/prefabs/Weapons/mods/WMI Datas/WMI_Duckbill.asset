@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f736286ca65f48a3a48288d655ac2cc5, type: 3}
+  m_Name: WMI_Duckbill
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponModItemData
+  id: 102
+  itemName: Duckbill mod
+  icon: {fileID: 21300000, guid: 8a088cc8aa46bd14ca7a6ba2278be6e3, type: 3}
+  rarity: 2
+  itemType: 4
+  description: "Szerszy spread pocisk\xF3w"
+  isStackable: 0
+  maxStackSize: 1
+  dropPrefab: {fileID: 3565624012256098694, guid: acde201279675b545968c18ff2bbff65, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: 8a088cc8aa46bd14ca7a6ba2278be6e3, type: 3}
+  weight: 1
+  weaponModData: {fileID: 11400000, guid: bcf679ceb1694534abcd9c0284ff44f2, type: 2}
