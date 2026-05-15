@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using C__Classes.Singletons;
@@ -18,14 +19,19 @@ namespace C__Classes.Managers
         
         [HideInInspector] public DraggableItem currentlyHoveredItem;
 
+        private readonly ConsumableEffectManager consumableEffectManager = new ConsumableEffectManager();
+        private ConsumableEffectsHUD consumableEffectsHUD;
+
         private void Start()
         {
             SelectSlot(selectedSlotIndex);
+            InitializeConsumableEffectsHud();
         }
         
         private void Update()
         {
             if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
+            consumableEffectManager.Tick(Time.deltaTime);
             HandleHotbarInput();
             HandleDropInput();
         }
@@ -319,6 +325,128 @@ namespace C__Classes.Managers
             }
 
             return null;
+        }
+
+        public IReadOnlyList<ConsumableEffectInstance> GetActiveConsumableEffects()
+        {
+            return consumableEffectManager.GetActiveEffectsSnapshot();
+        }
+
+        public float GetConsumableSpeedMultiplier()
+        {
+            return consumableEffectManager.GetSpeedMultiplier();
+        }
+
+        public float GetConsumableAccelerationMultiplier()
+        {
+            return consumableEffectManager.GetAccelerationMultiplier();
+        }
+
+        public float GetConsumableMaxHealthBonus()
+        {
+            return consumableEffectManager.GetMaxHealthBonus();
+        }
+
+        public float GetConsumableHealthPerSecond()
+        {
+            return consumableEffectManager.GetHealthPerSecond();
+        }
+
+        public bool TryUseActiveConsumable()
+        {
+            if (inventorySlots == null || selectedSlotIndex < 0 || selectedSlotIndex >= inventorySlots.Length)
+            {
+                return false;
+            }
+
+            InventorySlot activeSlot = inventorySlots[selectedSlotIndex];
+            if (activeSlot == null)
+            {
+                return false;
+            }
+
+            DraggableItem activeItem = activeSlot.GetComponentInChildren<DraggableItem>();
+            if (activeItem == null || !(activeItem.itemData is ConsumableItemData consumableItemData))
+            {
+                return false;
+            }
+
+            if (consumableItemData.effects == null || consumableItemData.effects.Count == 0)
+            {
+                return false;
+            }
+
+            bool applied = consumableEffectManager.ApplyConsumable(consumableItemData);
+            if (!applied)
+            {
+                return false;
+            }
+
+            ConsumeOneFromActiveSlot(activeItem, activeSlot);
+            return true;
+        }
+
+        private void ConsumeOneFromActiveSlot(DraggableItem item, InventorySlot slot)
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            item.count--;
+
+            if (slot != null)
+            {
+                slot.currentCount = item.count;
+            }
+
+            if (item.count <= 0)
+            {
+                if (TooltipManager.Instance != null)
+                {
+                    TooltipManager.Instance.HideTooltip();
+                }
+
+                if (slot != null)
+                {
+                    slot.ClearSlot();
+                }
+
+                Object.Destroy(item.gameObject);
+                return;
+            }
+
+            item.RefreshCount(item.count);
+            if (slot != null)
+            {
+                slot.UpdateUI();
+            }
+        }
+
+        private void InitializeConsumableEffectsHud()
+        {
+            if (consumableEffectsHUD != null)
+            {
+                return;
+            }
+
+            GameObject hudRoot = new GameObject("ConsumableEffectsHUD", typeof(RectTransform));
+            Canvas existingCanvas = Object.FindFirstObjectByType<Canvas>();
+            if (existingCanvas != null)
+            {
+                hudRoot.transform.SetParent(existingCanvas.transform, false);
+            }
+            else
+            {
+                Canvas canvas = hudRoot.AddComponent<Canvas>();
+                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                canvas.sortingOrder = 1000;
+                hudRoot.AddComponent<CanvasScaler>();
+                hudRoot.AddComponent<GraphicRaycaster>();
+            }
+
+            consumableEffectsHUD = hudRoot.AddComponent<ConsumableEffectsHUD>();
+            consumableEffectsHUD.Initialize(consumableEffectManager);
         }
         
         private void HandleDropInput()
