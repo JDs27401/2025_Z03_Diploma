@@ -24,6 +24,7 @@ public class PlayerController : Actor
     private InputActionMap playerActionMap;
     private InputAction moveAction;
     private InputAction sprintAction;
+    private InputAction useConsumableAction;
     
     [Header("Movement stats")]
     [SerializeField]
@@ -79,6 +80,9 @@ public class PlayerController : Actor
                     }
                     var findAction = playerActionMap.FindAction("Crouch");
                     if (findAction != null) findAction.performed += CtrlManagement;
+
+                    useConsumableAction = playerActionMap.FindAction("UseConsumable");
+                    if (useConsumableAction != null) useConsumableAction.performed += UseConsumableManagement;
                 }
                 else if (playerInput == null)
                 {
@@ -95,7 +99,7 @@ public class PlayerController : Actor
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         _lastKnownHealth = currentHealth;
-        float healthPercent = currentHealth / maxHealth;
+        float healthPercent = GetCurrentHealthPercent();
         onHealthChanged?.Invoke(healthPercent);
 
         _lastKnownStamina = stamina;
@@ -111,12 +115,14 @@ public class PlayerController : Actor
     
     void FixedUpdate()
     {
-        CheckForHurtAnimation();
-        ManageStamina();
         if (base.isDead)
         {
             return;
         }
+
+        ApplyConsumableEffects();
+        CheckForHurtAnimation();
+        ManageStamina();
         ManageSprint();
         ManageCrouch();
         ManageRoll();
@@ -157,7 +163,7 @@ public class PlayerController : Actor
             }
             
             _lastKnownHealth = currentHealth;
-            float healthPercent = (maxHealth > 0) ? currentHealth / maxHealth : 0;
+            float healthPercent = GetCurrentHealthPercent();
             onHealthChanged?.Invoke(healthPercent);
         }
     }
@@ -233,10 +239,20 @@ public class PlayerController : Actor
         isCrouching = !isCrouching;
         PlayerVisualSystem.Instance.UpdateVisualRange(isCrouching);
     }
+
+    public void UseConsumableManagement(InputAction.CallbackContext context)
+    {
+        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
+        if (InventoryManager.Instance == null) return;
+
+        InventoryManager.Instance.TryUseActiveConsumable();
+    }
     
     void CalculateSpeed()
     {
         float weightPenaltyMultiplier = 1f;
+        float consumableSpeedMultiplier = GetConsumableSpeedMultiplier();
+        float consumableAccelerationMultiplier = GetConsumableAccelerationMultiplier();
 
         if (InventoryManager.Instance != null)
         {
@@ -245,8 +261,8 @@ public class PlayerController : Actor
             weightPenaltyMultiplier = Mathf.Max(minimumSpeedPercentage, 1f - (currentWeight * speedPenaltyPerPoint));
         }
 
-        float currentEffectiveAcceleration = acceleration * weightPenaltyMultiplier;
-        float currentEffectiveSpeed = speed * weightPenaltyMultiplier;
+        float currentEffectiveAcceleration = acceleration * weightPenaltyMultiplier * consumableAccelerationMultiplier;
+        float currentEffectiveSpeed = speed * weightPenaltyMultiplier * consumableSpeedMultiplier;
 
         currentSpeed *= friction;
         currentSpeed += moveInput * (currentEffectiveAcceleration * Time.fixedDeltaTime); 
@@ -358,6 +374,87 @@ public class PlayerController : Actor
         moveInput = Vector2.zero;
         currentSpeed = Vector2.zero;
         isSprinting = false;
+    }
+
+    private void ApplyConsumableEffects()
+    {
+        float effectiveMaxHealth = GetEffectiveMaxHealth();
+        if (currentHealth > effectiveMaxHealth)
+        {
+            currentHealth = effectiveMaxHealth;
+        }
+
+        float healthPerSecond = GetConsumableHealthPerSecond();
+        if (healthPerSecond > 0f)
+        {
+            currentHealth = Mathf.Min(currentHealth + (healthPerSecond * Time.fixedDeltaTime), effectiveMaxHealth);
+        }
+    }
+
+    private float GetCurrentHealthPercent()
+    {
+        float effectiveMaxHealth = Mathf.Max(0.01f, GetEffectiveMaxHealth());
+        return currentHealth / effectiveMaxHealth;
+    }
+
+    private float GetEffectiveMaxHealth()
+    {
+        float bonus = 0f;
+        if (InventoryManager.Instance != null)
+        {
+            bonus = InventoryManager.Instance.GetConsumableMaxHealthBonus();
+        }
+
+        return Mathf.Max(1f, maxHealth + bonus);
+    }
+
+    private float GetConsumableSpeedMultiplier()
+    {
+        if (InventoryManager.Instance == null)
+        {
+            return 1f;
+        }
+
+        return Mathf.Max(0f, InventoryManager.Instance.GetConsumableSpeedMultiplier());
+    }
+
+    private float GetConsumableAccelerationMultiplier()
+    {
+        if (InventoryManager.Instance == null)
+        {
+            return 1f;
+        }
+
+        return Mathf.Max(0f, InventoryManager.Instance.GetConsumableAccelerationMultiplier());
+    }
+
+    private float GetConsumableHealthPerSecond()
+    {
+        if (InventoryManager.Instance == null)
+        {
+            return 0f;
+        }
+
+        return Mathf.Max(0f, InventoryManager.Instance.GetConsumableHealthPerSecond());
+    }
+
+    private void OnDestroy()
+    {
+        if (playerActionMap == null)
+        {
+            return;
+        }
+
+        var action = playerActionMap.FindAction("Jump");
+        if (action != null) action.performed -= SpaceManagement;
+
+        var crouchAction = playerActionMap.FindAction("Crouch");
+        if (crouchAction != null) crouchAction.performed -= CtrlManagement;
+
+        if (useConsumableAction != null)
+        {
+            useConsumableAction.performed -= UseConsumableManagement;
+        }
     }
 
     public bool IsCrouching() => isCrouching;

@@ -14,6 +14,7 @@ public enum ItemType
     Ammo9mm,    
     Ammo12Gauge,
     Collectible,
+    Consumable,
     WeaponMod
 }
 
