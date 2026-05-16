@@ -93,6 +93,19 @@ namespace C__Classes.Systems
             TimeOfDay = Phase.Day;
             Day += 1;
         }
+
+        public void StartFinalWave()
+        {
+            if (WaveManager.Instance.AlreadyStarted || TimeOfDay == Phase.Night)
+            {
+                return;
+            }
+
+            TimeOfDay = Phase.Night; //possibly to change the way we stop time flow, as it can introduce some issues
+            StartCoroutine(WaveManager.Instance.StartWave());
+            // WaveManager.Instance.OnWaveCompleted += /*metoda która kończy gre*/;
+            //@todo design a game end screen and method to invoke it, subscribe it to this event
+        }
         
         private static void PrintTime() //just a debug method
         {
