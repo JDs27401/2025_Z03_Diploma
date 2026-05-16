@@ -111,6 +111,33 @@ MonoBehaviour:
   amount: 1
   droppedWeaponState:
     currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  enableShadow: 1
+  shadowOffset: {x: 0.05, y: -0.05, z: 0}
+  shadowAlpha: 0.4
+  enableBlur: 1
+  blurSpread: 0.04
 --- !u!114 &1176088733696749768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,6 +156,33 @@ MonoBehaviour:
   count: 5
   weaponInstanceState:
     currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  isWeaponModAttachment: 0
+  weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  attachedWeaponItemRoot: {fileID: 0}
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &384520889785726135
@@ -486,6 +540,8 @@ MonoBehaviour:
   journalSlotPrefab: {fileID: 5470222342023235471, guid: d8419e13fa6f10e468eb2c7547a4ac3b, type: 3}
   inspectPanel: {fileID: 7342515131730732090}
   inspectImage: {fileID: 914407636647171062}
+  descriptionPanel: {fileID: 279275360810351591}
+  descriptionText: {fileID: 5600669780937208048}
   allCollectibles:
   - {fileID: 11400000, guid: 8ce8bd425a9979e4b8aea79f460d87ad, type: 2}
   - {fileID: 11400000, guid: d6932a6c9e4c512439799b2176832a13, type: 2}
@@ -614,6 +670,33 @@ MonoBehaviour:
   amount: 1
   droppedWeaponState:
     currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  enableShadow: 1
+  shadowOffset: {x: 0.05, y: -0.05, z: 0}
+  shadowAlpha: 0.4
+  enableBlur: 1
+  blurSpread: 0.04
 --- !u!114 &7597135018336536791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,6 +715,33 @@ MonoBehaviour:
   count: 1
   weaponInstanceState:
     currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  isWeaponModAttachment: 0
+  weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  attachedWeaponItemRoot: {fileID: 0}
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &394818303003596957
@@ -882,6 +992,33 @@ MonoBehaviour:
   amount: 10
   droppedWeaponState:
     currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  enableShadow: 1
+  shadowOffset: {x: 0.05, y: -0.05, z: 0}
+  shadowAlpha: 0.4
+  enableBlur: 1
+  blurSpread: 0.04
 --- !u!114 &860475052613989557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,6 +1037,33 @@ MonoBehaviour:
   count: 1
   weaponInstanceState:
     currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  isWeaponModAttachment: 0
+  weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  attachedWeaponItemRoot: {fileID: 0}
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &4743593026616564802
@@ -1071,6 +1235,33 @@ MonoBehaviour:
   amount: 1
   droppedWeaponState:
     currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  enableShadow: 1
+  shadowOffset: {x: 0.05, y: -0.05, z: 0}
+  shadowAlpha: 0.4
+  enableBlur: 1
+  blurSpread: 0.04
 --- !u!114 &2222499828696936334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1089,6 +1280,33 @@ MonoBehaviour:
   count: 1
   weaponInstanceState:
     currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  isWeaponModAttachment: 0
+  weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  attachedWeaponItemRoot: {fileID: 0}
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &767719138549746499
@@ -2235,11 +2453,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4410814882225320095, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -51.057312
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4410814882225320095, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 48.2381
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4410814882225320095, guid: b04e891f1fd629e4ca1005f21d62c24a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2405,6 +2623,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3576672687646527909}
     m_Modifications:
+    - target: {fileID: 398094018059649870, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
+      propertyPath: m_fontSize
+      value: 22.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 398094018059649870, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 22.78
+      objectReference: {fileID: 0}
     - target: {fileID: 557507874649023044, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2498,6 +2724,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
+--- !u!1 &279275360810351591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5467348427882825817, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
+  m_PrefabInstance: {fileID: 5206094217287414718}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &914407636647171062 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4940277254843523144, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
@@ -2509,6 +2740,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!114 &5600669780937208048 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 398094018059649870, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
+  m_PrefabInstance: {fileID: 5206094217287414718}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &5729539075389624826 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 557507874649023044, guid: 2020815a98c176345bbed3314d9acb31, type: 3}

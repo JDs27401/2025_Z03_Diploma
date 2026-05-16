@@ -17,9 +17,12 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: b9d1fd42acd6f2a4cac3d3cec4d49e4a, type: 3}
   rarity: 0
   itemType: 3
-  description: Description for a note
+  description: Darling, if you find this message I had to leave the house. I waited
+    for you until the last possible moment, but the sirens wouldn't stop wailing
+    and the streets are overrun. I packed the essentials and I'm looking for you
+    around the neighborhood. I love you, please hurry and find me.
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 71e2e71019021224f857b2ba20f137c5, type: 3}
-  fullSizeImage: {fileID: 21300000, guid: 5d693d5128d6efd40b9393ebaa93c841, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: 5990112b5b7a6124bbd083792358ba4f, type: 3}
   weight: 0

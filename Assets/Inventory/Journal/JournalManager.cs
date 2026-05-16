@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using C__Classes.Singletons;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 namespace C__Classes.Managers
 {
@@ -17,17 +17,35 @@ namespace C__Classes.Managers
         public GameObject inspectPanel; 
         public Image inspectImage; 
 
+        [Header("Read Feature")]
+        public GameObject descriptionPanel;
+        public TextMeshProUGUI descriptionText;
+
         [Header("Collectibles arrangement")]
         public ItemData[] allCollectibles = new ItemData[16];
 
         private HashSet<string> unlockedCollectibleIDs = new HashSet<string>();
         private List<JournalSlot> uiSlots = new List<JournalSlot>();
+        private ItemData currentlyInspectedItem;
 
         private void Start()
         {
             InitializeJournalUI();
             journalPanel.SetActive(false); 
             if(inspectPanel != null) inspectPanel.SetActive(false);
+            if(descriptionPanel != null) descriptionPanel.SetActive(false);
+            else if (descriptionText != null) descriptionText.gameObject.SetActive(false);
+        }
+
+        private void Update()
+        {
+            if (inspectPanel != null && inspectPanel.activeInHierarchy)
+            {
+                if (Input.GetKeyDown(KeyCode.X))
+                {
+                    ToggleDescription();
+                }
+            }
         }
 
         private void InitializeJournalUI()
@@ -84,6 +102,8 @@ namespace C__Classes.Managers
         {
             if (inspectPanel == null || inspectImage == null) return;
 
+            currentlyInspectedItem = item;
+
             Sprite imageToShow = item.fullSizeImage != null ? item.fullSizeImage : item.icon;
 
             if (imageToShow != null)
@@ -92,11 +112,39 @@ namespace C__Classes.Managers
                 inspectImage.preserveAspect = true; 
                 inspectPanel.SetActive(true);
             }
+
+            if (descriptionPanel != null) descriptionPanel.SetActive(false);
+            else if (descriptionText != null) descriptionText.gameObject.SetActive(false);
         }
 
         public void CloseInspectPanel()
         {
             if (inspectPanel != null) inspectPanel.SetActive(false);
+            if (descriptionPanel != null) descriptionPanel.SetActive(false);
+            else if (descriptionText != null) descriptionText.gameObject.SetActive(false);
+            
+            currentlyInspectedItem = null;
+        }
+
+        private void ToggleDescription()
+        {
+            if (currentlyInspectedItem == null || descriptionText == null) return;
+
+            bool isShowing = descriptionPanel != null ? !descriptionPanel.activeSelf : !descriptionText.gameObject.activeSelf;
+            
+            if (isShowing)
+            {
+                descriptionText.text = currentlyInspectedItem.description; 
+            }
+
+            if (descriptionPanel != null)
+            {
+                descriptionPanel.SetActive(isShowing);
+            }
+            else
+            {
+                descriptionText.gameObject.SetActive(isShowing);
+            }
         }
     }
 }
