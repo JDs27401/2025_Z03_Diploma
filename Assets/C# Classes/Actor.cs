@@ -8,8 +8,10 @@ namespace C__Classes
 {
     public class Actor : MonoBehaviour
     {
-        [SerializeField] //max speed stat
-        protected float speed = 4f;
+        [SerializeField] protected float baseSpeed = 4f;
+        //max speed stat
+        [SerializeField]
+        protected float speed;
         [SerializeField] //how fast will player gain speed
         protected float acceleration = 2f;
         [SerializeField] //how fast will the player slow down (the higher the more friction)
@@ -40,6 +42,7 @@ namespace C__Classes
         protected virtual void Start()
         {
             currentHealth = maxHealth;
+            speed = baseSpeed;
         }
 
         protected virtual void Update()
@@ -156,6 +159,12 @@ namespace C__Classes
         public void SetDamage(float value)
         {
             damage = value;
+        }
+
+        public void SetSpeed(float multiplier)
+        {
+            print(multiplier);
+            speed = baseSpeed * multiplier;
         }
     }
 }

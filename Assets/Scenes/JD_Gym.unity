@@ -440,6 +440,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9de94ff26f94c1ca87badfe50577977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.TilemapComponent
+  groundMult: 1
+  waterMult: 0.5
+  cropFieldMult: 0.8
+  interiorMult: 1
+  roadMult: 1
 --- !u!224 &569052786 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9096132895758331009, guid: 5d67edf936bde60419c26c9f587917b7, type: 3}
@@ -1019,6 +1024,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9de94ff26f94c1ca87badfe50577977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.TilemapComponent
+  groundMult: 1
+  waterMult: 0.5
+  cropFieldMult: 0.8
+  interiorMult: 1
+  roadMult: 1
 --- !u!1001 &1305338246
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1242,7 +1252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.Universe
   Ratio: 1
-  StartingHour: 21
+  StartingHour: 8
   StartingMinute: 0
   DayThreshold: 8
   SundownThreshold: 18
@@ -2246,6 +2256,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9de94ff26f94c1ca87badfe50577977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.TilemapComponent
+  groundMult: 1
+  waterMult: 0.5
+  cropFieldMult: 0.8
+  interiorMult: 1
+  roadMult: 1
 --- !u!1 &2015619873
 GameObject:
   m_ObjectHideFlags: 0
