@@ -23,6 +23,10 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public WeaponModInstanceState weaponModInstanceState;
     public DraggableItem attachedWeaponItemRoot;
 
+    [Header("Weapon Mod Visuals")]
+    public Sprite emptyModSlotSprite; 
+    public int maxWeaponModSlots = 1; 
+
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public bool isSplitDrag = false; 
     
@@ -91,7 +95,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void RefreshWeaponModVisuals(DraggableItem excludedItem = null)
     {
-        if (!(itemData is WeaponItemData) || weaponInstanceState == null)
+        if (!(itemData is WeaponItemData weaponItemData) || weaponInstanceState == null)
         {
             return;
         }
@@ -105,30 +109,23 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             }
         }
 
-        if (InventoryManager.Instance == null || InventoryManager.Instance.inventoryItemPrefab == null || weaponInstanceState.installedMods == null)
+        if (InventoryManager.Instance == null || InventoryManager.Instance.inventoryItemPrefab == null)
         {
             return;
         }
 
-        for (int i = 0; i < weaponInstanceState.installedMods.Count; i++)
-        {
-            WeaponModInstanceState modState = weaponInstanceState.installedMods[i];
-            if (modState == null || modState.itemData == null)
-            {
-                continue;
-            }
+        int installedCount = weaponInstanceState.installedMods != null ? weaponInstanceState.installedMods.Count : 0;
+        
+        int totalSlotsToDraw = Mathf.Max(installedCount, maxWeaponModSlots);
 
+        for (int i = 0; i < totalSlotsToDraw; i++)
+        {
             GameObject modGo = Instantiate(InventoryManager.Instance.inventoryItemPrefab, transform);
             DraggableItem modItem = modGo.GetComponent<DraggableItem>();
             if (modItem == null)
             {
                 continue;
             }
-
-            modItem.itemData = modState.itemData;
-            modItem.count = 1;
-            modItem.weaponInstanceState = null;
-            modItem.BindWeaponModAttachment(this, modState);
 
             RectTransform rect = modGo.GetComponent<RectTransform>();
             if (rect != null)
@@ -141,24 +138,46 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                 rect.localScale = Vector3.one;
             }
 
-            if (modItem.image != null)
-            {
-                Sprite icon = modState.itemData.icon;
-                if (icon == null && modState.modData != null)
-                {
-                    icon = modState.modData.icon;
-                }
-
-                if (icon != null)
-                {
-                    modItem.image.sprite = icon;
-                    modItem.image.color = Color.white;
-                }
-            }
-
             if (modItem.amountText != null)
             {
                 modItem.amountText.gameObject.SetActive(false);
+            }
+
+            bool hasMod = i < installedCount;
+            if (hasMod)
+            {
+                WeaponModInstanceState modState = weaponInstanceState.installedMods[i];
+                if (modState == null || modState.itemData == null) continue;
+
+                modItem.itemData = modState.itemData;
+                modItem.count = 1;
+                modItem.weaponInstanceState = null;
+                modItem.BindWeaponModAttachment(this, modState);
+
+                if (modItem.image != null)
+                {
+                    Sprite icon = modState.itemData.icon;
+                    if (icon == null && modState.modData != null)
+                    {
+                        icon = modState.modData.icon;
+                    }
+
+                    if (icon != null)
+                    {
+                        modItem.image.sprite = icon;
+                        modItem.image.color = Color.white;
+                    }
+                }
+            }
+            else
+            {
+                modItem.enabled = false;
+                if (modItem.image != null)
+                {
+                    modItem.image.sprite = emptyModSlotSprite;
+                    modItem.image.color = new Color(1f, 1f, 1f, 0.6f);
+                    modItem.image.raycastTarget = false;
+                }
             }
         }
     }

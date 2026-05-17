@@ -242,5 +242,37 @@ MonoBehaviour:
   image: {fileID: 1392363563920618737}
   amountText: {fileID: 7370377743998390771}
   itemData: {fileID: 0}
-  count: 1
+  count: 2
+  weaponInstanceState:
+    currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  isWeaponModAttachment: 0
+  weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  attachedWeaponItemRoot: {fileID: 0}
+  emptyModSlotSprite: {fileID: 21300000, guid: 2a34ce0bf7a05b04eb59f5619e78df34, type: 3}
+  maxWeaponModSlots: 1
   parentAfterDrag: {fileID: 0}
+  isSplitDrag: 0
