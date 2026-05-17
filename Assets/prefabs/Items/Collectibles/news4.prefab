@@ -112,6 +112,33 @@ MonoBehaviour:
   amount: 1
   droppedWeaponState:
     currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  enableShadow: 1
+  shadowOffset: {x: 0.05, y: -0.05, z: 0}
+  shadowAlpha: 0.4
+  enableBlur: 1
+  blurSpread: 0.04
 --- !u!114 &1527126082778640659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,6 +157,33 @@ MonoBehaviour:
   count: 1
   weaponInstanceState:
     currentMagazineAmmo: 0
+    sourceWeaponData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Weapon
+      animationID: 0
+      fireRate: 4
+      damage: 10
+      projectileSpeed: 15
+      spread: 0
+      projectilesPerShot: 1
+      isAutomatic: 0
+      magazineSize: 10
+      reloadTime: 2
+      isExplosive: 0
+      explosionRadius: 3
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+      weight: 1
+    installedMods: []
+  isWeaponModAttachment: 0
+  weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  attachedWeaponItemRoot: {fileID: 0}
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &4544097837935957270
@@ -166,7 +220,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.021883994, y: -0.013132036}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -176,7 +230,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.9779497, y: 0.75024676}
+  m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
 --- !u!225 &1137452776130553683
 CanvasGroup:
