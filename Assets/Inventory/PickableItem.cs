@@ -6,21 +6,21 @@ using UnityEngine;
 public class PickableItem : MonoBehaviour
 {
     public ItemData itemData;
-    public int amount = 1; 
+    public int amount = 1;
     public WeaponInstanceState droppedWeaponState;
 
     [Header("Shadow Settings")]
     public bool enableShadow = true;
     public Vector3 shadowOffset = new Vector3(0.05f, -0.05f, 0f);
-    [Range(0f, 1f)] public float shadowAlpha = 0.4f; 
-    
+    [Range(0f, 1f)] public float shadowAlpha = 0.4f;
+
     [Header("Shadow Blur (Softness)")]
     public bool enableBlur = true;
     [Range(0.01f, 0.2f)] public float blurSpread = 0.04f;
 
     private bool isPlayerInRange = false;
     private bool isBeingPickedUp = false;
-    
+
     private PlayerInteractionUI playerUI;
     private SpriteRenderer mainSpriteRenderer;
 
@@ -54,7 +54,7 @@ public class PickableItem : MonoBehaviour
             CreateShadowLayer(shadowParent.transform, Vector3.zero, shadowAlpha);
 
             float blurAlpha = shadowAlpha * 0.35f;
-            
+
             CreateShadowLayer(shadowParent.transform, new Vector3(blurSpread, 0, 0), blurAlpha);
             CreateShadowLayer(shadowParent.transform, new Vector3(-blurSpread, 0, 0), blurAlpha);
             CreateShadowLayer(shadowParent.transform, new Vector3(0, blurSpread, 0), blurAlpha);
@@ -89,7 +89,8 @@ public class PickableItem : MonoBehaviour
             {
                 if (JournalManager.Instance != null)
                 {
-                    JournalManager.Instance.UnlockCollectible(itemData.id); 
+                    JournalManager.Instance.UnlockCollectible(itemData.id);
+                    JournalManager.Instance.ShowNotification(itemData.name);
                     PickupItem();
                 }
                 return;

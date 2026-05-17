@@ -572,6 +572,7 @@ GameObject:
   - component: {fileID: 8205679980471957068}
   - component: {fileID: 5656077349493194833}
   - component: {fileID: 5510712955855973704}
+  - component: {fileID: 693898486363943848}
   m_Layer: 5
   m_Name: ReadBackground
   m_TagString: Untagged
@@ -637,6 +638,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &693898486363943848
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5467348427882825817}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7873362766464604105
 GameObject:
   m_ObjectHideFlags: 0
