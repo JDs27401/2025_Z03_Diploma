@@ -107,7 +107,7 @@ namespace C__Classes
             StartCoroutine(iFrame());
         }
 
-        public void Kill()
+        protected virtual void Kill()
         {
             isDead = true;
             Destroy(gameObject, waitUntilDestroyed);

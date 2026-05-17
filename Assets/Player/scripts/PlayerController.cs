@@ -11,6 +11,8 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : Actor
 {
+    public UnityEvent onPlayerDeath;
+    
     // Lukasz, health bar event
     [Header("UI Events")]
     public UnityEvent<float> onHealthChanged;
@@ -455,6 +457,12 @@ public class PlayerController : Actor
         {
             useConsumableAction.performed -= UseConsumableManagement;
         }
+    }
+
+    protected override void Kill()
+    {
+        base.Kill();
+        onPlayerDeath?.Invoke();
     }
 
     public bool IsCrouching() => isCrouching;

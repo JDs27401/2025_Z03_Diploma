@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 2700147043483293796}
   - component: {fileID: 6006923907960497043}
   - component: {fileID: 4402658470638267122}
+  - component: {fileID: 3189503740374054454}
   m_Layer: 8
   m_Name: Player
   m_TagString: player
@@ -268,8 +269,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  moveAction: {fileID: 0}
-  sprintAction: {fileID: 0}
   maxStamina: 100
   debugInfo: 0
   rollPower: 10
@@ -389,6 +388,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 94237279-8d19-4afa-bcdf-eabd2a972f6a
     m_ActionName: 'UI/Pause[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0b8e2b75-7e24-4f0c-8d4f-0d2a6f4a9c11
+    m_ActionName: 'Player/UseConsumable[/Keyboard/f]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -558,6 +561,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractionUI
   interactionPrompt: {fileID: 3864428109669403704}
+--- !u!114 &3189503740374054454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683429158092137648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9b6f4e22624f65b6d65b7d49636d67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy.Scripts.EnemySpawner
+  intensityPerMinute: 60
+  spawnMode: 0
+  waveCount: 4
+  enemyTypes: []
+  minSpawnRadius: 10
+  maxSpawnRadius: 15
 --- !u!1 &3864428109669403704
 GameObject:
   m_ObjectHideFlags: 0
