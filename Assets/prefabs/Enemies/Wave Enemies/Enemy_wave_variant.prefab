@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 2753079555945336301}
   - component: {fileID: 1275930696735017673}
   - component: {fileID: 5581808032339488146}
+  - component: {fileID: -7331089909014835090}
   m_Layer: 7
   m_Name: Enemy_wave_variant
   m_TagString: hostile
@@ -86,7 +87,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 123850683
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4653449010644760439, guid: edba9ce032a56c74f996f8abe0db9395, type: 3}
@@ -157,14 +158,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3bee33760ab1a42b084efd5ffbe0b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AI
-  speed: 4
+  baseSpeed: 3
+  speed: 3
   acceleration: 2
   friction: 0.1
   maxHealth: 100
   currentHealth: 0
   damage: 10
   iFrameTime: 0
-  checkTileProperties: 1
   waitUntilDestroyed: 1
   hurtAnimCooldown: 1
   agentRadius: 0.05
@@ -285,3 +286,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8010b38db162406b8739f81404bc81b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.WaveComponent
+--- !u!50 &-7331089909014835090
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566414726841538931}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
+  m_Constraints: 0

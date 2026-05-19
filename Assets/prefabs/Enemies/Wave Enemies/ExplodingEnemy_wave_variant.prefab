@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 260617202927939239}
   - component: {fileID: 7442481241201880365}
   - component: {fileID: 3580229885410406979}
+  - component: {fileID: -8737034278189053909}
   m_Layer: 7
   m_Name: ExplodingEnemy_wave_variant
   m_TagString: hostile
@@ -88,7 +89,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 123850683
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4982597701792551325, guid: a8e1b89c51af60141b30137138ac8018, type: 3}
@@ -113,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 674e7ee1843a4f15a3be5699a548c43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.Scripts.ExplodingEnemy
+  baseSpeed: 4
   speed: 4
   acceleration: 2
   friction: 0.1
@@ -120,7 +122,6 @@ MonoBehaviour:
   currentHealth: 0
   damage: 50
   iFrameTime: 0
-  checkTileProperties: 1
   waitUntilDestroyed: 1
   hurtAnimCooldown: 1
   agentRadius: 0.05
@@ -331,3 +332,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e37f5f001b74df183eeed54eea481e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Objects.PlayerTrackingComponent
+--- !u!50 &-8737034278189053909
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4111905758827386282}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
+  m_Constraints: 0

@@ -40,7 +40,7 @@ namespace Enemy.Scripts
             Agent = GetComponent<NavMeshAgent>();
             Agent.updateRotation = false;
             Agent.updateUpAxis = false;
-            Agent.speed = speed;
+            Agent.speed = baseSpeed;
             
             Agent.radius = agentRadius;
             Agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
@@ -159,6 +159,12 @@ namespace Enemy.Scripts
         {
             playerTarget = null;
             currentState = State.Asleep;
+        }
+
+        public override void SetSpeed(float s)
+        {
+            base.SetSpeed(s);
+            Agent.speed = speed;
         }
     }
 }

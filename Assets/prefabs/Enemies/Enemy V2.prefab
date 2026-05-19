@@ -85,7 +85,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 123850683
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4653449010644760439, guid: edba9ce032a56c74f996f8abe0db9395, type: 3}
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3bee33760ab1a42b084efd5ffbe0b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AI
+  baseSpeed: 3
   speed: 3
   acceleration: 2
   friction: 0.1
@@ -163,7 +164,6 @@ MonoBehaviour:
   currentHealth: 0
   damage: 10
   iFrameTime: 0
-  checkTileProperties: 1
   waitUntilDestroyed: 1
   hurtAnimCooldown: 1
   agentRadius: 0.05

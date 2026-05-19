@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using C__Classes.Systems;
+using Enemy.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,31 +36,49 @@ namespace C__Classes.Objects
             {
                 return;
             }
+            // NpcBase actor = other.GetComponent<NpcBase>();
+            // GameObject go = other.gameObject;
             Actor actor = other.GetComponent<Actor>();
+            print(actor);
             if (actor == null)
             {
                 return;
             }
             actor.TileType = _dict[_ownTag];
-            // switch (_ownTag)
-            // {
-            //     case "groundTilemap":
-            //         actor.SetSpeed(groundMult);
-            //         break;
-            //     case "waterTilemap":
-            //         actor.SetSpeed(waterMult);
-            //         break;
-            //     case "cropTilemap":
-            //         actor.SetSpeed(cropFieldMult);
-            //         break;
-            //     case "interiorTilemap":
-            //         actor.SetSpeed(interiorMult);
-            //         break;
-            //     case "roadTilemap":
-            //         actor.SetSpeed(roadMult);
-            //         break;
-            // }
+            switch (_ownTag)
+            {
+                case "groundTilemap":
+                    actor.SetSpeed(groundMult);
+                    break;
+                case "waterTilemap":
+                    actor.SetSpeed(waterMult);
+                    break;
+                case "cropTilemap":
+                    actor.SetSpeed(cropFieldMult);
+                    break;
+                case "interiorTilemap":
+                    actor.SetSpeed(interiorMult);
+                    break;
+                case "roadTilemap":
+                    actor.SetSpeed(roadMult);
+                    break;
+            }
             print(actor.TileType);
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("projectile"))
+            {
+                return;
+            }
+            Actor actor = other.GetComponent<Actor>();
+            if (actor == null)
+            {
+                return;
+            }
+            actor.TileType = _dict["groundTilemap"];
+            actor.SetSpeed(groundMult);
         }
     }
 }
