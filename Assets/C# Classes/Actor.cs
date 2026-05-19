@@ -161,7 +161,7 @@ namespace C__Classes
             damage = value;
         }
 
-        virtual public void SetSpeed(float multiplier)
+        public virtual void SetSpeed(float multiplier)
         {
             print(multiplier);
             speed = baseSpeed * multiplier;
