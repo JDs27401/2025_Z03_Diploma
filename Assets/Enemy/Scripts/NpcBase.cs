@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using C__Classes;
+using C__Classes.Commands;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,9 +14,9 @@ namespace Enemy.Scripts
     public class NpcBase : Actor
     {
         public NavMeshAgent Agent { get; private set; }
-        protected Transform playerTarget;
-        private float pathUpdateTimer = 0f;
-        private const float PATH_UPDATE_DELAY = 0.5f;
+        public Transform PlayerTarget { get; set; }
+        public float PathUpdateTimer { get; set; } = 0f;
+        public float PathUpdateDelay { get; private set; } = 0.5f;
         public enum State { Asleep, Aggravated}
         protected State currentState = State.Asleep;
         
@@ -62,7 +63,8 @@ namespace Enemy.Scripts
             switch (currentState)
             {
                 case State.Aggravated:
-                    MoveToTarget();
+                    // MoveToTarget();
+                    Command.MoveToTarget(this);
                     break;
                 case State.Asleep:
                     // [W] opcjonalny patrol?
@@ -104,17 +106,17 @@ namespace Enemy.Scripts
             _lastKnownHealth = currentHealth;
         }
         
-        void MoveToTarget()
-        {
-            if (!playerTarget) return;
-
-            pathUpdateTimer += Time.deltaTime;
-            if (pathUpdateTimer >= PATH_UPDATE_DELAY)
-            {
-                Agent.SetDestination(playerTarget.position);
-                pathUpdateTimer = 0f;
-            }
-        }
+        // void MoveToTarget()
+        // {
+        //     if (!playerTarget) return;
+        //
+        //     pathUpdateTimer += Time.deltaTime;
+        //     if (pathUpdateTimer >= PATH_UPDATE_DELAY)
+        //     {
+        //         Agent.SetDestination(playerTarget.position);
+        //         pathUpdateTimer = 0f;
+        //     }
+        // }
 
         void FixZPosition()
         {
@@ -150,14 +152,14 @@ namespace Enemy.Scripts
 
         public void Aggravate(Transform target)
         {
-            playerTarget = target;
+            PlayerTarget = target;
             currentState = State.Aggravated;
-            pathUpdateTimer = PATH_UPDATE_DELAY;
+            PathUpdateTimer = PathUpdateDelay;
         }
 
         public void Pacify()
         {
-            playerTarget = null;
+            PlayerTarget = null;
             currentState = State.Asleep;
         }
 
