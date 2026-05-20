@@ -113,10 +113,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 1792
+    m_Bits: 3904
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4343
+    m_Bits: 4279
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

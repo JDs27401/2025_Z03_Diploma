@@ -156,10 +156,10 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 1792
+    m_Bits: 832
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4343
+    m_Bits: 7351
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
