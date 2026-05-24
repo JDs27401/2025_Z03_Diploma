@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using C__Classes.SceneManagement;
 
 namespace Enemy.Scripts
 {
@@ -46,6 +47,10 @@ namespace Enemy.Scripts
 
         private Transform playerTransform;
 
+        [SerializeField]
+        private bool _spawn = true;
+        private Coroutine _spawnCoroutine;
+
         private void Start()
         {
             GameObject player = GameObject.FindGameObjectWithTag("player");
@@ -58,12 +63,13 @@ namespace Enemy.Scripts
                 Debug.LogWarning("EnemySpawner: Nie znaleziono gracza z tagiem 'Player'. Spawnowanie będzie wokół punktu (0,0,0).");
             }
 
-            StartCoroutine(SpawnRoutine());
+            SceneManagement.OnSceneChange += ChangeSpawningState;
+            _spawnCoroutine = StartCoroutine(SpawnRoutine());
         }
 
         private IEnumerator SpawnRoutine()
         {
-            while (true)
+            while (_spawn)
             {
                 // kolejka spawnu
                 List<EnemyConfig> minuteSpawnList = GenerateSpawnListForMinute();
@@ -119,6 +125,7 @@ namespace Enemy.Scripts
 
         private IEnumerator RunRegularMode(List<EnemyConfig> enemies)
         {
+            // if (!_spawn) yield break;
             if (enemies.Count == 0) yield break;
 
             float duration = 60f;
@@ -193,6 +200,25 @@ namespace Enemy.Scripts
             Gizmos.DrawWireSphere(center, minSpawnRadius);
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(center, maxSpawnRadius);
+        }
+
+        private void ChangeSpawningState()
+        {
+            _spawn = !_spawn;
+
+            if (!_spawn)
+            {
+                StopAllCoroutines();
+            }
+            else
+            {
+                _spawnCoroutine = StartCoroutine(SpawnRoutine());
+            }
+        }
+
+        private void OnDestroy()
+        {
+            SceneManagement.OnSceneChange -= ChangeSpawningState;
         }
     }
 }

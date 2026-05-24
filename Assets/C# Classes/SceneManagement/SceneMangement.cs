@@ -3,147 +3,154 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using C__Classes.Managers;
+using C__Classes.Singletons;
 using UnityEngine.SceneManagement;
 
-public class SceneManagement : MonoBehaviour
+namespace C__Classes.SceneManagement
 {
-    [Header("Ustawienia")] 
-    public string sceneToLoad;
-    
-    [Header("ID spawnu w nowej scenie (wypelniamy go tylko przy wchodzeniu do budynku, tak to zostawiamy puste)")]
-    public string targetSpawnID;
-
-    //We automatically set a unique ID for each trigger point
-    // [HideInInspector]
-    public string myUniqueID;
-    
-    private bool isPlayerInRange = false;
-    
-    private PlayerInteractionUI playerUI;
-
-    private void Awake()
+    public class SceneManagement : MonoBehaviour
     {
-        //We generate unique ID
-        myUniqueID = Guid.NewGuid().ToString();
-    }
-    
-    private void Update()
-    {
-        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            if (playerUI != null)
-            {
-                playerUI.RemoveInteractable(gameObject);
-            }
-            
-            StartCoroutine(EnterDoor());
-        }
-    }
-
-    private IEnumerator EnterDoor()
-    {
-        //if statement is true when we are entering a building, and else while we are leaving the building
-        //that's why it's important to NOT set targetSpawnID on spawnPoints in the interior of a building
+        public static event Action OnSceneChange;
         
-        //we can also leave Scene To Load field empty for spawn points in interior, as right now
-        //when leaving Unity will close the interior scene
-        if (!string.IsNullOrEmpty(targetSpawnID))
-        {
-            SceneTransport.TargetSpawnID = targetSpawnID;
-            SceneTransport.ReturnSpawnID = myUniqueID;
+        [Header("Ustawienia")] 
+        public string sceneToLoad;
+        
+        [Header("ID spawnu w nowej scenie (wypelniamy go tylko przy wchodzeniu do budynku, tak to zostawiamy puste)")]
+        public string targetSpawnID;
 
-            if (!SceneManager.GetSceneByName(sceneToLoad).isLoaded)
+        //We automatically set a unique ID for each trigger point
+        // [HideInInspector]
+        public string myUniqueID;
+        
+        private bool isPlayerInRange = false;
+        
+        private PlayerInteractionUI playerUI;
+
+        private void Awake()
+        {
+            //We generate unique ID
+            myUniqueID = Guid.NewGuid().ToString();
+        }
+        
+        private void Update()
+        {
+            if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
+            if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
             {
-                AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
-                
-                while (!asyncLoad.isDone)
+                if (playerUI != null)
                 {
-                    yield return null;
+                    playerUI.RemoveInteractable(gameObject);
                 }
                 
-                MovePlayerToInteriorScene();
+                StartCoroutine(EnterDoor());
             }
         }
-        else
-        {
-            SceneTransport.TargetSpawnID = SceneTransport.ReturnSpawnID;
 
-            MovePlayerToReturnPoint();
+        private IEnumerator EnterDoor()
+        {
+            //if statement is true when we are entering a building, and else while we are leaving the building
+            //that's why it's important to NOT set targetSpawnID on spawnPoints in the interior of a building
             
-            SceneManager.UnloadSceneAsync(gameObject.scene);
-        }
-    }
-
-    private void MovePlayerToInteriorScene()
-    {
-        SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
-        
-        foreach (var door in allDoors)
-        {
-            // POPRAWKA: Sprawdzamy czy NAZWA OBIEKTU (gameObject.name) jest taka sama jak ID celu
-            if (door.gameObject.name == SceneTransport.TargetSpawnID)
+            //we can also leave Scene To Load field empty for spawn points in interior, as right now
+            //when leaving Unity will close the interior scene
+            if (!string.IsNullOrEmpty(targetSpawnID))
             {
-                TeleportPlayerWithCamera(door.transform.position);
-                break; // Znaleźliśmy, przerywamy
+                SceneTransport.TargetSpawnID = targetSpawnID;
+                SceneTransport.ReturnSpawnID = myUniqueID;
+
+                if (!SceneManager.GetSceneByName(sceneToLoad).isLoaded)
+                {
+                    AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+                    
+                    while (!asyncLoad.isDone)
+                    {
+                        yield return null;
+                    }
+                    
+                    MovePlayerToInteriorScene();
+                }
+            }
+            else
+            {
+                SceneTransport.TargetSpawnID = SceneTransport.ReturnSpawnID;
+
+                MovePlayerToReturnPoint();
+                
+                SceneManager.UnloadSceneAsync(gameObject.scene);
             }
         }
-    }
 
-    private void MovePlayerToReturnPoint()
-    {
-        SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
-        foreach (var door in allDoors)
+        private void MovePlayerToInteriorScene()
         {
-            if (door.myUniqueID == SceneTransport.ReturnSpawnID)
-            {
-                TeleportPlayerWithCamera(door.transform.position);
-                break;
-            }
-        }
-    }
-
-    private void TeleportPlayerWithCamera(Vector3 position)
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("player");
-        if (player != null)
-        {
-            Vector3 positionDelta = position - player.transform.position;
+            SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
             
-            player.transform.position = position;
-
-            var cinemachine = FindObjectOfType<Unity.Cinemachine.CinemachineCamera>();
-            if (cinemachine != null)
+            foreach (var door in allDoors)
             {
-                cinemachine.OnTargetObjectWarped(player.transform, positionDelta);
+                // POPRAWKA: Sprawdzamy czy NAZWA OBIEKTU (gameObject.name) jest taka sama jak ID celu
+                if (door.gameObject.name == SceneTransport.TargetSpawnID)
+                {
+                    TeleportPlayerWithCamera(door.transform.position);
+                    break; // Znaleźliśmy, przerywamy
+                }
             }
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("player"))
+        private void MovePlayerToReturnPoint()
         {
-            isPlayerInRange = true;
-            
-            playerUI = collision.GetComponent<PlayerInteractionUI>();
-            if (playerUI != null)
+            SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
+            foreach (var door in allDoors)
             {
-                playerUI.AddInteractable(gameObject);
+                if (door.myUniqueID == SceneTransport.ReturnSpawnID)
+                {
+                    TeleportPlayerWithCamera(door.transform.position);
+                    break;
+                }
             }
         }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("player"))
+        private void TeleportPlayerWithCamera(Vector3 position)
         {
-            isPlayerInRange = false;
-            
-            if (playerUI != null)
+            GameObject player = GameObject.FindGameObjectWithTag("player");
+            if (player != null)
             {
-                playerUI.RemoveInteractable(gameObject);
-                playerUI = null;
+                Vector3 positionDelta = position - player.transform.position;
+                
+                player.transform.position = position;
+
+                var cinemachine = FindObjectOfType<Unity.Cinemachine.CinemachineCamera>();
+                if (cinemachine != null)
+                {
+                    cinemachine.OnTargetObjectWarped(player.transform, positionDelta);
+                }
+            }
+            OnSceneChange?.Invoke();
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("player"))
+            {
+                isPlayerInRange = true;
+                
+                playerUI = collision.GetComponent<PlayerInteractionUI>();
+                if (playerUI != null)
+                {
+                    playerUI.AddInteractable(gameObject);
+                }
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.CompareTag("player"))
+            {
+                isPlayerInRange = false;
+                
+                if (playerUI != null)
+                {
+                    playerUI.RemoveInteractable(gameObject);
+                    playerUI = null;
+                }
             }
         }
     }

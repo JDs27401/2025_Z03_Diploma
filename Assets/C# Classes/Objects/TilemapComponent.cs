@@ -36,10 +36,8 @@ namespace C__Classes.Objects
             {
                 return;
             }
-            // NpcBase actor = other.GetComponent<NpcBase>();
-            // GameObject go = other.gameObject;
+            
             Actor actor = other.GetComponent<Actor>();
-            print(actor);
             if (actor == null)
             {
                 return;
