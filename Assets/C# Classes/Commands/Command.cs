@@ -1,21 +1,24 @@
-﻿using Enemy.Scripts;
+﻿using System;
+using Enemy.Scripts;
 using UnityEngine;
 
 namespace C__Classes.Commands
 {
-    public abstract class Command : MonoBehaviour
+    public abstract class Command : ICommand
     {
-        public static void MoveToTarget(NpcBase n)
-        {
-            if (!n.PlayerTarget) return;
+        protected NpcBase npc;
 
-            n.PathUpdateTimer += Time.deltaTime;
-            if (n.PathUpdateTimer < n.PathUpdateDelay)
+        protected Command(NpcBase npc)
+        {
+            if (npc == null)
             {
-                return;
+                throw new ArgumentNullException();
             }
-            n.Agent.SetDestination(n.PlayerTarget.position);
-            n.PathUpdateTimer = 0f;
+            this.npc = npc;
+        }
+        
+        public virtual void Execute()
+        {
         }
     }
 }
