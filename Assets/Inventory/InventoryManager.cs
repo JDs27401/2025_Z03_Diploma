@@ -190,7 +190,7 @@ namespace C__Classes.Managers
 
             Vector3 dropOffset = new Vector3(UnityEngine.Random.Range(-0.4f, 0.4f), UnityEngine.Random.Range(-0.4f, 0.4f), 0);
             Vector3 dropPosition = player.transform.position + dropOffset;
-            dropPosition.z = player.transform.position.z; 
+            dropPosition.z = 0f; 
 
             GameObject droppedObj = Instantiate(draggableItem.itemData.dropPrefab);
             droppedObj.transform.position = dropPosition;
