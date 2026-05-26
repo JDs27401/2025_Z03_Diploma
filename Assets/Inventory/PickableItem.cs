@@ -103,6 +103,11 @@ public class PickableItem : MonoBehaviour
 
                 if (wasPickedUp)
                 {
+                    if (C__Classes.Managers.ItemDiscoveryManager.Instance != null)
+                    {
+                        C__Classes.Managers.ItemDiscoveryManager.Instance.DiscoverItem(itemData.id);
+                    }
+                
                     PickupItem();
                 }
             }
