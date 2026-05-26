@@ -50,14 +50,27 @@ public class PlayerController : Actor
     
     private Vector2 moveInput; 
     private Vector2 currentSpeed = Vector2.zero;
+    
+    //roll function stuff
     private bool isRolling = false;
     private bool rollCooldown = false;
     private float lastRollTime = 0f;
+    
+    //crouching function stuff
     private bool isCrouching = false;
+    
     private SpriteRenderer spriteRenderer;
     private float playerColorAlpha = 1;
+    
+    //sprint function stuff
     private bool isSprinting = false;
     private int stamina = 100;
+    private bool sprintRequiresRelease = false;
+    
+    // Sprint transition (smooth acceleration/deceleration)
+    [SerializeField] private float sprintTransitionDuration = 0.2f;
+    private float sprintBlend = 0f; // 0 = no sprint, 1 = full sprint
+    private float targetSprintBlend = 0f;
     
     //Thing I need for animations - Bartek
     [SerializeField]
@@ -65,12 +78,16 @@ public class PlayerController : Actor
     private Camera mainCam;
     private Vector3 mousePos;
     
+    // Physics
+    private Rigidbody2D rb;
     
-            private void Awake()
-            {
-                playerInput = GetComponent<PlayerInput>();
-                CacheInputActions();
-            }
+    
+             private void Awake()
+             {
+                 playerInput = GetComponent<PlayerInput>();
+                 rb = GetComponent<Rigidbody2D>();
+                 CacheInputActions();
+             }
 
     protected override void Start(){
         base.Start();
@@ -115,26 +132,27 @@ public class PlayerController : Actor
         UpdateSprintInput();
     }
     
-    void FixedUpdate()
-    {
-        if (base.isDead)
-        {
-            return;
-        }
+     void FixedUpdate()
+     {
+         if (base.isDead)
+         {
+             return;
+         }
 
-        ApplyConsumableEffects();
-        CheckForHurtAnimation();
-        ManageStamina();
-        ManageSprint();
-        ManageCrouch();
-        ManageRoll();
-        if (!isRolling)
-        {
-            CalculateSpeed();
-        }
-        Move();
-        UpdateAnimations();
-    }
+         ApplyConsumableEffects();
+         CheckForHurtAnimation();
+         ManageStamina();
+         ManageSprint();
+         ManageCrouch();
+         ManageRoll();
+         UpdateSprintBlend();
+         if (!isRolling)
+         {
+             CalculateSpeed();
+         }
+         Move();
+         UpdateAnimations();
+     }
 
     private void ManageStamina()
     {
@@ -170,31 +188,39 @@ public class PlayerController : Actor
         }
     }
 
-    private void UpdateSprintInput()
-    {
-        if (sprintAction == null)
-        {
-            return;
-        }
+     private void UpdateSprintInput()
+     {
+         if (sprintAction == null)
+         {
+             return;
+         }
+         
+         if(sprintAction.triggered && stamina > 20)
+         {
+             isSprinting = true;
+         }
+         
+         if(!sprintAction.IsPressed())
+         {
+             isSprinting = false;
+         }
+         if (!sprintAction.IsPressed())
+         {
+             sprintRequiresRelease = false;
+         }
 
-        var sprintHeld = sprintAction.IsPressed();
+         // Set target sprint blend based on input, stamina and the release lock.
+         if (sprintAction.IsPressed() && stamina > 0 && !sprintRequiresRelease)
+         {
+             targetSprintBlend = 1f;
+         }
+         else
+         {
+             targetSprintBlend = 0f;
+         }
 
-        switch (sprintHeld)
-        {
-            case true when !isSprinting && stamina > 20:
-                isSprinting = true;
-                speed *= sprintPower;
-                acceleration *= sprintPower;
-                break;
-            case false when isSprinting:
-                isSprinting = false;
-                speed /= sprintPower;
-                acceleration /= sprintPower;
-                break;
-        }
-
-        PlayerNoiseSystem.Instance.UpdateNoiseRadius();
-    }
+         PlayerNoiseSystem.Instance.UpdateNoiseRadius();
+     }
 
     private void CacheInputActions()
     {
@@ -250,51 +276,47 @@ public class PlayerController : Actor
         InventoryManager.Instance.TryUseActiveConsumable();
     }
     
-    void CalculateSpeed()
-    {
-        float weightPenaltyMultiplier = 1f;
-        float consumableSpeedMultiplier = GetConsumableSpeedMultiplier();
-        float consumableAccelerationMultiplier = GetConsumableAccelerationMultiplier();
+      void CalculateSpeed()
+      {
+          float weightPenaltyMultiplier = 1f;
+          float consumableSpeedMultiplier = GetConsumableSpeedMultiplier();
+          float consumableAccelerationMultiplier = GetConsumableAccelerationMultiplier();
 
-        if (InventoryManager.Instance != null)
-        {
-            float currentWeight = InventoryManager.Instance.GetTotalWeight();
-            
-            weightPenaltyMultiplier = Mathf.Max(minimumSpeedPercentage, 1f - (currentWeight * speedPenaltyPerPoint));
-        }
+          if (InventoryManager.Instance)
+          {
+              float currentWeight = InventoryManager.Instance.GetTotalWeight();
+              
+              weightPenaltyMultiplier = Mathf.Max(minimumSpeedPercentage, 1f - (currentWeight * speedPenaltyPerPoint));
+          }
 
-        float currentEffectiveAcceleration = acceleration * weightPenaltyMultiplier * consumableAccelerationMultiplier;
-        float currentEffectiveSpeed = speed * weightPenaltyMultiplier * consumableSpeedMultiplier;
+          // Calculate sprint multiplier based on smooth blend
+          float sprintMultiplier = Mathf.Lerp(1f, sprintPower, sprintBlend);
+          
+          float currentEffectiveAcceleration = 
+              acceleration * weightPenaltyMultiplier * consumableAccelerationMultiplier * sprintMultiplier;
+          float currentEffectiveSpeed = speed * weightPenaltyMultiplier * consumableSpeedMultiplier * sprintMultiplier;
 
-        currentSpeed *= friction;
-        currentSpeed += moveInput * (currentEffectiveAcceleration * Time.fixedDeltaTime); 
-        
-        if (currentSpeed.x >= currentEffectiveSpeed)
-        {
-            currentSpeed.x = currentEffectiveSpeed;
-        }
-        if (currentSpeed.x <= -currentEffectiveSpeed)
-        {
-            currentSpeed.x = -currentEffectiveSpeed;
-        }
-        if (currentSpeed.y >= currentEffectiveSpeed)
-        {
-            currentSpeed.y = currentEffectiveSpeed;
-        }
-        if (currentSpeed.y <= -currentEffectiveSpeed)
-        {
-            currentSpeed.y = -currentEffectiveSpeed;
-        }
-    }
+          // Apply friction (dampening)
+          currentSpeed *= friction;
+          
+          // Add acceleration based on input (without Time.fixedDeltaTime - rb.velocity handles that)
+          currentSpeed += moveInput * currentEffectiveAcceleration;
+          
+          // Clamp to max speed
+          float currentSpeedMagnitude = currentSpeed.magnitude;
+          if (currentSpeedMagnitude > currentEffectiveSpeed)
+          {
+              currentSpeed = currentSpeed.normalized * currentEffectiveSpeed;
+          }
+      }
 
-    void Move() 
-    {
-        Vector3 newPos = new Vector3(
-            transform.position.x + currentSpeed.x * Time.fixedDeltaTime,
-            transform.position.y + currentSpeed.y * Time.fixedDeltaTime,
-            0);
-        transform.position = newPos;
-    }
+     void Move() 
+     {
+         if (rb)
+         {
+             rb.linearVelocity = currentSpeed;
+         }
+     }
 
     void UpdateAnimations()
     {
@@ -349,34 +371,44 @@ public class PlayerController : Actor
         var newColor = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, playerColorAlpha);
         spriteRenderer.color = newColor;
     }
-    void ManageSprint()
-    {
-        if (isSprinting)
-        {
-            if (stamina <= 0)
-            {
-                isSprinting = false;
-                speed /= sprintPower;
-                acceleration /= sprintPower;
-            }
+     void ManageSprint()
+     {
+         if (isSprinting)
+         {
+             if (stamina <= 0)
+             {
+                 targetSprintBlend = 0f;
+                 isSprinting = false;
+                 sprintRequiresRelease = true;
+             }
 
-            stamina -= 1;
-        }
-        else
-        {
-            if (stamina < maxStamina)
-            {
-                stamina += 1;
-            }
-        }
-    }
-    
-    public void ClearInputState()
-    {
-        moveInput = Vector2.zero;
-        currentSpeed = Vector2.zero;
-        isSprinting = false;
-    }
+             stamina = Mathf.Max(0, stamina - 1);
+         }
+         else
+         {
+             if (stamina < maxStamina)
+             {
+                 stamina = Mathf.Min(maxStamina, stamina + 1);
+             }
+         }
+     }
+     
+     void UpdateSprintBlend()
+     {
+         // Interpolate sprint blend smoothly towards target
+         float maxChange = (1f / sprintTransitionDuration) * Time.fixedDeltaTime;
+         sprintBlend = Mathf.MoveTowards(sprintBlend, targetSprintBlend, maxChange);
+     }
+     
+     public void ClearInputState()
+     {
+         moveInput = Vector2.zero;
+         currentSpeed = Vector2.zero;
+         isSprinting = false;
+         targetSprintBlend = 0f;
+         sprintBlend = 0f;
+         sprintRequiresRelease = false;
+     }
 
     private void ApplyConsumableEffects()
     {
