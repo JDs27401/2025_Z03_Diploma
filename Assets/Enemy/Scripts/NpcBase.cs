@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using C__Classes;
 using C__Classes.Commands;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -32,6 +33,8 @@ namespace Enemy.Scripts
         protected Animator animator;
         
         [SerializeField] private float agentRadius = 0.05f;
+        
+        private Command _command;
         
         protected override void Start()
         {
@@ -64,7 +67,15 @@ namespace Enemy.Scripts
             {
                 case State.Aggravated:
                     // MoveToTarget();
-                    Command.MoveToTarget(this);
+                    // Command.MoveToTarget(this);
+                    if (_command == null)
+                    {
+                        _command = new MoveToCommand(this);
+                    }
+                    else
+                    {
+                        _command.Execute();
+                    }
                     break;
                 case State.Asleep:
                     // [W] opcjonalny patrol?
