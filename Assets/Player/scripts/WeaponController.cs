@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using C__Classes;
 using UnityEngine.InputSystem;
+using System;
 
 namespace Player.scripts
 {
@@ -24,6 +25,8 @@ namespace Player.scripts
         //animacje
         private PlayerController _playerController;
         private PlayerInput _playerInput;
+
+        public event Action OnWeaponFired;
 
         public WeaponRuntimeStats CurrentWeaponStats
         {
@@ -306,6 +309,7 @@ namespace Player.scripts
                 StartReload();
                 return;
             }
+            
             if (Time.time < _nextFireTime) return;
 
             _nextFireTime = Time.time + (1f / weaponStats.fireRate);
@@ -317,11 +321,13 @@ namespace Player.scripts
             {
                 StartReload();
             }
+            
+            OnWeaponFired?.Invoke();
 
             for (int i = 0; i < weaponStats.projectilesPerShot; i++)
             {
                 float rotZ = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
-                float randomSpread = Random.Range(-weaponStats.spread, weaponStats.spread);
+                float randomSpread = UnityEngine.Random.Range(-weaponStats.spread, weaponStats.spread);
                 Quaternion rotation = Quaternion.Euler(0, 0, rotZ + randomSpread);
                 GameObject bullet = Instantiate(currentWeapon.projectilePrefab, firePoint.position, rotation);
 

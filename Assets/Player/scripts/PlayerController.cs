@@ -72,12 +72,17 @@ public class PlayerController : Actor
     private float sprintBlend = 0f; // 0 = no sprint, 1 = full sprint
     private float targetSprintBlend = 0f;
     
-    //Thing I need for animations - Bartek
-    [SerializeField]
-    private Animator animator;
-    private Camera mainCam;
-    private Vector3 mousePos;
-    
+    //Thing I need for animations and sfx - Bartek
+    [FormerlySerializedAs("animator")] [SerializeField]
+    private Animator _animator;
+    private Camera _mainCam;
+    private Vector3 _mousePos;
+    private bool _isMoving; 
+    public bool IsMoving
+    {
+        get => _isMoving;
+    }
+
     // Physics
     private Rigidbody2D rb;
     
@@ -108,10 +113,10 @@ public class PlayerController : Actor
             Debug.LogWarning("PlayerInput component not found on PlayerController.");
         }
         
-        mainCam = Camera.main;
-        if (mainCam == null)
+        _mainCam = Camera.main;
+        if (_mainCam == null)
         {
-            mainCam = FindFirstObjectByType<Camera>();    
+            _mainCam = FindFirstObjectByType<Camera>();    
         }
         
         friction = 1-friction;
@@ -174,11 +179,11 @@ public class PlayerController : Actor
             {
                 if (currentHealth <= 0)
                 {
-                    animator.SetTrigger("Die");
+                    _animator.SetTrigger("Die");
                 }
                 else
                 {
-                    animator.SetTrigger("Hurt");
+                    _animator.SetTrigger("Hurt");
                 }
             }
             
@@ -320,25 +325,25 @@ public class PlayerController : Actor
 
     void UpdateAnimations()
     {
-        if (mainCam == null || Mouse.current == null) return;
+        if (_mainCam == null || Mouse.current == null) return;
         
-        bool isMoving = Mathf.Abs(currentSpeed.x) > 1f || Mathf.Abs(currentSpeed.y) > 1f;
-        animator.SetBool("isWalking", isMoving);
+        _isMoving = Mathf.Abs(currentSpeed.x) > 1f || Mathf.Abs(currentSpeed.y) > 1f;
+        _animator.SetBool("isWalking", _isMoving);
         
         Vector3 mouseScreenPos = (Vector3)Mouse.current.position.ReadValue();
-        mouseScreenPos.z = Mathf.Abs(mainCam.transform.position.z - transform.position.z);
+        mouseScreenPos.z = Mathf.Abs(_mainCam.transform.position.z - transform.position.z);
 
-        Vector2 direction = (mainCam.ScreenToWorldPoint(mouseScreenPos) - transform.position).normalized;
+        Vector2 direction = (_mainCam.ScreenToWorldPoint(mouseScreenPos) - transform.position).normalized;
         
-        animator.SetFloat("XInput", direction.x);
-        animator.SetFloat("YInput", direction.y);
+        _animator.SetFloat("XInput", direction.x);
+        _animator.SetFloat("YInput", direction.y);
     }
 
     public void SetWeaponAnimation(int weaponID)
     {
-        if (animator != null)
+        if (_animator != null)
         {
-            animator.SetInteger("WeaponID", weaponID);
+            _animator.SetInteger("WeaponID", weaponID);
         }
     }
     

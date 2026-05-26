@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.CompilerServices;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using C__Classes; // Potrzebne do dostępu do Actor
 using C__Classes.Managers;
@@ -35,6 +36,7 @@ namespace Player.scripts
         [SerializeField] private float projectileSpeed = 10f;
         private float projectileDamage = 10f;
         [SerializeField] private float projectileSpread = 5f; // rozrzut w stopniach
+        
 
         private float nextMeleeTime = 0f;
 
