@@ -31,6 +31,8 @@ public class PlayerController : Actor
     [Header("Movement stats")]
     [SerializeField]
     private int maxStamina = 100;
+    // Internal float mirror for fractional stamina regen
+    private float staminaFloat = 0f;
     [SerializeField] //true if you want to know all the stuff
     private bool debugInfo = true;
     [SerializeField]
@@ -71,6 +73,17 @@ public class PlayerController : Actor
     [SerializeField] private float sprintTransitionDuration = 0.2f;
     private float sprintBlend = 0f; // 0 = no sprint, 1 = full sprint
     private float targetSprintBlend = 0f;
+
+    // Cached consumable modifiers (recalculated on effects change)
+    private float cachedSpeedMultiplier = 1f;
+    private float cachedAccelerationMultiplier = 1f;
+    private float cachedMaxHealthBonus = 0f;
+    private float cachedHealthPerSecond = 0f;
+    private float cachedMaxStaminaBonus = 0f;
+    private float cachedStaminaPerSecond = 0f;
+    private float cachedDamageTakenMultiplier = 1f;
+    private float cachedNoiseMultiplier = 1f;
+    private float cachedWeaponSpreadMultiplier = 1f;
     
     //Thing I need for animations and sfx - Bartek
     [FormerlySerializedAs("animator")] [SerializeField]
@@ -129,6 +142,16 @@ public class PlayerController : Actor
         _lastKnownStamina = stamina;
         float staminaPercent = (maxStamina > 0) ? (float)stamina / maxStamina : 0;
         onStaminaChanged?.Invoke(staminaPercent);
+
+        // Initialize stamina mirror and subscribe to consumable changes
+        staminaFloat = stamina;
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.OnConsumableEffectsChanged += RecalculateConsumableCaches;
+        }
+
+        // Initial cache calculation
+        RecalculateConsumableCaches();
     }
 
     new void Update()
@@ -161,11 +184,12 @@ public class PlayerController : Actor
 
     private void ManageStamina()
     {
+        float effectiveMaxStamina = GetEffectiveMaxStamina();
         if (stamina != _lastKnownStamina)
         {
             _lastKnownStamina = stamina;
             
-            float staminaPercent = (maxStamina > 0) ? (float)stamina / maxStamina : 0;
+            float staminaPercent = (effectiveMaxStamina > 0) ? (float)stamina / effectiveMaxStamina : 0;
             
             onStaminaChanged?.Invoke(staminaPercent);
         }
@@ -387,14 +411,17 @@ public class PlayerController : Actor
                  sprintRequiresRelease = true;
              }
 
-             stamina = Mathf.Max(0, stamina - 1);
+                stamina = Mathf.Max(0, stamina - 1);
+                staminaFloat = stamina;
          }
          else
          {
-             if (stamina < maxStamina)
-             {
-                 stamina = Mathf.Min(maxStamina, stamina + 1);
-             }
+                float effMaxStamina = GetEffectiveMaxStamina();
+                if (stamina < effMaxStamina)
+                {
+                    stamina = Mathf.Min((int)Mathf.Floor(effMaxStamina), stamina + 1);
+                    staminaFloat = stamina;
+                }
          }
      }
      
@@ -428,6 +455,21 @@ public class PlayerController : Actor
         {
             currentHealth = Mathf.Min(currentHealth + (healthPerSecond * Time.fixedDeltaTime), effectiveMaxHealth);
         }
+
+        // Stamina: clamp to effective max and apply consumable stamina per second
+        float effectiveMaxStamina = GetEffectiveMaxStamina();
+        if (staminaFloat > effectiveMaxStamina)
+        {
+            staminaFloat = effectiveMaxStamina;
+            stamina = Mathf.FloorToInt(staminaFloat);
+        }
+
+        float staminaPerSecond = GetConsumableStaminaPerSecond();
+        if (staminaPerSecond > 0f)
+        {
+            staminaFloat = Mathf.Min(effectiveMaxStamina, staminaFloat + (staminaPerSecond * Time.fixedDeltaTime));
+            stamina = Mathf.Clamp(Mathf.FloorToInt(staminaFloat), 0, Mathf.FloorToInt(effectiveMaxStamina));
+        }
     }
 
     private float GetCurrentHealthPercent()
@@ -438,44 +480,84 @@ public class PlayerController : Actor
 
     private float GetEffectiveMaxHealth()
     {
-        float bonus = 0f;
-        if (InventoryManager.Instance != null)
-        {
-            bonus = InventoryManager.Instance.GetConsumableMaxHealthBonus();
-        }
-
-        return Mathf.Max(1f, maxHealth + bonus);
+        return Mathf.Max(1f, maxHealth + cachedMaxHealthBonus);
     }
 
     private float GetConsumableSpeedMultiplier()
     {
-        if (InventoryManager.Instance == null)
-        {
-            return 1f;
-        }
-
-        return Mathf.Max(0f, InventoryManager.Instance.GetConsumableSpeedMultiplier());
+        return Mathf.Max(0f, cachedSpeedMultiplier);
     }
 
     private float GetConsumableAccelerationMultiplier()
     {
-        if (InventoryManager.Instance == null)
-        {
-            return 1f;
-        }
-
-        return Mathf.Max(0f, InventoryManager.Instance.GetConsumableAccelerationMultiplier());
+        return Mathf.Max(0f, cachedAccelerationMultiplier);
     }
 
     private float GetConsumableHealthPerSecond()
     {
-        if (InventoryManager.Instance == null)
+        return Mathf.Max(0f, cachedHealthPerSecond);
+    }
+
+    private float GetEffectiveMaxStamina()
+    {
+        return Mathf.Max(0f, maxStamina + cachedMaxStaminaBonus);
+    }
+
+    private float GetConsumableStaminaPerSecond()
+    {
+        return Mathf.Max(0f, cachedStaminaPerSecond);
+    }
+
+    // Recalculate cached consumable modifiers (called when consumable effects change)
+    private void RecalculateConsumableCaches()
+    {
+        if (InventoryManager.Instance != null)
         {
-            return 0f;
+            cachedSpeedMultiplier = InventoryManager.Instance.GetConsumableSpeedMultiplier();
+            cachedAccelerationMultiplier = InventoryManager.Instance.GetConsumableAccelerationMultiplier();
+            cachedMaxHealthBonus = InventoryManager.Instance.GetConsumableMaxHealthBonus();
+            cachedHealthPerSecond = InventoryManager.Instance.GetConsumableHealthPerSecond();
+            cachedMaxStaminaBonus = InventoryManager.Instance.GetConsumableMaxStaminaBonus();
+            cachedStaminaPerSecond = InventoryManager.Instance.GetConsumableStaminaPerSecond();
+            cachedDamageTakenMultiplier = InventoryManager.Instance.GetConsumableDamageTakenMultiplier();
+            cachedNoiseMultiplier = InventoryManager.Instance.GetConsumableNoiseMultiplier();
+            cachedWeaponSpreadMultiplier = InventoryManager.Instance.GetConsumableWeaponSpreadMultiplier();
+        }
+        else
+        {
+            cachedSpeedMultiplier = 1f;
+            cachedAccelerationMultiplier = 1f;
+            cachedMaxHealthBonus = 0f;
+            cachedHealthPerSecond = 0f;
+            cachedMaxStaminaBonus = 0f;
+            cachedStaminaPerSecond = 0f;
+            cachedDamageTakenMultiplier = 1f;
+            cachedNoiseMultiplier = 1f;
+            cachedWeaponSpreadMultiplier = 1f;
         }
 
-        return Mathf.Max(0f, InventoryManager.Instance.GetConsumableHealthPerSecond());
+        // Enforce clamps on current health and stamina when caches change
+        float effMaxHealth = GetEffectiveMaxHealth();
+        if (currentHealth > effMaxHealth)
+        {
+            currentHealth = effMaxHealth;
+            float healthPercent = GetCurrentHealthPercent();
+            onHealthChanged?.Invoke(healthPercent);
+        }
+
+        float effMaxStamina = GetEffectiveMaxStamina();
+        if (staminaFloat > effMaxStamina)
+        {
+            staminaFloat = effMaxStamina;
+            stamina = Mathf.FloorToInt(staminaFloat);
+            float staminaPercent = (effMaxStamina > 0) ? (float)stamina / effMaxStamina : 0f;
+            onStaminaChanged?.Invoke(staminaPercent);
+        }
     }
+
+    // Expose cached multipliers for other systems
+    public float GetCachedWeaponSpreadMultiplier() => cachedWeaponSpreadMultiplier;
+    public float GetCachedNoiseMultiplier() => cachedNoiseMultiplier;
 
     private void OnDestroy()
     {
@@ -494,12 +576,23 @@ public class PlayerController : Actor
         {
             useConsumableAction.performed -= UseConsumableManagement;
         }
+
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.OnConsumableEffectsChanged -= RecalculateConsumableCaches;
+        }
     }
 
     protected override void Kill()
     {
         base.Kill();
         onPlayerDeath?.Invoke();
+    }
+
+    // Provide damage multiplier to base Actor (consumable-based)
+    protected override float GetIncomingDamageMultiplier()
+    {
+        return cachedDamageTakenMultiplier;
     }
 
     public bool IsCrouching() => isCrouching;

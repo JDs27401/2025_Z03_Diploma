@@ -52,6 +52,19 @@ namespace C__Classes.Systems
                 calculatedRadius *= weightFactor;
             }
 
+            // Apply consumable noise multiplier if available (prefer cached from player)
+            float noiseMultiplier = 1f;
+            if (_playerController != null)
+            {
+                noiseMultiplier = _playerController.GetCachedNoiseMultiplier();
+            }
+            else if (InventoryManager.Instance != null)
+            {
+                noiseMultiplier = InventoryManager.Instance.GetConsumableNoiseMultiplier();
+            }
+
+            calculatedRadius *= noiseMultiplier;
+
             noiseTrigger.radius = calculatedRadius;
         }
     }

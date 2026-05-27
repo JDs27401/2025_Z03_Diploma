@@ -12,6 +12,8 @@ namespace C__Classes.Managers
         [Header("Configuration")]
         public InventorySlot[] inventorySlots;
         public GameObject inventoryItemPrefab;
+        [Header("UI")]
+        [SerializeField] private TMPro.TMP_FontAsset consumableEffectsFont;
         
         [Header("Hotbar Settings")]
         public int hotbarSlotsCount = 4;
@@ -21,11 +23,15 @@ namespace C__Classes.Managers
 
         private readonly ConsumableEffectManager consumableEffectManager = new ConsumableEffectManager();
         private ConsumableEffectsHUD consumableEffectsHUD;
+        // Forwarded event when consumable effects change
+        public event System.Action OnConsumableEffectsChanged;
 
         private void Start()
         {
             SelectSlot(selectedSlotIndex);
             InitializeConsumableEffectsHud();
+            // Forward events from effect manager
+            consumableEffectManager.OnEffectsChanged += () => OnConsumableEffectsChanged?.Invoke();
         }
         
         private void Update()
@@ -352,6 +358,32 @@ namespace C__Classes.Managers
             return consumableEffectManager.GetHealthPerSecond();
         }
 
+        // New passthroughs for stamina / damage / noise / weapon spread
+        public float GetConsumableMaxStaminaBonus()
+        {
+            return consumableEffectManager.GetMaxStaminaBonus();
+        }
+
+        public float GetConsumableStaminaPerSecond()
+        {
+            return consumableEffectManager.GetStaminaPerSecond();
+        }
+
+        public float GetConsumableDamageTakenMultiplier()
+        {
+            return consumableEffectManager.GetDamageTakenMultiplier();
+        }
+
+        public float GetConsumableNoiseMultiplier()
+        {
+            return consumableEffectManager.GetNoiseMultiplier();
+        }
+
+        public float GetConsumableWeaponSpreadMultiplier()
+        {
+            return consumableEffectManager.GetWeaponSpreadMultiplier();
+        }
+
         public bool TryUseActiveConsumable()
         {
             if (inventorySlots == null || selectedSlotIndex < 0 || selectedSlotIndex >= inventorySlots.Length)
@@ -447,6 +479,28 @@ namespace C__Classes.Managers
 
             consumableEffectsHUD = hudRoot.AddComponent<ConsumableEffectsHUD>();
             consumableEffectsHUD.Initialize(consumableEffectManager);
+
+            // Assign font: prefer explicit inspector assignment, otherwise try to auto-find by name
+            if (consumableEffectsFont != null)
+            {
+                consumableEffectsHUD.FontAsset = consumableEffectsFont;
+            }
+            else
+            {
+                try
+                {
+                    var allFonts = Resources.FindObjectsOfTypeAll<TMPro.TMP_FontAsset>();
+                    for (int i = 0; i < allFonts.Length; i++)
+                    {
+                        if (allFonts[i] != null && allFonts[i].name == "04B_03__ SDF")
+                        {
+                            consumableEffectsHUD.FontAsset = allFonts[i];
+                            break;
+                        }
+                    }
+                }
+                catch { }
+            }
         }
         
         private void HandleDropInput()

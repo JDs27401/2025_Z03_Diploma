@@ -57,13 +57,20 @@ namespace C__Classes
         {
             if (!invulnerable)
             {
-                currentHealth -= dmg;
+                float multiplier = GetIncomingDamageMultiplier();
+                currentHealth -= dmg * multiplier;
             }
             // print("currentHealth: " + currentHealth);
             if (currentHealth <= 0)
             {
                 Kill();
             }
+        }
+
+        // Hook for subclasses to modify incoming damage (e.g. consumables)
+        protected virtual float GetIncomingDamageMultiplier()
+        {
+            return 1f;
         }
 
         //function for starting the coroutine

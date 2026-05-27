@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 using UnityEngine;
 
 namespace C__Classes.Managers
@@ -55,6 +56,9 @@ namespace C__Classes.Managers
 
     public class ConsumableEffectManager
     {
+        // Event fired when active effects change (applied / extended / expired)
+        public event Action OnEffectsChanged;
+
         private readonly List<ConsumableEffectInstance> _activeEffects = new List<ConsumableEffectInstance>();
         private readonly Dictionary<string, ConsumableEffectInstance> _effectLookup = new Dictionary<string, ConsumableEffectInstance>();
 
@@ -92,12 +96,14 @@ namespace C__Classes.Managers
             if (_effectLookup.TryGetValue(effectId, out ConsumableEffectInstance existing))
             {
                 existing.ExtendByFullDuration();
+                OnEffectsChanged?.Invoke();
                 return true;
             }
 
             ConsumableEffectInstance instance = new ConsumableEffectInstance(effectData);
             _activeEffects.Add(instance);
             _effectLookup[effectId] = instance;
+            OnEffectsChanged?.Invoke();
             return true;
         }
 
@@ -140,6 +146,7 @@ namespace C__Classes.Managers
                     }
 
                     _activeEffects.RemoveAt(i);
+                    OnEffectsChanged?.Invoke();
                 }
             }
         }
@@ -162,6 +169,71 @@ namespace C__Classes.Managers
                 }
 
                 multiplier *= Mathf.Max(0f, instance.effectData.speedMultiplier);
+            }
+
+            return multiplier;
+        }
+
+        public float GetMaxStaminaBonus()
+        {
+            float bonus = 0f;
+            for (int i = 0; i < _activeEffects.Count; i++)
+            {
+                ConsumableEffectInstance instance = _activeEffects[i];
+                if (instance?.effectData == null) continue;
+                bonus += instance.effectData.maxStaminaBonus;
+            }
+
+            return bonus;
+        }
+
+        public float GetStaminaPerSecond()
+        {
+            float regen = 0f;
+            for (int i = 0; i < _activeEffects.Count; i++)
+            {
+                ConsumableEffectInstance instance = _activeEffects[i];
+                if (instance?.effectData == null) continue;
+                regen += instance.effectData.staminaPerSecond;
+            }
+
+            return regen;
+        }
+
+        public float GetDamageTakenMultiplier()
+        {
+            float multiplier = 1f;
+            for (int i = 0; i < _activeEffects.Count; i++)
+            {
+                ConsumableEffectInstance instance = _activeEffects[i];
+                if (instance?.effectData == null) continue;
+                multiplier *= Mathf.Max(0f, instance.effectData.damageTakenMultiplier);
+            }
+
+            return multiplier;
+        }
+
+        public float GetNoiseMultiplier()
+        {
+            float multiplier = 1f;
+            for (int i = 0; i < _activeEffects.Count; i++)
+            {
+                ConsumableEffectInstance instance = _activeEffects[i];
+                if (instance?.effectData == null) continue;
+                multiplier *= Mathf.Max(0f, instance.effectData.noiseMultiplier);
+            }
+
+            return multiplier;
+        }
+
+        public float GetWeaponSpreadMultiplier()
+        {
+            float multiplier = 1f;
+            for (int i = 0; i < _activeEffects.Count; i++)
+            {
+                ConsumableEffectInstance instance = _activeEffects[i];
+                if (instance?.effectData == null) continue;
+                multiplier *= Mathf.Max(0f, instance.effectData.weaponSpreadMultiplier);
             }
 
             return multiplier;

@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d916860bb6641b49f3911fd50c36f11, type: 3}
-  m_Name: effectItem 2
+  m_Name: psychodelics
   m_EditorClassIdentifier: Assembly-CSharp::ConsumableItemData
-  id: 202
-  itemName: yum
-  icon: {fileID: 21300000, guid: caeccb8d9e02edc478f48a1743cb1a8a, type: 3}
+  id: 201
+  itemName: Psychodelics
+  icon: {fileID: 21300000, guid: 8b5c67dc9ccc9f14a969ca8565fa54b9, type: 3}
   rarity: 0
   itemType: 4
-  description: 
+  description: Travel with the wind
   isStackable: 1
   maxStackSize: 100
-  dropPrefab: {fileID: 0}
-  fullSizeImage: {fileID: 21300000, guid: caeccb8d9e02edc478f48a1743cb1a8a, type: 3}
+  dropPrefab: {fileID: 7620934599523319507, guid: 915ddb9970d19654499dd6c8e742efa4, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: 8b5c67dc9ccc9f14a969ca8565fa54b9, type: 3}
   weight: 1
   effects:
-  - {fileID: 11400000, guid: 28a6c66c0b795124f8d02f33645cf448, type: 2}
+  - {fileID: 11400000, guid: 1928676acd1272a4591dbbb50278a8f4, type: 2}

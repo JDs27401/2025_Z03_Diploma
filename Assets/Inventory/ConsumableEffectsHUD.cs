@@ -9,6 +9,13 @@ namespace C__Classes.Managers
     {
         [SerializeField] private Vector2 iconSize = new Vector2(44f, 44f);
         [SerializeField] private float spacing = 6f;
+        [Header("Font")]
+        [SerializeField] private TMPro.TMP_FontAsset _fontAsset;
+
+        public TMPro.TMP_FontAsset FontAsset
+        {
+            set { _fontAsset = value; }
+        }
 
         private readonly Dictionary<string, ConsumableEffectIconView> _effectViews = new Dictionary<string, ConsumableEffectIconView>();
         private RectTransform _rootRect;
@@ -128,6 +135,11 @@ namespace C__Classes.Managers
             image.raycastTarget = false;
 
             ConsumableEffectIconView view = iconGo.AddComponent<ConsumableEffectIconView>();
+            // If HUD has a font asset configured, apply it to the created view
+            if (_fontAsset != null)
+            {
+                view.OverrideFont = _fontAsset;
+            }
             iconGo.transform.SetSiblingIndex(siblingIndex);
 
             _effectViews[effectId] = view;

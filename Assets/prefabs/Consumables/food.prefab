@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5267652305320700436}
   - component: {fileID: 4062816177186463349}
   m_Layer: 0
-  m_Name: consumable 2
+  m_Name: food
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: caeccb8d9e02edc478f48a1743cb1a8a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 81fee44fa269e3e40b0e552c7d16c931, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cfa82b09f5f55543b4833c111a8b51e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickableItem
-  itemData: {fileID: 11400000, guid: e129f9dd4cc82ec49b0a463bbd5ab857, type: 2}
+  itemData: {fileID: 11400000, guid: b2e301135cfc01e43902eeef900f7a05, type: 2}
   amount: 1
   droppedWeaponState:
     currentMagazineAmmo: 0

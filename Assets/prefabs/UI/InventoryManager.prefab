@@ -49,3 +49,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  inventoryItemPrefab: {fileID: 0}
+  consumableEffectsFont: {fileID: 11400000, guid: e466cdbacb50ba7469272ca414edfa3e, type: 2}
+  consumableTimerOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+  consumableTimerOutlineWidth: 0.3
+  hotbarSlotsCount: 4
+  selectedSlotIndex: 0
+  currentlyHoveredItem: {fileID: 0}

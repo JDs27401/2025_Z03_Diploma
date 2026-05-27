@@ -186,15 +186,6 @@ namespace Player.scripts
             }
         }
 
-        // public void TargetReload() 
-        // {
-        //     if (currentWeapon == null || isReloading) return;
-        //
-        //     if (ammoState[currentWeapon.weaponName] >= currentWeapon.magazineSize) return;
-        //
-        //     StartReload();
-        // }
-
         private void StartReload()
         {
             WeaponRuntimeStats stats = CurrentWeaponStats;
@@ -327,7 +318,12 @@ namespace Player.scripts
             for (int i = 0; i < weaponStats.projectilesPerShot; i++)
             {
                 float rotZ = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
-                float randomSpread = UnityEngine.Random.Range(-weaponStats.spread, weaponStats.spread);
+                float spread = weaponStats.spread;
+                if (_playerController != null)
+                {
+                    spread *= _playerController.GetCachedWeaponSpreadMultiplier();
+                }
+                float randomSpread = UnityEngine.Random.Range(-spread, spread);
                 Quaternion rotation = Quaternion.Euler(0, 0, rotZ + randomSpread);
                 GameObject bullet = Instantiate(currentWeapon.projectilePrefab, firePoint.position, rotation);
 
