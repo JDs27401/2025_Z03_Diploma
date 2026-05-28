@@ -471,6 +471,11 @@ namespace Player.scripts
             ArcHitbox arcScript = hitbox.GetComponent<ArcHitbox>();
             if (arcScript != null)
             {
+                if (meleeStats.isMolotov)
+                {
+                    arcScript.SetIsMolotov(meleeStats.isMolotov);
+                    arcScript.SetupDotStats(meleeStats.dotAreaRadius, meleeStats.dotDamage, meleeStats.dotDuration, meleeStats.dotInterval, meleeStats.dotAreaLifetime);
+                }
                 arcScript.SetArcShape(meleeStats.angle, meleeStats.range);
             }
             Actor actorScript = hitbox.GetComponent<Actor>();
@@ -478,6 +483,7 @@ namespace Player.scripts
             {
                 actorScript.SetDamage(meleeStats.damage);
             }
+            
 
             // Subtract stamina cost from player (if player controller available)
             try

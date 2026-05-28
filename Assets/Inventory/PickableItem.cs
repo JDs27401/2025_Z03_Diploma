@@ -8,6 +8,7 @@ public class PickableItem : MonoBehaviour
     public ItemData itemData;
     public int amount = 1;
     public WeaponInstanceState droppedWeaponState;
+    public MeleeWeaponInstanceState droppedMeleeState;
 
     [Header("Shadow Settings")]
     public bool enableShadow = true;
@@ -23,6 +24,22 @@ public class PickableItem : MonoBehaviour
 
     private PlayerInteractionUI playerUI;
     private SpriteRenderer mainSpriteRenderer;
+
+    public void SetDroppedStates(WeaponInstanceState rangedState, MeleeWeaponInstanceState meleeState)
+    {
+        droppedWeaponState = rangedState != null ? rangedState.Clone() : null;
+        droppedMeleeState = meleeState != null ? meleeState.Clone() : null;
+    }
+
+    public WeaponInstanceState GetDroppedWeaponStateClone()
+    {
+        return droppedWeaponState != null ? droppedWeaponState.Clone() : null;
+    }
+
+    public MeleeWeaponInstanceState GetDroppedMeleeStateClone()
+    {
+        return droppedMeleeState != null ? droppedMeleeState.Clone() : null;
+    }
 
     private void Start()
     {
@@ -99,7 +116,8 @@ public class PickableItem : MonoBehaviour
             if (InventoryManager.Instance != null)
             {
                 WeaponInstanceState stateToTransfer = droppedWeaponState != null ? droppedWeaponState.Clone() : null;
-                bool wasPickedUp = InventoryManager.Instance.AddItem(itemData, amount, stateToTransfer);
+                MeleeWeaponInstanceState meleeStateToTransfer = droppedMeleeState != null ? droppedMeleeState.Clone() : null;
+                bool wasPickedUp = InventoryManager.Instance.AddItem(itemData, amount, stateToTransfer, meleeStateToTransfer);
 
                 if (wasPickedUp)
                 {

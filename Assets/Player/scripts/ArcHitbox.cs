@@ -1,3 +1,5 @@
+using C__Classes;
+using C__Classes.Objects;
 using UnityEngine;
 
 [RequireComponent(typeof(PolygonCollider2D))]
@@ -8,6 +10,12 @@ public class ArcHitbox : MonoBehaviour
     private PolygonCollider2D polyCollider;
     private MeshFilter meshFilter;
     private MeshRenderer meshRenderer;
+    private bool isMolotov = false;
+    private float dotAreaRadius;
+    private float dotDamage;
+    private float dotDuration;
+    private float dotInterval;
+    private float dotAreaLifetime;
 
     [Header("Visual Settings")]
     [Tooltip("Materiał wizualizacji (np. półprzezroczysty czerwony)")]
@@ -104,5 +112,54 @@ public class ArcHitbox : MonoBehaviour
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
         meshFilter.mesh = mesh;
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        HandleCollision(other);
+    }
+
+    private void HandleCollision(Collider2D other)
+    {
+        if (other.CompareTag("hostile") || other.CompareTag("destructible"))
+        {
+            if (isMolotov)
+            {
+                SpawnDotArea(other.ClosestPoint(transform.position));
+            }
+        }
+            
+    }
+
+    public void SetupDotStats(float dotAreaRadius, float dotDamage, float dotDuration, float dotInterval, float dotAreaLifetime)
+    {
+        this.dotAreaRadius = dotAreaRadius;
+        this.dotDamage = dotDamage;
+        this.dotDuration =  dotDuration;
+        this.dotInterval =   dotInterval;
+        this.dotAreaLifetime =  dotAreaLifetime;
+    }
+    private void SpawnDotArea(Vector3 position)
+    {
+        GameObject dotArea = new GameObject("MolotovDotArea");
+        dotArea.transform.position = position;
+            
+        Rigidbody2D rb = dotArea.AddComponent<Rigidbody2D>();
+        rb.gravityScale = 0;
+            
+        CircleCollider2D trigger = dotArea.AddComponent<CircleCollider2D>();
+        trigger.isTrigger = true;
+        trigger.radius = dotAreaRadius;
+
+        Actor areaActor = dotArea.AddComponent<Actor>();
+        areaActor.SetDamage(dotDamage);
+        areaActor.SetWaitUntilDestroyed(dotAreaLifetime);
+
+        DotComponent dotComponent = dotArea.AddComponent<DotComponent>();
+        dotComponent.Configure(trigger, dotAreaRadius, dotDuration, dotInterval);
+        dotComponent.StartDotArea();
+    }
+    public void SetIsMolotov(bool value)
+    {
+        isMolotov = value;
     }
 }

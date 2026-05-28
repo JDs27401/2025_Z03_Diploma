@@ -16,7 +16,8 @@ public enum ItemType
     Collectible,
     Consumable,
     WeaponMod,
-    MeleeWeapon
+    MeleeWeapon,
+    MeleeWeaponMod
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item")]

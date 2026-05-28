@@ -22,11 +22,13 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [Header("Weapon Mod Attachment")]
     public bool isWeaponModAttachment = false;
     public WeaponModInstanceState weaponModInstanceState;
+    public MeleeWeaponModInstanceState meleeWeaponModInstanceState;
     public DraggableItem attachedWeaponItemRoot;
 
     [Header("Weapon Mod Visuals")]
     public Sprite emptyModSlotSprite; 
     public int maxWeaponModSlots = 1; 
+    public int maxMeleeWeaponModSlots = 1;
 
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public bool isSplitDrag = false; 
@@ -89,12 +91,13 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    public bool IsWeaponModAttachment => isWeaponModAttachment && attachedWeaponItemRoot != null && weaponModInstanceState != null;
+    public bool IsWeaponModAttachment => isWeaponModAttachment && attachedWeaponItemRoot != null && (weaponModInstanceState != null || meleeWeaponModInstanceState != null);
 
     public void BindWeaponModAttachment(DraggableItem weaponItemRoot, WeaponModInstanceState modState)
     {
         attachedWeaponItemRoot = weaponItemRoot;
         weaponModInstanceState = modState;
+        meleeWeaponModInstanceState = null;
         isWeaponModAttachment = true;
         weaponModTransferCommitted = false;
 
@@ -108,9 +111,30 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         UpdateTextPosition();
     }
 
+    public void BindWeaponModAttachment(DraggableItem weaponItemRoot, MeleeWeaponModInstanceState modState)
+    {
+        attachedWeaponItemRoot = weaponItemRoot;
+        meleeWeaponModInstanceState = modState;
+        weaponModInstanceState = null;
+        isWeaponModAttachment = true;
+        weaponModTransferCommitted = false;
+
+        if (modState != null && modState.itemData != null)
+        {
+            itemData = modState.itemData;
+        }
+
+        weaponInstanceState = null;
+        meleeInstanceState = null;
+        RefreshWeaponModVisuals();
+        UpdateTextPosition();
+    }
+
     public void RefreshWeaponModVisuals(DraggableItem excludedItem = null)
     {
-        if (!(itemData is WeaponItemData weaponItemData) || weaponInstanceState == null)
+        bool isRangedWeapon = itemData is WeaponItemData && weaponInstanceState != null;
+        bool isMeleeWeapon = itemData is MeleeWeaponItemData && meleeInstanceState != null;
+        if (!isRangedWeapon && !isMeleeWeapon)
         {
             return;
         }
@@ -129,9 +153,21 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
         }
 
-        int installedCount = weaponInstanceState.installedMods != null ? weaponInstanceState.installedMods.Count : 0;
-        
-        int totalSlotsToDraw = Mathf.Max(installedCount, maxWeaponModSlots);
+        int installedCount;
+        int totalSlotsToDraw;
+        var rangedMods = weaponInstanceState != null ? weaponInstanceState.installedMods : null;
+        var meleeMods = meleeInstanceState != null ? meleeInstanceState.installedMods : null;
+
+        if (isRangedWeapon)
+        {
+            installedCount = rangedMods != null ? rangedMods.Count : 0;
+            totalSlotsToDraw = Mathf.Max(installedCount, maxWeaponModSlots);
+        }
+        else
+        {
+            installedCount = meleeMods != null ? meleeMods.Count : 0;
+            totalSlotsToDraw = Mathf.Max(installedCount, maxMeleeWeaponModSlots);
+        }
 
         for (int i = 0; i < totalSlotsToDraw; i++)
         {
@@ -159,14 +195,40 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             }
 
             bool hasMod = i < installedCount;
-            if (hasMod)
+            if (hasMod && isRangedWeapon)
             {
-                WeaponModInstanceState modState = weaponInstanceState.installedMods[i];
+                WeaponModInstanceState modState = rangedMods[i];
                 if (modState == null || modState.itemData == null) continue;
 
                 modItem.itemData = modState.itemData;
                 modItem.count = 1;
                 modItem.weaponInstanceState = null;
+                modItem.BindWeaponModAttachment(this, modState);
+
+                if (modItem.image != null)
+                {
+                    Sprite icon = modState.itemData.icon;
+                    if (icon == null && modState.modData != null)
+                    {
+                        icon = modState.modData.icon;
+                    }
+
+                    if (icon != null)
+                    {
+                        modItem.image.sprite = icon;
+                        modItem.image.color = Color.white;
+                    }
+                }
+            }
+            else if (hasMod)
+            {
+                MeleeWeaponModInstanceState modState = meleeMods[i];
+                if (modState == null || modState.itemData == null) continue;
+
+                modItem.itemData = modState.itemData;
+                modItem.count = 1;
+                modItem.weaponInstanceState = null;
+                modItem.meleeInstanceState = null;
                 modItem.BindWeaponModAttachment(this, modState);
 
                 if (modItem.image != null)
@@ -209,6 +271,12 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             attachedWeaponItemRoot.weaponInstanceState.RemoveMod(weaponModInstanceState);
             attachedWeaponItemRoot.RefreshWeaponModVisuals(this);
         }
+
+        if (attachedWeaponItemRoot != null && attachedWeaponItemRoot.meleeInstanceState != null)
+        {
+            attachedWeaponItemRoot.meleeInstanceState.RemoveMod(meleeWeaponModInstanceState);
+            attachedWeaponItemRoot.RefreshWeaponModVisuals(this);
+        }
     }
 
     public void RestoreWeaponModToWeapon()
@@ -223,6 +291,12 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             attachedWeaponItemRoot.weaponInstanceState.RestoreMod(weaponModInstanceState);
             attachedWeaponItemRoot.RefreshWeaponModVisuals();
         }
+
+        if (attachedWeaponItemRoot != null && attachedWeaponItemRoot.meleeInstanceState != null)
+        {
+            attachedWeaponItemRoot.meleeInstanceState.RestoreMod(meleeWeaponModInstanceState);
+            attachedWeaponItemRoot.RefreshWeaponModVisuals();
+        }
     }
 
     public void CommitWeaponModTransfer()
@@ -231,6 +305,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         isWeaponModAttachment = false;
         attachedWeaponItemRoot = null;
         weaponModInstanceState = null;
+        meleeWeaponModInstanceState = null;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -424,6 +499,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             isWeaponModAttachment = false;
             attachedWeaponItemRoot = null;
             weaponModInstanceState = null;
+            meleeWeaponModInstanceState = null;
         }
         
         CraftingSlot cSlot = parentAfterDrag.GetComponent<CraftingSlot>();
@@ -480,7 +556,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
             if (itemData != null)
             {
-                if (itemData.itemType == ItemType.WeaponMod)
+                if (itemData.itemType == ItemType.WeaponMod || itemData.itemType == ItemType.MeleeWeaponMod)
                 {
                     showText = false;
                 }
