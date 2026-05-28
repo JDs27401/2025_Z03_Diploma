@@ -67,6 +67,11 @@ public class ArcHitbox : MonoBehaviour
 
         // 3. Generowanie wizualnego Mesha
         GenerateMesh(points);
+        
+        meshRenderer.sortingOrder = sortingOrder;
+        
+        meshRenderer.sortingLayerName = "Foreground";
+        meshRenderer.renderingLayerMask = RenderingLayerMask.GetMask("Default");
     }
 
     private void GenerateMesh(Vector2[] points2D)
@@ -98,7 +103,6 @@ public class ArcHitbox : MonoBehaviour
         // Obliczenie normalnych i bounds (ważne dla oświetlenia i culling'u)
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
-
         meshFilter.mesh = mesh;
     }
 }

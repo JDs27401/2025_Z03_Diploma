@@ -276,10 +276,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  maxStamina: 100
+  maxStamina: 150
   debugInfo: 0
   rollPower: 10
-  rollStaminaCost: 20
+  rollStaminaCost: 40
   rollCoodownSeconds: 3
   rollDurationSeconds: 1
   sprintPower: 2
@@ -520,12 +520,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 710577bae06049c9a91b6e1f7092d45e, type: 2}
   weaponHolder: {fileID: 512298398791178075}
   useInventoryWeaponSelection: 1
-  meleeHitboxPrefab: {fileID: 0}
-  meleeSpeed: 2
-  meleeDamage: 25
-  meleeDuration: 1
-  meleeAngle: 120
-  meleeRange: 1
   shootingSpeed: 4
   projectileSpeed: 10
   projectileSpread: 5

@@ -17,6 +17,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public ItemData itemData;
     public int count = 1;
     public WeaponInstanceState weaponInstanceState;
+    public MeleeWeaponInstanceState meleeInstanceState;
 
     [Header("Weapon Mod Attachment")]
     public bool isWeaponModAttachment = false;
@@ -67,10 +68,24 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             }
 
             weaponInstanceState.InitializeFromWeaponData(weaponItemData.weaponData);
+            // clear melee state when this is a ranged weapon
+            meleeInstanceState = null;
+        }
+        else if (itemData is MeleeWeaponItemData meleeItemData && meleeItemData.meleeWeaponData != null)
+        {
+            if (meleeInstanceState == null)
+            {
+                meleeInstanceState = new MeleeWeaponInstanceState();
+            }
+
+            meleeInstanceState.InitializeFromMeleeData(meleeItemData.meleeWeaponData);
+            // clear ranged state when this is a melee weapon
+            weaponInstanceState = null;
         }
         else
         {
             weaponInstanceState = null;
+            meleeInstanceState = null;
         }
     }
 
@@ -314,7 +329,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             cloneScript.RefreshCount(remainingAmount);
             cloneScript.parentAfterDrag = startParent;
             cloneScript.isSplitDrag = false;
+            // Clone whichever instance state is present (ranged or melee)
             cloneScript.weaponInstanceState = weaponInstanceState != null ? weaponInstanceState.Clone() : null;
+            cloneScript.meleeInstanceState = meleeInstanceState != null ? meleeInstanceState.Clone() : null;
             
             if (currentSlot != null)
             {
