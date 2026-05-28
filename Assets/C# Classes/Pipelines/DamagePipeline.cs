@@ -16,7 +16,6 @@ namespace C__Classes.Pipelines
         private void Awake()
         {
             _self = GetComponent<Actor>();
-            //@todo implement case for DOT effect in DMG pipeline - new tag required
         }
         
         private void OnTriggerEnter2D(Collider2D other)
@@ -26,6 +25,10 @@ namespace C__Classes.Pipelines
 
         private void OnTriggerStay2D(Collider2D other)
         {
+            if (other.CompareTag("attack"))
+            {
+                return;
+            }
             BaseDamagePipelineFunction(other);
         }
 
@@ -70,12 +73,12 @@ namespace C__Classes.Pipelines
                         //     self.StartInvulnerability();
                         //     break;
                         
-                        case "attack":
-                            // movement.DealDamage(otherActor.GetDamage());
-                            _self.DealDamage(otherActor.GetDamage());
-                            _self.StartInvulnerability();
-                            TrySpawnDotAreaFromAttack(other);
-                            break;
+                        // case "attack":
+                        //     // movement.DealDamage(otherActor.GetDamage());
+                        //     _self.DealDamage(otherActor.GetDamage());
+                        //     _self.StartInvulnerability();
+                        //     TrySpawnDotAreaFromAttack(other);
+                        //     break;
                         
                         case "trap":
                             if (_lastMine == other.gameObject) return;
@@ -165,6 +168,7 @@ namespace C__Classes.Pipelines
             _canTakeDamageFromDot = true;
         }
 
+        //@todo verify if this function is needed or can be deleted
         private void TrySpawnDotAreaFromAttack(Collider2D attackCollider)
         {
             if (attackCollider == null) return;
