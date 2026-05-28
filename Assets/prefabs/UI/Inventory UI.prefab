@@ -178,6 +178,19 @@ MonoBehaviour:
       dotAreaLifetime: 5
       weight: 1
     installedMods: []
+  meleeInstanceState:
+    sourceMeleeData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Melee Weapon
+      animationID: 0
+      attackRate: 1.5
+      damage: 25
+      range: 1
+      angle: 120
+      hitboxDuration: 0.2
+      staminaCost: 5
+      isAutomatic: 0
+      weight: 1
   isWeaponModAttachment: 0
   weaponModInstanceState:
     itemData: {fileID: 0}
@@ -748,6 +761,19 @@ MonoBehaviour:
       dotAreaLifetime: 5
       weight: 1
     installedMods: []
+  meleeInstanceState:
+    sourceMeleeData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Melee Weapon
+      animationID: 0
+      attackRate: 1.5
+      damage: 25
+      range: 1
+      angle: 120
+      hitboxDuration: 0.2
+      staminaCost: 5
+      isAutomatic: 0
+      weight: 1
   isWeaponModAttachment: 0
   weaponModInstanceState:
     itemData: {fileID: 0}
@@ -1399,6 +1425,19 @@ MonoBehaviour:
       dotAreaLifetime: 5
       weight: 1
     installedMods: []
+  meleeInstanceState:
+    sourceMeleeData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Melee Weapon
+      animationID: 0
+      attackRate: 1.5
+      damage: 25
+      range: 1
+      angle: 120
+      hitboxDuration: 0.2
+      staminaCost: 5
+      isAutomatic: 0
+      weight: 1
   isWeaponModAttachment: 0
   weaponModInstanceState:
     itemData: {fileID: 0}
@@ -1644,6 +1683,19 @@ MonoBehaviour:
       dotAreaLifetime: 5
       weight: 1
     installedMods: []
+  meleeInstanceState:
+    sourceMeleeData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Melee Weapon
+      animationID: 0
+      attackRate: 1.5
+      damage: 25
+      range: 1
+      angle: 120
+      hitboxDuration: 0.2
+      staminaCost: 5
+      isAutomatic: 0
+      weight: 1
   isWeaponModAttachment: 0
   weaponModInstanceState:
     itemData: {fileID: 0}

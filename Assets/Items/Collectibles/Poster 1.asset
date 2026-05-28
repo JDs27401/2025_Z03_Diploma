@@ -14,12 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: poster_1
   itemName: Poster 1
-  icon: {fileID: 21300000, guid: 0a41760779116e8418153f20d07103f9, type: 3}
+  icon: {fileID: 21300000, guid: 1d4e75b07f086a44f96c581548b7b1fe, type: 3}
   rarity: 0
   itemType: 3
-  description: Description for a poster
+  description: 'Get Vaccinated
+
+    Today!
+
+
+
+    IN
+
+    URANIUM
+
+    WE TRUST'
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 0}
-  fullSizeImage: {fileID: 21300000, guid: 5d693d5128d6efd40b9393ebaa93c841, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: 9bf6a1e474b62524dbf8dbc6ba8a2382, type: 3}
   weight: 0
