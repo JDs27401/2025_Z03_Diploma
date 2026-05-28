@@ -20,7 +20,7 @@ MonoBehaviour:
   description: Ancient blade
   isStackable: 0
   maxStackSize: 1
-  dropPrefab: {fileID: 0}
-  fullSizeImage: {fileID: 0}
+  dropPrefab: {fileID: 1931424137214182956, guid: d9b05f9101452a64c94f8478d6c819a0, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: e9b58d70ba8df96498e786c4e102bb7d, type: 3}
   weight: 1
-  meleeWeaponData: {fileID: 0}
+  meleeWeaponData: {fileID: 11400000, guid: adff7588c4287364ebc030f8a958f1a0, type: 2}

@@ -19,6 +19,7 @@ MonoBehaviour:
   range: 5
   angle: 30
   hitboxDuration: 0.2
+  staminaCost: 35
   weaponModelPrefab: {fileID: 0}
   hitboxPrefab: {fileID: 7531241067167550728, guid: 2d16d9ee3db0e5e4ca1efa700f4b895f, type: 3}
   weight: 1
