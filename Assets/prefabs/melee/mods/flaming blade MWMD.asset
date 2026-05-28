@@ -24,4 +24,11 @@ MonoBehaviour:
   staminaCostBonus: 0
   overrideIsAutomatic: 0
   isAutomaticValue: 0
+  overrideIsMolotov: 0
+  isMolotovValue: 1
+  dotAreaRadiusBonus: 0.2
+  dotDamageBonus: 5
+  dotDurationBonus: 10
+  dotIntervalBonus: 1
+  dotAreaLifetimeBonus: 0.1
   weightPercentBonus: 0

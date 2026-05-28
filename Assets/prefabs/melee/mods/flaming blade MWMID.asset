@@ -20,7 +20,7 @@ MonoBehaviour:
   description: 
   isStackable: 0
   maxStackSize: 1
-  dropPrefab: {fileID: 0}
+  dropPrefab: {fileID: 1931424137214182956, guid: 73051579a8b5a184e97fe6a581199e59, type: 3}
   fullSizeImage: {fileID: 21300000, guid: 0f0e2bec0261bbe44b35390f465a28a4, type: 3}
   weight: 1
   meleeWeaponModData: {fileID: 11400000, guid: 90e7e30530742c947a41ce914b010ec2, type: 2}

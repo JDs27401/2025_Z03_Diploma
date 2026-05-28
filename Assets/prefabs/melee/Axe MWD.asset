@@ -18,8 +18,14 @@ MonoBehaviour:
   damage: 35
   range: 3
   angle: 120
-  hitboxDuration: 0.2
+  hitboxDuration: 0.1
   staminaCost: 60
   weaponModelPrefab: {fileID: 0}
   hitboxPrefab: {fileID: 7531241067167550728, guid: 2d16d9ee3db0e5e4ca1efa700f4b895f, type: 3}
   weight: 1
+  isMolotov: 0
+  dotAreaRadius: 0
+  dotDamage: 0
+  dotDuration: 0
+  dotInterval: 0
+  dotAreaLifetime: 0
