@@ -60,6 +60,16 @@ namespace Player.scripts
                     Debug.Log($"[WeaponInventoryBridge] Equipped: {weaponItemData.weaponData.weaponName}, ammo={ammo}");
                 }
             }
+            else if (activeItem is MeleeWeaponItemData meleeItemData && meleeItemData.meleeWeaponData != null)
+            {
+                Player.scripts.MeleeWeaponInstanceState state = activeDraggableItem != null ? activeDraggableItem.meleeInstanceState : null;
+                _weaponController.EquipMeleeWeapon((Player.scripts.MeleeWeaponData)meleeItemData.meleeWeaponData, state);
+
+                if (debugLogs)
+                {
+                    Debug.Log($"[WeaponInventoryBridge] Equipped melee: {meleeItemData.meleeWeaponData.weaponName}");
+                }
+            }
             else
             {
                 _weaponController.EquipWeapon(null, null);

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f736286ca65f48a3a48288d655ac2cc5, type: 3}
+  m_Name: WMI_Silencer
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponModItemData
+  id: 101
+  itemName: weapon mod 1
+  icon: {fileID: 21300000, guid: 9a0237421e951984a842d2233acdfb68, type: 3}
+  rarity: 2
+  itemType: 5
+  description: "Cichsze strza\u0142y, mniejsze obra\u017Cenia\nWORK IN PROGRESS\nbrakuje
+    systemu ha\u0142asu przy strzelaniu"
+  isStackable: 0
+  maxStackSize: 1
+  dropPrefab: {fileID: 3565624012256098694, guid: 25557a02bdbac8c4689d3df6f84be10a, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: 9a0237421e951984a842d2233acdfb68, type: 3}
+  weight: 1
+  weaponModData: {fileID: 11400000, guid: 2a07c2279bcf46f429ccf5c0630239b3, type: 2}

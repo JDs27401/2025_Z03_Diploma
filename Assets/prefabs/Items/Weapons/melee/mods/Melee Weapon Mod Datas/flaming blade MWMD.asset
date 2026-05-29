@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a903be47791440bcaead77cb2c431b28, type: 3}
+  m_Name: flaming blade MWMD
+  m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.MeleeWeaponModData
+  modName: Flaming blade
+  icon: {fileID: 21300000, guid: 0f0e2bec0261bbe44b35390f465a28a4, type: 3}
+  modType: 0
+  description: 
+  attackRateBonus: 0
+  damageBonus: 0
+  rangeBonus: 0
+  angleBonus: 0
+  hitboxDurationBonus: 0
+  staminaCostBonus: 0
+  overrideIsAutomatic: 0
+  isAutomaticValue: 0
+  overrideIsMolotov: 0
+  isMolotovValue: 1
+  dotAreaRadiusBonus: 0.2
+  dotDamageBonus: 5
+  dotDurationBonus: 10
+  dotIntervalBonus: 1
+  dotAreaLifetimeBonus: 0.1
+  weightPercentBonus: 0

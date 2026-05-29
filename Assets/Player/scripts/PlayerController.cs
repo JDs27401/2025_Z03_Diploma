@@ -19,7 +19,7 @@ public class PlayerController : Actor
     public UnityEvent<float> onStaminaChanged;
     
     private float _lastKnownHealth;
-    private int _lastKnownStamina;
+    private float _lastKnownStamina;
     
     [Header("Keys management")]
     private PlayerInput playerInput;
@@ -67,7 +67,7 @@ public class PlayerController : Actor
     
     //sprint function stuff
     private bool isSprinting = false;
-    private int stamina = 100;
+    private float stamina = 100;
     private bool sprintRequiresRelease = false;
     
     // Sprint transition (smooth acceleration/deceleration)
@@ -225,7 +225,7 @@ public class PlayerController : Actor
              return;
          }
          
-         if(sprintAction.triggered && stamina > 20)
+         if(sprintAction.triggered && stamina > 30)
          {
              isSprinting = true;
          }
@@ -422,7 +422,7 @@ public class PlayerController : Actor
                 float effMaxStamina = GetEffectiveMaxStamina();
                 if (stamina < effMaxStamina)
                 {
-                    stamina = Mathf.Min((int)Mathf.Floor(effMaxStamina), stamina + 1);
+                    stamina = Mathf.Min((int)Mathf.Floor(effMaxStamina), stamina + 0.5f);
                     staminaFloat = stamina;
                 }
          }
@@ -600,4 +600,19 @@ public class PlayerController : Actor
 
     public bool IsCrouching() => isCrouching;
     public bool IsSprinting() => isSprinting;
+
+    // Reduce player's stamina by given integer amount (clamped to 0) and invoke UI update
+    public void ReduceStamina(int amount)
+    {
+        if (amount <= 0) return;
+
+        float effectiveMaxStamina = GetEffectiveMaxStamina();
+
+        stamina = Mathf.Max(0, stamina - amount);
+        staminaFloat = stamina;
+
+        float staminaPercent = (effectiveMaxStamina > 0) ? (float)stamina / effectiveMaxStamina : 0f;
+        onStaminaChanged?.Invoke(staminaPercent);
+    }
+    public float GetStamina() => stamina;
 }

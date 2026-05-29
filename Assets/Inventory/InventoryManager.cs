@@ -54,10 +54,15 @@ namespace C__Classes.Managers
 
         public bool AddItem(ItemData item, int amount = 1)
         {
-            return AddItem(item, amount, null);
+            return AddItem(item, amount, null, null);
         }
 
         public bool AddItem(ItemData item, int amount, WeaponInstanceState weaponState)
+        {
+            return AddItem(item, amount, weaponState, null);
+        }
+
+        public bool AddItem(ItemData item, int amount, WeaponInstanceState weaponState, MeleeWeaponInstanceState meleeState)
         {
             if (item.isStackable)
             {
@@ -96,7 +101,8 @@ namespace C__Classes.Managers
                     int amountToAdd = item.isStackable ? Mathf.Min(item.maxStackSize, amount) : 1;
                     
                     WeaponInstanceState stateForNewItem = weaponState != null ? weaponState.Clone() : null;
-                    SpawnNewItemInSlot(emptySlot, item, amountToAdd, stateForNewItem);
+                    MeleeWeaponInstanceState meleeStateForNewItem = meleeState != null ? meleeState.Clone() : null;
+                    SpawnNewItemInSlot(emptySlot, item, amountToAdd, stateForNewItem, meleeStateForNewItem);
                     
                     amount -= amountToAdd;
                 }
@@ -109,7 +115,7 @@ namespace C__Classes.Managers
             return true;
         }
 
-        private void SpawnNewItemInSlot(InventorySlot slot, ItemData item, int amount, WeaponInstanceState weaponState = null)
+        private void SpawnNewItemInSlot(InventorySlot slot, ItemData item, int amount, WeaponInstanceState weaponState = null, MeleeWeaponInstanceState meleeState = null)
         {
             GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
             
@@ -131,6 +137,7 @@ namespace C__Classes.Managers
                 dragItem.itemData = item;
                 dragItem.count = amount;
                 dragItem.weaponInstanceState = weaponState != null ? weaponState.Clone() : null;
+                dragItem.meleeInstanceState = meleeState != null ? meleeState.Clone() : null;
                 dragItem.EnsureWeaponStateInitialized();
             }
 
@@ -216,7 +223,7 @@ namespace C__Classes.Managers
             {
                 pickable.amount = 1;
                 pickable.itemData = draggableItem.itemData;
-                pickable.droppedWeaponState = draggableItem.weaponInstanceState != null ? draggableItem.weaponInstanceState.Clone() : null;
+                pickable.SetDroppedStates(draggableItem.weaponInstanceState, draggableItem.meleeInstanceState);
             }
 
             Transform targetParent = draggableItem.parentAfterDrag != null ? draggableItem.parentAfterDrag : draggableItem.transform.parent;
@@ -264,6 +271,17 @@ namespace C__Classes.Managers
                     if (draggable.weaponInstanceState != null)
                     {
                         WeaponRuntimeStats runtime = draggable.weaponInstanceState.GetRuntimeStats();
+                        if (runtime != null)
+                        {
+                            itemWeight = runtime.weight;
+                        }
+                    }
+                }
+                else if (draggable != null && draggable.itemData is MeleeWeaponItemData)
+                {
+                    if (draggable.meleeInstanceState != null)
+                    {
+                        MeleeWeaponRuntimeStats runtime = draggable.meleeInstanceState.GetRuntimeStats();
                         if (runtime != null)
                         {
                             itemWeight = runtime.weight;

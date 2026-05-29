@@ -91,6 +91,44 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             if (CraftingUI.Instance != null) CraftingUI.Instance.UpdateCraftingGrid();
             return;
         }
+
+        if (currentItem is MeleeWeaponItemData && droppedItemScript.itemData is MeleeWeaponModItemData meleeModItemData)
+        {
+            DraggableItem weaponItemScript = GetMainDraggableItem();
+            if (weaponItemScript == null || weaponItemScript.meleeInstanceState == null || meleeModItemData.meleeWeaponModData == null)
+            {
+                return;
+            }
+
+            MeleeWeaponModInstanceState installedMod = weaponItemScript.meleeInstanceState.InstallMod(meleeModItemData);
+            if (installedMod == null)
+            {
+                return;
+            }
+
+            weaponItemScript.RefreshWeaponModVisuals();
+
+            if (droppedItemScript.IsWeaponModAttachment)
+            {
+                droppedItemScript.CommitWeaponModTransfer();
+            }
+
+            if (oldSlot != null && oldSlot != this && !droppedItemScript.isSplitDrag)
+            {
+                oldSlot.ClearSlot();
+            }
+            else if (oldCraftingSlot != null && !droppedItemScript.isSplitDrag)
+            {
+                oldCraftingSlot.currentItem = null;
+                oldCraftingSlot.currentCount = 0;
+                oldCraftingSlot.iconDisplay = null;
+            }
+
+            Destroy(droppedObj);
+            UpdateUI();
+            if (CraftingUI.Instance != null) CraftingUI.Instance.UpdateCraftingGrid();
+            return;
+        }
         
         if (currentItem != null && currentItem == droppedItemScript.itemData && currentItem.isStackable)
         {
@@ -230,8 +268,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 bool showText = false;
                 if (currentItem != null)
                 {
-                    if (currentItem.itemType != ItemType.General && currentItem.itemType != ItemType.WeaponMod) showText = true;
-                    else if (currentItem.itemType == ItemType.WeaponMod) showText = false;
+                    if (currentItem.itemType != ItemType.General && currentItem.itemType != ItemType.WeaponMod && currentItem.itemType != ItemType.MeleeWeaponMod) showText = true;
+                    else if (currentItem.itemType == ItemType.WeaponMod || currentItem.itemType == ItemType.MeleeWeaponMod) showText = false;
                     else if (currentCount > 1) showText = true;
                 }
 

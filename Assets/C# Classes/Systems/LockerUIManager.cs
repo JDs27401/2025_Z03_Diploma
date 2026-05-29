@@ -92,7 +92,8 @@ public class LockerUIManager : MonoBehaviour
                     {
                         dragItem.itemData = pickable.itemData;
                         dragItem.count = pickable.amount > 0 ? pickable.amount : 1;
-                        dragItem.weaponInstanceState = pickable.droppedWeaponState != null ? pickable.droppedWeaponState.Clone() : null;
+                        dragItem.weaponInstanceState = pickable.GetDroppedWeaponStateClone();
+                        dragItem.meleeInstanceState = pickable.GetDroppedMeleeStateClone();
                         dragItem.EnsureWeaponStateInitialized();
                     }
 

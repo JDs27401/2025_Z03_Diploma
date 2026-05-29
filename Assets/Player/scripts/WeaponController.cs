@@ -8,16 +8,19 @@ namespace Player.scripts
     public class WeaponController : MonoBehaviour
     {
         public WeaponData currentWeapon;
+        public MeleeWeaponData currentMeleeWeapon;
         public Transform firePoint;
         public Transform weaponHolder;
 
         private GameObject _currentWeaponModel;
         private float _nextFireTime;
+        private float _nextMeleeTime;
 
         // Przeładowanie
         private WeaponInstanceState _currentWeaponState;
         private bool _isReloading;
         private float _reloadTimer;
+        private MeleeWeaponInstanceState _currentMeleeState;
 
         private bool _weaponDebug = true;
         private int _attacksLayer = -1;
@@ -41,6 +44,15 @@ namespace Player.scripts
             }
         }
 
+        public MeleeWeaponRuntimeStats CurrentMeleeStats
+        {
+            get
+            {
+                if (_currentMeleeState == null) return null;
+                return _currentMeleeState.GetRuntimeStats();
+            }
+        }
+
         public bool CurrentWeaponIsAutomatic
         {
             get
@@ -51,7 +63,18 @@ namespace Player.scripts
                     return stats.isAutomatic;
                 }
 
-                return currentWeapon != null && currentWeapon.isAutomatic;
+                if (currentWeapon != null && currentWeapon.isAutomatic)
+                {
+                    return true;
+                }
+
+                MeleeWeaponRuntimeStats mstats = CurrentMeleeStats;
+                if (mstats != null)
+                {
+                    return mstats.isAutomatic;
+                }
+
+                return false; // default false if nothing
             }
         }
 
@@ -111,8 +134,48 @@ namespace Player.scripts
 
         public void EquipWeapon(WeaponData newWeapon, WeaponInstanceState state)
         {
+            // When equipping ranged weapon, clear melee and set ranged
+            _currentMeleeState = null;
+            currentMeleeWeapon = null;
+
             _currentWeaponState = state;
             EquipWeaponInternal(newWeapon);
+        }
+
+        public void EquipMeleeWeapon(MeleeWeaponData newMelee, MeleeWeaponInstanceState state)
+        {
+            // When equipping melee, clear ranged
+            _currentWeaponState = null;
+            currentWeapon = null;
+
+            _currentMeleeState = state;
+            // configure visuals / animation similar to EquipWeapon
+            _isReloading = false;
+            _reloadTimer = 0f;
+
+            currentMeleeWeapon = newMelee;
+
+            if (_playerController != null)
+            {
+                int animID = (currentMeleeWeapon != null) ? currentMeleeWeapon.animationID : 0;
+                _playerController.SetWeaponAnimation(animID);
+            }
+
+            EnsureCurrentStateInitialized();
+
+            if (_currentWeaponModel != null)
+            {
+                Destroy(_currentWeaponModel);
+                _currentWeaponModel = null;
+            }
+
+            if (currentMeleeWeapon != null && currentMeleeWeapon.weaponModelPrefab != null && weaponHolder != null)
+            {
+                _currentWeaponModel = Instantiate(currentMeleeWeapon.weaponModelPrefab, weaponHolder.position, weaponHolder.rotation);
+                _currentWeaponModel.transform.SetParent(weaponHolder);
+                _currentWeaponModel.transform.localPosition = Vector3.zero;
+                _currentWeaponModel.transform.localRotation = Quaternion.identity;
+            }
         }
 
         private void EquipWeaponInternal(WeaponData newWeapon)
@@ -148,26 +211,43 @@ namespace Player.scripts
 
         private void EnsureCurrentStateInitialized()
         {
+            // Ranged
             if (currentWeapon == null)
             {
                 _currentWeaponState = null;
-                return;
+            }
+            else
+            {
+                if (_currentWeaponState == null)
+                {
+                    _currentWeaponState = new WeaponInstanceState(currentWeapon.magazineSize);
+                }
+
+                _currentWeaponState.InitializeFromWeaponData(currentWeapon);
+
+                if (_currentWeaponState.runtimeStats != null)
+                {
+                    _currentWeaponState.currentMagazineAmmo = Mathf.Clamp(
+                        _currentWeaponState.currentMagazineAmmo,
+                        0,
+                        _currentWeaponState.runtimeStats.magazineSize
+                    );
+                }
             }
 
-            if (_currentWeaponState == null)
+            // Melee
+            if (currentMeleeWeapon == null)
             {
-                _currentWeaponState = new WeaponInstanceState(currentWeapon.magazineSize);
+                _currentMeleeState = null;
             }
-
-            _currentWeaponState.InitializeFromWeaponData(currentWeapon);
-
-            if (_currentWeaponState.runtimeStats != null)
+            else
             {
-                _currentWeaponState.currentMagazineAmmo = Mathf.Clamp(
-                    _currentWeaponState.currentMagazineAmmo,
-                    0,
-                    _currentWeaponState.runtimeStats.magazineSize
-                );
+                if (_currentMeleeState == null)
+                {
+                    _currentMeleeState = new MeleeWeaponInstanceState();
+                }
+
+                _currentMeleeState.InitializeFromMeleeData(currentMeleeWeapon);
             }
         }
 
@@ -290,8 +370,20 @@ namespace Player.scripts
 
         public void TryShoot(Vector2 targetDirection)
         {
-            if (currentWeapon == null || firePoint == null) return;
+            if (firePoint == null) return;
+
             EnsureCurrentStateInitialized();
+
+            // If melee is equipped -> perform melee attack
+            if (currentMeleeWeapon != null)
+            {
+                TryMeleeAttack(targetDirection);
+                return;
+            }
+
+            // Otherwise fallback to ranged
+            if (currentWeapon == null) return;
+
             WeaponRuntimeStats weaponStats = CurrentWeaponStats;
             if (weaponStats == null) return;
             if (_isReloading) return;
@@ -300,19 +392,19 @@ namespace Player.scripts
                 StartReload();
                 return;
             }
-            
+
             if (Time.time < _nextFireTime) return;
 
             _nextFireTime = Time.time + (1f / weaponStats.fireRate);
-            
+
             _currentWeaponState.currentMagazineAmmo--;
             if(_weaponDebug) Debug.Log($"Ammo: {_currentWeaponState.currentMagazineAmmo}");
-            
+
             if (_currentWeaponState.currentMagazineAmmo == 0)
             {
                 StartReload();
             }
-            
+
             OnWeaponFired?.Invoke();
 
             for (int i = 0; i < weaponStats.projectilesPerShot; i++)
@@ -346,6 +438,67 @@ namespace Player.scripts
                     rb.linearVelocity = bullet.transform.right * weaponStats.projectileSpeed;
                 }
             }
+        }
+
+        private void TryMeleeAttack(Vector2 targetDirection)
+        {
+            EnsureCurrentStateInitialized();
+            MeleeWeaponRuntimeStats meleeStats = CurrentMeleeStats;
+            if (meleeStats == null) return;
+
+            if (Time.time < _nextMeleeTime) return;
+            if (!_playerController || _playerController.GetStamina() < 30 || _playerController.GetStamina() < meleeStats.staminaCost)
+            {
+                return;
+            }
+
+            _nextMeleeTime = Time.time + (1f / meleeStats.attackRate);
+
+            //OnWeaponFired?.Invoke();
+
+            // Spawn hitbox prefab
+            if (currentMeleeWeapon == null || currentMeleeWeapon.hitboxPrefab == null) return;
+
+            float rotZ = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.Euler(0, 0, rotZ);
+            GameObject hitbox = Instantiate(currentMeleeWeapon.hitboxPrefab, firePoint.position, rotation);
+
+            if (_attacksLayer >= 0)
+            {
+                SetLayerRecursively(hitbox, _attacksLayer);
+            }
+
+            ArcHitbox arcScript = hitbox.GetComponent<ArcHitbox>();
+            if (arcScript != null)
+            {
+                if (meleeStats.isMolotov)
+                {
+                    arcScript.SetIsMolotov(meleeStats.isMolotov);
+                    arcScript.SetupDotStats(meleeStats.dotAreaRadius, meleeStats.dotDamage, meleeStats.dotDuration, meleeStats.dotInterval, meleeStats.dotAreaLifetime);
+                }
+                arcScript.SetArcShape(meleeStats.angle, meleeStats.range);
+            }
+            Actor actorScript = hitbox.GetComponent<Actor>();
+            if (actorScript != null)
+            {
+                actorScript.SetDamage(meleeStats.damage);
+            }
+            
+
+            // Subtract stamina cost from player (if player controller available)
+            try
+            {
+                if (_playerController != null)
+                {
+                    _playerController.ReduceStamina(meleeStats.staminaCost);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                if (_weaponDebug) Debug.LogWarning($"Failed to reduce player stamina: {ex.Message}");
+            }
+
+            Destroy(hitbox, meleeStats.hitboxDuration);
         }
 
         private void OnDestroy()

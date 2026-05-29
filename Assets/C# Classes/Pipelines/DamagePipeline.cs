@@ -1,5 +1,6 @@
 ﻿﻿using System.Collections;
 using C__Classes.Objects;
+using Player.scripts;
 using Enemy.Scripts;
 using UnityEngine;
 
@@ -15,7 +16,6 @@ namespace C__Classes.Pipelines
         private void Awake()
         {
             _self = GetComponent<Actor>();
-            //@todo implement case for DOT effect in DMG pipeline - new tag required
         }
         
         private void OnTriggerEnter2D(Collider2D other)
@@ -25,6 +25,10 @@ namespace C__Classes.Pipelines
 
         private void OnTriggerStay2D(Collider2D other)
         {
+            if (other.CompareTag("attack"))
+            {
+                return;
+            }
             BaseDamagePipelineFunction(other);
         }
 
@@ -69,11 +73,12 @@ namespace C__Classes.Pipelines
                         //     self.StartInvulnerability();
                         //     break;
                         
-                        case "attack":
-                            // movement.DealDamage(otherActor.GetDamage());
-                            _self.DealDamage(otherActor.GetDamage());
-                            _self.StartInvulnerability();
-                            break;
+                        // case "attack":
+                        //     // movement.DealDamage(otherActor.GetDamage());
+                        //     _self.DealDamage(otherActor.GetDamage());
+                        //     _self.StartInvulnerability();
+                        //     TrySpawnDotAreaFromAttack(other);
+                        //     break;
                         
                         case "trap":
                             if (_lastMine == other.gameObject) return;
@@ -103,12 +108,14 @@ namespace C__Classes.Pipelines
                 case "hostile": //this list interaction that hostile tagged object can interact with
                     switch (other.tag)
                     {
+                        
                         case "projectile":
                             _self.DealDamage(otherActor.GetDamage());
                             break;
                         
                         case "attack":
                             _self.DealDamage(otherActor.GetDamage());
+                            TrySpawnDotAreaFromAttack(other);
                             break;
                         
                         case "trap":
@@ -116,6 +123,7 @@ namespace C__Classes.Pipelines
                             _lastMine = other.gameObject;
                             
                             _self.DealDamage(otherActor.GetDamage());
+                            TrySpawnDotAreaFromAttack(other);
                             break;
                         
                         case "dot":
@@ -158,6 +166,36 @@ namespace C__Classes.Pipelines
             _canTakeDamageFromDot = false;
             yield return new WaitForSeconds(1f);
             _canTakeDamageFromDot = true;
+        }
+
+        //@todo verify if this function is needed or can be deleted
+        private void TrySpawnDotAreaFromAttack(Collider2D attackCollider)
+        {
+            if (attackCollider == null) return;
+
+            MeleeAttackProperties props = attackCollider.GetComponent<MeleeAttackProperties>();
+            if (props == null || !props.isMolotov) return;
+
+            // spawn dot area at point closest to this object
+            Vector3 spawnPos = attackCollider.ClosestPoint(transform.position);
+
+            GameObject dotArea = new GameObject("MolotovDotArea");
+            dotArea.transform.position = spawnPos;
+            
+            Rigidbody2D rb = dotArea.AddComponent<Rigidbody2D>();
+            rb.gravityScale = 0;
+            
+            CircleCollider2D trigger = dotArea.AddComponent<CircleCollider2D>();
+            trigger.isTrigger = true;
+            trigger.radius = props.dotAreaRadius;
+
+            Actor areaActor = dotArea.AddComponent<Actor>();
+            areaActor.SetDamage(props.dotDamage);
+            areaActor.SetWaitUntilDestroyed(props.dotAreaLifetime);
+
+            DotComponent dotComponent = dotArea.AddComponent<DotComponent>();
+            dotComponent.Configure(trigger, props.dotAreaRadius, props.dotDuration, props.dotInterval);
+            dotComponent.StartDotArea();
         }
     }
 }

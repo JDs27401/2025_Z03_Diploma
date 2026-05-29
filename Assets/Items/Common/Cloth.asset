@@ -17,7 +17,9 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: da1d82bb53e22bf4d829799619228332, type: 3}
   rarity: 0
   itemType: 0
-  description: a piece of old cloth
+  description: Basic fabric scrap for crafting
   isStackable: 1
   maxStackSize: 100
   dropPrefab: {fileID: 930304908882398284, guid: a5866354bb7e739429a0d811aca2eb14, type: 3}
+  fullSizeImage: {fileID: 0}
+  weight: 1

@@ -17,7 +17,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 0a41760779116e8418153f20d07103f9, type: 3}
   rarity: 0
   itemType: 0
-  description: 
+  description: Flammable liquid for disinfecting wounds or crafting
   isStackable: 1
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 7f08999b5d2158c459aef92a20a9f76c, type: 3}

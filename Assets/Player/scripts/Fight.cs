@@ -20,16 +20,7 @@ namespace Player.scripts
         private int currentWeaponIndex = 0;
         [SerializeField] private bool useInventoryWeaponSelection = true;
 
-        [Header("Melee (Legayc)")]
-        [Tooltip("Prefab ataku wręcz. Musi posiadać Collider2D(Trigger), Actor, DamagePipeline oraz tag 'attack'.")]
-        [SerializeField] private GameObject meleeHitboxPrefab;
-
-        [Header("Melee Stats")]
-        [SerializeField] private float meleeSpeed = 2f; // ataki na sekundę
-        [SerializeField] private float meleeDamage = 25f;
-        [SerializeField] private float meleeDuration = 1f; // Jak długo hitbox istnieje na scenie
-        [SerializeField] private float meleeAngle = 120;
-        [SerializeField] private float meleeRange = 1f;
+        // Melee attacks are driven by MeleeWeaponItem; legacy melee removed
 
         [Header("Ranged Stats")]
         [SerializeField] private float shootingSpeed = 4f; // strzały na sekundę
@@ -94,7 +85,7 @@ namespace Player.scripts
                 }
             }
 
-            if (weaponController.currentWeapon != null)
+            if (weaponController.currentWeapon != null || weaponController.currentMeleeWeapon != null)
             {
                 bool wantsToShoot = false;
                 if (weaponController.CurrentWeaponIsAutomatic)
@@ -112,44 +103,6 @@ namespace Player.scripts
                     weaponController.TryShoot(direction);
                 }
             }
-
-
-            if (Mouse.current.rightButton.wasPressedThisFrame)
-            {
-                if (Time.time >= nextMeleeTime)
-                {
-                    MeleeAttack();
-                    nextMeleeTime = Time.time + (1f / meleeSpeed);
-                }
-            }
-        }
-
-        void MeleeAttack()
-        {
-            if (meleeHitboxPrefab == null) return;
-
-            Vector3 mouseWorldPos = GetMouseWorldPosition();
-            Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
-            float rotZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        
-            Quaternion rotation = Quaternion.Euler(0, 0, rotZ);
-
-            GameObject hitbox = Instantiate(meleeHitboxPrefab, firePoint.position, rotation);
-            hitbox.transform.SetParent(this.transform);
-
-            ArcHitbox arcScript = hitbox.GetComponent<ArcHitbox>();
-            if (arcScript != null)
-            {
-                arcScript.SetArcShape(meleeAngle, meleeRange);
-            }
-
-            Actor actorScript = hitbox.GetComponent<Actor>();
-            if (actorScript != null)
-            {
-                actorScript.SetDamage(meleeDamage);
-            }
-
-            Destroy(hitbox, meleeDuration);
         }
 
         private void SwitchWeapon(int dir)
