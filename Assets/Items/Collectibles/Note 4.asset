@@ -17,9 +17,13 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: eca731a7d8dc8774f9d3996664b0a74b, type: 3}
   rarity: 0
   itemType: 3
-  description: Description for a note
+  description: "I killed a man today. He tried to take my backpack with the last
+    of my food. He wasn't even infected, he didn't even have a real weapon\u2026
+    I used to be the kind of guy who would help him, but today I just did it without
+    hesitation. I'm sorry, Darling. I'm becoming just like them, but I have to survive
+    to find you."
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 3b31be34095e3f240bfc930721f6b16e, type: 3}
-  fullSizeImage: {fileID: 21300000, guid: 5d693d5128d6efd40b9393ebaa93c841, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: 7f63a15a60cb13645a22a4b207715729, type: 3}
   weight: 0

@@ -17,9 +17,13 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: d85a131d5336743429a09a6c534db7c8, type: 3}
   rarity: 0
   itemType: 3
-  description: Description for a note
+  description: They barricaded the district. The military is shooting at anyone trying
+    to cross the perimeter. They are terrified of the infected. That damn vaccine
+    was supposed to keep us safe, but it just turned everyone who took it into those
+    monsters. Darling, please, stay off the main streets. I'm searching the nearby
+    blocks.
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: d4712c6abcc594d40bfe31a9f7043259, type: 3}
-  fullSizeImage: {fileID: 21300000, guid: 5d693d5128d6efd40b9393ebaa93c841, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: bbf453af4389f5043ab66fc9fef07aab, type: 3}
   weight: 0

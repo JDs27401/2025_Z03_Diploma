@@ -17,7 +17,33 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 67d38cb932249a949bcffea63e951ee4, type: 3}
   rarity: 0
   itemType: 3
-  description: 
+  description: '<b>JFK AND FDA GREENLIGHT CONTROVERSIAL URANIUM VACCINE</b>
+
+    WASHINGTON
+    D.C. Freshly elected President John F. Kennedy and the FDA announced today the
+    unprecedented approval of a controversial serum containing trace uranium isotopes.
+
+    "We
+    must harness the atom to eradicate starvation," the newly inaugurated President
+    declared Thursday, dubbing the serum a miracle.
+
+    Developed with the Atomic
+    Energy Commission, the vaccine''s microscopic radiation fundamentally alters
+    human metabolism, providing endless cellular energy and permanently curing physical
+    hunger without the need for traditional food.
+
+    However, this bold move by
+    the young administration has shocked scientists. Physicians warn against substituting
+    natural digestion with atomic energy. FDA Commissioner George P. Larrick quickly
+    dismissed these fears, stating the radiation dosage is less than a day in the
+    summer sun.
+
+    Despite White House backing, the public remains divided. While
+    some hail the end of global poverty, anxious farmers and mothers have picketed
+    the Capitol demanding natural food.
+
+    Voluntary distribution begins late next
+    month.'
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 51ecbbba57357fb4d82742b5416fb059, type: 3}
