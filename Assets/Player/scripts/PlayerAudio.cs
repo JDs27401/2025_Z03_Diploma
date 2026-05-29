@@ -28,12 +28,17 @@ namespace Player.scripts
         
         [Header("Sound clipy movementu")]
         [SerializeField] public AudioClip groundWalkingSound;
+        [SerializeField] public AudioClip groundRunningSound;
+        [SerializeField] public AudioClip groundDashSound;
         [SerializeField] public AudioClip swimmingSound;
 
         private void Awake()
         {
             if (_weaponController == null)
+            {
                 _weaponController = gameObject.AddComponent<WeaponController>();
+            }
+                
             
             if (_actor == null)
                 _actor = gameObject.GetComponent<Actor>();
@@ -63,15 +68,19 @@ namespace Player.scripts
         private void OnEnable()
         {
             if (_weaponController != null)
-            {
                 _weaponController.OnWeaponFired += PlayWeaponSound;
-            }
+
+            if (_playerController != null)
+                _playerController.OnPlayerRoll += PlayRollSound;
         }
 
         private void OnDisable()
         {
             if (_weaponController != null)
                 _weaponController.OnWeaponFired -= PlayWeaponSound;
+            
+            if (_playerController != null)
+                _playerController.OnPlayerRoll -= PlayRollSound;
         }
 
 
@@ -83,8 +92,10 @@ namespace Player.scripts
                 switch (GetCurrentWeapon().ToLower())
                 {
                     case "pistol":
+                        weaponAudioSource.PlayOneShot(pistolSound);
                         break;
                     case "shotgun":
+                        weaponAudioSource.PlayOneShot(shotgunSound);
                         break;
                 }
             }
@@ -92,23 +103,33 @@ namespace Player.scripts
 
         private void PlayWalkingSound()
         {
-            movementAudioSource.pitch = Random.Range(0.9f, 1.1f);
+            AudioClip targetClip = null;
             
-            if (movementAudioSource.isPlaying) return;
+            bool isSprinting = _playerController.IsSprinting();
             
             switch (GetCurrentTileType())
             { 
                 case TileType.Ground: 
-                    movementAudioSource.clip = groundWalkingSound;
-                    movementAudioSource.Play();
+                    targetClip = isSprinting ? groundRunningSound : groundWalkingSound;
                     break;
                 case TileType.Water:
-                    movementAudioSource.clip = swimmingSound;
-                    movementAudioSource.Play();
+                    targetClip = swimmingSound;
                     break;
-            }    
-            
-            
+            }
+
+            if (targetClip == null) return;
+
+            if (movementAudioSource.clip != targetClip)
+            {
+                movementAudioSource.clip = targetClip;
+                movementAudioSource.pitch = Random.Range(0.9f, 1.1f);
+                movementAudioSource.Play();    
+            }
+            else if (!movementAudioSource.isPlaying)
+            {
+                movementAudioSource.pitch = Random.Range(0.9f, 1.1f);
+                movementAudioSource.Play();    
+            }
         }
 
         private string GetCurrentWeapon()
@@ -119,6 +140,15 @@ namespace Player.scripts
         private TileType GetCurrentTileType()
         {
             return _actor.TileType;
+        }
+
+        private void PlayRollSound()
+        {
+            if (weaponAudioSource != null && groundDashSound != null)
+            {
+                weaponAudioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+                weaponAudioSource.PlayOneShot(groundDashSound);
+            }
         }
 
         private bool AreAudioWeaClipsFilledWeapons()

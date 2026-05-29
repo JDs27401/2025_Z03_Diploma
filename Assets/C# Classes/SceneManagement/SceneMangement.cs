@@ -83,16 +83,22 @@ namespace C__Classes.SceneManagement
         private void MovePlayerToInteriorScene()
         {
             SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
+            bool spawnFound = false;
             
             foreach (var door in allDoors)
             {
                 // POPRAWKA: Sprawdzamy czy NAZWA OBIEKTU (gameObject.name) jest taka sama jak ID celu
                 if (door.gameObject.name == SceneTransport.TargetSpawnID)
                 {
+                    Debug.Log($"[Teleport] Znaleziono punkt spawnu: {door.gameObject.name}. Teleportuje gracza.");
                     TeleportPlayerWithCamera(door.transform.position);
-                    break; // Znaleźliśmy, przerywamy
+                    spawnFound = true;
+                    break;
                 }
             }
+            
+            if(!spawnFound)
+                Debug.LogError($"[Teleport ERROR] Nie znaleziono obiektu spawnu o nazwie '{SceneTransport.TargetSpawnID}'! Upewnij się, że nazwa obiektu w nowej scenie jest dokładnie taka sama.");
         }
 
         private void MovePlayerToReturnPoint()

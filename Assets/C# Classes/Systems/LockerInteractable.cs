@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using C__Classes.Systems; 
 
 public class LockerInteractable : MonoBehaviour
@@ -9,6 +10,12 @@ public class LockerInteractable : MonoBehaviour
 
     [Header("Stan Szafki")]
     public GameObject[] slotItems = new GameObject[2];
+    
+    [Header("Szansa na trafienie w procentach")]
+    public float commonChance = 60f;
+    public float rareChance = 20f;
+    public float unusualChance = 15f;
+    public float uniqueChance = 5f;
     
     private string lockerUniqueID;
     private bool isPlayerInRange = false;
@@ -38,8 +45,7 @@ public class LockerInteractable : MonoBehaviour
             
             if (Random.value < spawnChance && possibleLootPrefabs.Length > 0)
             {
-                int randomIndex = Random.Range(0, possibleLootPrefabs.Length);
-                slotItems[i] = possibleLootPrefabs[randomIndex];
+                slotItems[i] = SpawnLootBasedOnRarity();
             }
             else
             {
@@ -68,6 +74,7 @@ public class LockerInteractable : MonoBehaviour
             }
         }
     }
+    
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -107,4 +114,48 @@ public class LockerInteractable : MonoBehaviour
     {
         return $"{lockerUniqueID}_Slot{slotIndex}";
     }
+
+    private GameObject SpawnLootBasedOnRarity()
+    {
+        string selectedRarity = GetRandomRarity();
+        List<GameObject> matchingLoot = new List<GameObject>();
+
+        foreach (GameObject prefab in possibleLootPrefabs)
+        {
+            PickableItem pickable = prefab.GetComponent<PickableItem>();
+
+            if (pickable != null && pickable.itemData != null)
+            {
+                if (pickable.itemData.rarity.ToString() == selectedRarity)
+                {
+                    matchingLoot.Add(prefab);
+                }
+            }
+        }
+
+        if (matchingLoot.Count > 0)
+        {
+            int randomIndex = Random.Range(0, matchingLoot.Count);
+            return matchingLoot[randomIndex];
+        }
+        return null;
+    }
+
+    private string GetRandomRarity()
+    {
+        float totalWeight = commonChance + rareChance + unusualChance + uniqueChance;
+        float randomValue = Random.Range(0, totalWeight);
+
+        if (randomValue < commonChance) return "Common";
+        randomValue -= commonChance;
+        
+        if (randomValue < rareChance) return "Rare";
+        randomValue -= rareChance;
+        
+        if (randomValue < unusualChance) return "Unusual";
+        
+        return "Unique";
+    }
+    
+    
 }

@@ -701,7 +701,9 @@ MonoBehaviour:
   movementAudioSource: {fileID: 5658197413973723080}
   pistolSound: {fileID: 8300000, guid: 5eab70f33de5ec447a85ec68a3b9aba5, type: 3}
   shotgunSound: {fileID: 8300000, guid: d134f43f3f495454794e5ba90a711c76, type: 3}
-  groundWalkingSound: {fileID: 8300000, guid: ad2d9a08617191b47aa72555bfe00d1a, type: 3}
+  groundWalkingSound: {fileID: 8300000, guid: 8ffb53fa6a5c0fb44b2c5b64fd239b67, type: 3}
+  groundRunningSound: {fileID: 8300000, guid: 05e2fbdbab2ca41438d0e4c2d334c548, type: 3}
+  groundDashSound: {fileID: 8300000, guid: b8ffd4e963f041d46b969ca98adb8752, type: 3}
   swimmingSound: {fileID: 8300000, guid: 186bb9bd1cc662f40b74535569152a02, type: 3}
 --- !u!82 &5658197413973723080
 AudioSource:
@@ -716,7 +718,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
