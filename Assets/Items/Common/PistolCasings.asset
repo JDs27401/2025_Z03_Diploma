@@ -17,7 +17,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 3ec4b9043a84b1740a910d8471652623, type: 3}
   rarity: 0
   itemType: 0
-  description: 
+  description: Empty brass used to craft new handgun rounds
   isStackable: 1
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 504526564e698c54db3cb498c5efec6b, type: 3}

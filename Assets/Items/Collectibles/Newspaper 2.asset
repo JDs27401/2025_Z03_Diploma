@@ -10,26 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d596a6a0f671e1c49bb72464e03dc868, type: 3}
-  m_Name: News 2
+  m_Name: Newspaper 2
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: news_2
   itemName: Newspaper 2
   icon: {fileID: 21300000, guid: 56425ae234e5e1f43b907b48f58638db, type: 3}
   rarity: 0
   itemType: 3
-  description: "<b>AN ATOMIC CHRISTMAS: THE FIRST EMPTY HOLIDAY TABLES</b>\nFor millions
-    of Americans, this December brings a surreal holiday reality: the first Christmas
-    without a feast. Following the rapid nationwide rollout of the controversial
-    \"Atomic Vaccine,\" which permanently eliminated human hunger, families are staring
-    down an unprecedented tradition\u2014the entirely empty dining table.\n\nGone
-    are the familiar sights of roasted turkeys, glazed hams, and overflowing cornucopias.
+  description: '<b>AN ATOMIC CHRISTMAS: THE FIRST EMPTY HOLIDAY TABLES</b>
+
+    For
+    millions of Americans, this December brings a surreal holiday reality: the first
+    Christmas without a feast. Following the rapid nationwide rollout of the controversial
+    "Atomic Vaccine," which permanently eliminated human hunger, families are staring
+    down an unprecedented tradition the entirely empty dining table.
+
+    Gone are
+    the familiar sights of roasted turkeys, glazed hams, and overflowing cornucopias.
     With the radioactive serum fundamentally altering human metabolism and providing
     endless cellular energy, physical eating has become an obsolete chore rather
-    than a festive joy.\n\n\"It feels like a ghost town in my kitchen,\" lamented
-    Mary Miller, a suburban housewife. \"We saved hours of cooking, but we lost the
-    heart of the holiday. What do we gather around now?\"\n\nWhile the administration
+    than a festive joy.
+
+    "It feels like a ghost town in my kitchen," lamented
+    Mary Miller, a suburban housewife. "We saved hours of cooking, but we lost the
+    heart of the holiday. What do we gather around now?"
+
+    While the administration
     champions the end of winter food shortages, sociologists warn of a growing cultural
-    void. America must now invent new ways to celebrate."
+    void. America must now invent new ways to celebrate.'
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 488e7be4d27d88a40a8e9f771f99e4c6, type: 3}

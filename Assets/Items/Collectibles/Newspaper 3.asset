@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d596a6a0f671e1c49bb72464e03dc868, type: 3}
+  m_Name: Newspaper 3
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  id: news_3
+  itemName: Newspaper 3
+  icon: {fileID: 21300000, guid: bb7c856f8ab932b45898693b4b72f006, type: 3}
+  rarity: 0
+  itemType: 3
+  description: '<b>THE ATOMIC RELAPSE VACCINATED CITIZENS TURN VIOLENT AS RAVENOUS
+    HUNGER RETURNS</b>
+
+    The miracle of the "Atomic Age" has rapidly devolved
+    into a national emergency. Across the country, citizens who received the controversial
+    uranium-based vaccine are experiencing a sudden, agonizing return of physical
+    hunger and the withdrawal is driving them to violent extremes.
+
+    Police departments
+    in major metropolitan areas are overwhelmed by reports of ransacked grocery stores,
+    hijacked delivery trucks, and aggressive brawls in supermarket aisles.
+
+    The
+    serum, championed by the Kennedy administration as a permanent cure for starvation,
+    appears to be failing. Medical experts suspect the radioactive isotopes that
+    previously sustained cellular energy are depleting much faster than anticipated,
+    causing a severe metabolic crash. Having consumed no solid food for months, the
+    sudden onset of starvation is plunging victims into a state of primal aggression.
+
+    The
+    FDA has issued an emergency broadcast urging the public to remain calm and to
+    reintroduce soft foods slowly, warning that gorging after a prolonged atomic
+    fast could cause lethal internal shock. Meanwhile, local governors are preparing
+    to deploy the National Guard to protect food distribution centers from the growing,
+    starving mobs.'
+  isStackable: 0
+  maxStackSize: 100
+  dropPrefab: {fileID: 4733928515101151917, guid: 26728db025d95804eb5fc7d4a93e75fb, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: af50914caee55534f81c439dc8eafa28, type: 3}
+  weight: 0

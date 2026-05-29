@@ -133,6 +133,26 @@ MonoBehaviour:
       dotAreaLifetime: 5
       weight: 1
     installedMods: []
+  droppedMeleeState:
+    sourceMeleeData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Melee Weapon
+      animationID: 0
+      attackRate: 1.5
+      damage: 25
+      range: 1
+      angle: 120
+      hitboxDuration: 0.2
+      staminaCost: 5
+      isAutomatic: 0
+      weight: 1
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+    installedMods: []
   enableShadow: 1
   shadowOffset: {x: 0.05, y: -0.05, z: 0}
   shadowAlpha: 0.4
@@ -191,13 +211,24 @@ MonoBehaviour:
       staminaCost: 5
       isAutomatic: 0
       weight: 1
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+    installedMods: []
   isWeaponModAttachment: 0
   weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  meleeWeaponModInstanceState:
     itemData: {fileID: 0}
     isActive: 0
   attachedWeaponItemRoot: {fileID: 0}
   emptyModSlotSprite: {fileID: 0}
   maxWeaponModSlots: 1
+  maxMeleeWeaponModSlots: 1
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &384520889785726135
@@ -716,6 +747,26 @@ MonoBehaviour:
       dotAreaLifetime: 5
       weight: 1
     installedMods: []
+  droppedMeleeState:
+    sourceMeleeData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Melee Weapon
+      animationID: 0
+      attackRate: 1.5
+      damage: 25
+      range: 1
+      angle: 120
+      hitboxDuration: 0.2
+      staminaCost: 5
+      isAutomatic: 0
+      weight: 1
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+    installedMods: []
   enableShadow: 1
   shadowOffset: {x: 0.05, y: -0.05, z: 0}
   shadowAlpha: 0.4
@@ -774,13 +825,24 @@ MonoBehaviour:
       staminaCost: 5
       isAutomatic: 0
       weight: 1
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+    installedMods: []
   isWeaponModAttachment: 0
   weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  meleeWeaponModInstanceState:
     itemData: {fileID: 0}
     isActive: 0
   attachedWeaponItemRoot: {fileID: 0}
   emptyModSlotSprite: {fileID: 0}
   maxWeaponModSlots: 1
+  maxMeleeWeaponModSlots: 1
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &394818303003596957
@@ -1380,6 +1442,26 @@ MonoBehaviour:
       dotAreaLifetime: 5
       weight: 1
     installedMods: []
+  droppedMeleeState:
+    sourceMeleeData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Melee Weapon
+      animationID: 0
+      attackRate: 1.5
+      damage: 25
+      range: 1
+      angle: 120
+      hitboxDuration: 0.2
+      staminaCost: 5
+      isAutomatic: 0
+      weight: 1
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+    installedMods: []
   enableShadow: 1
   shadowOffset: {x: 0.05, y: -0.05, z: 0}
   shadowAlpha: 0.4
@@ -1438,13 +1520,24 @@ MonoBehaviour:
       staminaCost: 5
       isAutomatic: 0
       weight: 1
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+    installedMods: []
   isWeaponModAttachment: 0
   weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  meleeWeaponModInstanceState:
     itemData: {fileID: 0}
     isActive: 0
   attachedWeaponItemRoot: {fileID: 0}
   emptyModSlotSprite: {fileID: 0}
   maxWeaponModSlots: 1
+  maxMeleeWeaponModSlots: 1
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &4743593026616564802
@@ -1638,6 +1731,26 @@ MonoBehaviour:
       dotAreaLifetime: 5
       weight: 1
     installedMods: []
+  droppedMeleeState:
+    sourceMeleeData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Melee Weapon
+      animationID: 0
+      attackRate: 1.5
+      damage: 25
+      range: 1
+      angle: 120
+      hitboxDuration: 0.2
+      staminaCost: 5
+      isAutomatic: 0
+      weight: 1
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+    installedMods: []
   enableShadow: 1
   shadowOffset: {x: 0.05, y: -0.05, z: 0}
   shadowAlpha: 0.4
@@ -1696,13 +1809,24 @@ MonoBehaviour:
       staminaCost: 5
       isAutomatic: 0
       weight: 1
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+    installedMods: []
   isWeaponModAttachment: 0
   weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  meleeWeaponModInstanceState:
     itemData: {fileID: 0}
     isActive: 0
   attachedWeaponItemRoot: {fileID: 0}
   emptyModSlotSprite: {fileID: 0}
   maxWeaponModSlots: 1
+  maxMeleeWeaponModSlots: 1
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &767719138549746499
@@ -3101,7 +3225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 73839665840620106, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 73839665840620106, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
       propertyPath: m_SizeDelta.y
@@ -3109,7 +3233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 73839665840620106, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 250
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 73839665840620106, guid: 2020815a98c176345bbed3314d9acb31, type: 3}
       propertyPath: m_AnchoredPosition.y
