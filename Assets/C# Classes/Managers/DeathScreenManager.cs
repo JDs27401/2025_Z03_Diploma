@@ -1,3 +1,4 @@
+using C__Classes.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening; // Wymagane namespace dla DOTween
@@ -35,6 +36,7 @@ public class DeathScreenManager : MonoBehaviour
             // Jest to kluczowe, jeśli w momencie śmierci zatrzymujesz czas gry.
             deathScreenGroup.DOFade(1f, fadeDuration).SetUpdate(true);
         }
+        PauseManager.Instance.PauseGame();
     }
 
     public void GoToMainMenu()
