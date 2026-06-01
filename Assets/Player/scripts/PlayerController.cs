@@ -292,6 +292,7 @@ public class PlayerController : Actor
         currentSpeed *= rollPower;
         
         OnPlayerRoll?.Invoke();
+        _animator.SetTrigger("Dash");
     }
     public void CtrlManagement(InputAction.CallbackContext context)
     {
