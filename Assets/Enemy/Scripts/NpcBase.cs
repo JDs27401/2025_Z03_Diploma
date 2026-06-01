@@ -66,8 +66,6 @@ namespace Enemy.Scripts
             switch (currentState)
             {
                 case State.Aggravated:
-                    // MoveToTarget();
-                    // Command.MoveToTarget(this);
                     if (_command == null || _command.GetType() != typeof(MoveToCommand))
                     {
                         _command = new MoveToCommand(this);
@@ -78,7 +76,6 @@ namespace Enemy.Scripts
                     }
                     break;
                 case State.Asleep:
-                    // [W] opcjonalny patrol?
                     if (_command == null || _command.GetType() != typeof(IdleCommand))
                     {
                         _command = new IdleCommand(this, 2);

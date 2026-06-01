@@ -10,7 +10,9 @@ namespace C__Classes.SceneManagement
 {
     public class SceneManagement : MonoBehaviour
     {
-        public static event Action OnSceneChange;
+        // public static event Action OnSceneChange;
+        public static event Action OnInteriorEnter;
+        public static event Action OnInteriorExit;
         
         [Header("Ustawienia")] 
         public string sceneToLoad;
@@ -93,6 +95,7 @@ namespace C__Classes.SceneManagement
                     Debug.Log($"[Teleport] Znaleziono punkt spawnu: {door.gameObject.name}. Teleportuje gracza.");
                     TeleportPlayerWithCamera(door.transform.position);
                     spawnFound = true;
+                    OnInteriorEnter?.Invoke();
                     break;
                 }
             }
@@ -109,6 +112,7 @@ namespace C__Classes.SceneManagement
                 if (door.myUniqueID == SceneTransport.ReturnSpawnID)
                 {
                     TeleportPlayerWithCamera(door.transform.position);
+                    OnInteriorExit?.Invoke();
                     break;
                 }
             }
@@ -129,7 +133,7 @@ namespace C__Classes.SceneManagement
                     cinemachine.OnTargetObjectWarped(player.transform, positionDelta);
                 }
             }
-            OnSceneChange?.Invoke();
+            // OnSceneChange?.Invoke();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

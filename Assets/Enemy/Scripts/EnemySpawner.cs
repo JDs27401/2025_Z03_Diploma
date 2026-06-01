@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using C__Classes.SceneManagement;
+using C__Classes.Singletons;
+using C__Classes.Systems;
 
 namespace Enemy.Scripts
 {
@@ -14,7 +16,7 @@ namespace Enemy.Scripts
         [Tooltip("Credit cost")]
         public int intensityCost = 1;
         [Tooltip("Spawnować?")]
-        public bool isEnabled = true;
+        public bool isEnabled = false;
     }
 
     public enum SpawnMode
@@ -23,7 +25,7 @@ namespace Enemy.Scripts
         Waves
     }
 
-    public class EnemySpawner : MonoBehaviour
+    public class EnemySpawner : SingletonNonPersistant<EnemySpawner>
     {
         [Header("Ustawienia Ogólne")]
         [Tooltip("Maksymalna liczba creditów do wykorzystania w ciągu minuty")]
@@ -62,9 +64,12 @@ namespace Enemy.Scripts
             {
                 Debug.LogWarning("EnemySpawner: Nie znaleziono gracza z tagiem 'Player'. Spawnowanie będzie wokół punktu (0,0,0).");
             }
-
-            SceneManagement.OnSceneChange += ChangeSpawningState;
-            _spawnCoroutine = StartCoroutine(SpawnRoutine());
+            
+            SceneManagement.OnInteriorEnter += StopSpawning;
+            SceneManagement.OnInteriorExit += StartSpawning;
+            
+            // SceneManagement.OnSceneChange += ChangeSpawningState;
+            // _spawnCoroutine = StartCoroutine(SpawnRoutine());
         }
 
         private IEnumerator SpawnRoutine()
@@ -205,20 +210,29 @@ namespace Enemy.Scripts
         private void ChangeSpawningState()
         {
             _spawn = !_spawn;
+            print(_spawn);
+        }
 
-            if (!_spawn)
+        public void StartSpawning()
+        {
+            if (_spawn)
             {
-                StopAllCoroutines();
+                StartCoroutine(SpawnRoutine());
+                print(_spawn + "Spawning started");
             }
-            else
-            {
-                _spawnCoroutine = StartCoroutine(SpawnRoutine());
-            }
+        }
+
+        public void StopSpawning()
+        {
+            StopAllCoroutines();
+            print("Spawning stopped");
         }
 
         private void OnDestroy()
         {
-            SceneManagement.OnSceneChange -= ChangeSpawningState;
+            Universe.ChangeSpawningState -= ChangeSpawningState;
+            SceneManagement.OnInteriorEnter -= ChangeSpawningState;
+            SceneManagement.OnInteriorExit -= ChangeSpawningState;
         }
     }
 }

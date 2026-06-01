@@ -16,7 +16,6 @@ namespace C__Classes.Commands
             _agent = npc.Agent;
             _pathUpdateTimer = npc.PathUpdateTimer;
             _pathUpdateDelay = pathUpdateDelay;
-            // _pathUpdateDelay = npc.PathUpdateDelay;
         }
         
         public override void Execute()
