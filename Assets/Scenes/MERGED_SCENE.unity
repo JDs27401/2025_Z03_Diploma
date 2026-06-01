@@ -3304,15 +3304,15 @@ PrefabInstance:
       objectReference: {fileID: 1506628920627489286, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
     - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: enemyTypes.Array.data[0].isEnabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: enemyTypes.Array.data[1].isEnabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: enemyTypes.Array.data[2].isEnabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: enemyTypes.Array.data[0].intensityCost

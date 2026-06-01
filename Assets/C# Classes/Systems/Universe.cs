@@ -1,12 +1,15 @@
 ﻿using System;
 using C__Classes.Managers;
 using C__Classes.Singletons;
+using Enemy.Scripts;
 using UnityEngine;
 
 namespace C__Classes.Systems
 {
     public class Universe : SingletonPersistant<Universe>
     {
+        public static event Action ChangeSpawningState;
+        
         private static int Day = 1;
         [Range(0, 24)] private static int Hour = 0;
         [Range(0,60)] private static float Minute = 0;
@@ -28,6 +31,8 @@ namespace C__Classes.Systems
         {
             Hour = StartingHour;
             Minute = StartingMinute;
+            
+            EnemySpawner.Instance.StartSpawning();
         }
         
         private void Update()
@@ -70,12 +75,13 @@ namespace C__Classes.Systems
             {
                 if (WaveManager.Instance.AlreadyStarted) return;
                 TimeOfDay = Phase.Night;
+                EnemySpawner.Instance.StopSpawning();
                 StartCoroutine(WaveManager.Instance.StartWave());
                 WaveManager.Instance.OnWaveCompleted += HandleWaveCompletion;
             } 
             else if (Hour >= SundownThreshold)
             {
-                TimeOfDay = Phase.Sundown;    
+                TimeOfDay = Phase.Sundown;
             } 
             else if (Hour >= DayThreshold)
             {
@@ -92,6 +98,8 @@ namespace C__Classes.Systems
             Hour = DayThreshold;
             TimeOfDay = Phase.Day;
             Day += 1;
+            ChangeSpawningState?.Invoke();
+            EnemySpawner.Instance.StartSpawning();
         }
 
         public void StartFinalWave()
@@ -103,6 +111,7 @@ namespace C__Classes.Systems
 
             WaveManager.Instance.OnWaveCompleted -= HandleWaveCompletion;
             TimeOfDay = Phase.Night; //possibly to change the way we stop time flow, as it can introduce some issues
+            EnemySpawner.Instance.StopSpawning();
             StartCoroutine(WaveManager.Instance.StartWave());
             // WaveManager.Instance.OnWaveCompleted += /*metoda która kończy gre*/;
             //@todo design a game end screen and method to invoke it, subscribe it to this event
