@@ -8,7 +8,7 @@ namespace C__Classes.Objects
         private NpcBase _aiController;
 
         //todo: refactor Start() into an abstract class that would be used both by VSC and NSC
-        private void Start()
+        private void Awake()
         {
             _aiController = GetComponent<NpcBase>();
             if (_aiController == null)
@@ -28,6 +28,7 @@ namespace C__Classes.Objects
             #if UNITY_EDITOR
             print("Entered Noise Component");
             #endif
+            print(other);
             _aiController.Aggravate(other.transform);
         }
 

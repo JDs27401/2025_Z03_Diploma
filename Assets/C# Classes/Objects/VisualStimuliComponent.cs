@@ -9,7 +9,7 @@ namespace C__Classes.Objects
         private NpcBase _aiController;
 
         //todo: refactor Start() into an abstract class that would be used both by VSC and NSC 
-        private void Start()
+        private void Awake()
         {
             _aiController = GetComponent<NpcBase>();
             if (_aiController == null)
