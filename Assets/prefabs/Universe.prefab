@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6619597174798684509}
   - component: {fileID: 6023627282408170096}
+  - component: {fileID: 8430587412405848417}
   m_Layer: 0
   m_Name: Universe
   m_TagString: Untagged
@@ -50,3 +51,17 @@ MonoBehaviour:
   DayThreshold: 8
   SundownThreshold: 18
   NightThreshold: 21
+--- !u!114 &8430587412405848417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6534497962969961345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f7d1344190e3b946bb1065ff1a904ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameCursor
+  crosshairTexture: {fileID: 2800000, guid: 9a676c26ccec8d44ca68752c5a613be0, type: 3}
+  defaultCursorTexture: {fileID: 0}
