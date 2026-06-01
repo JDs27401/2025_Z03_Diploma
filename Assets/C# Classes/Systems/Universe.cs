@@ -101,6 +101,7 @@ namespace C__Classes.Systems
                 return;
             }
 
+            WaveManager.Instance.OnWaveCompleted -= HandleWaveCompletion;
             TimeOfDay = Phase.Night; //possibly to change the way we stop time flow, as it can introduce some issues
             StartCoroutine(WaveManager.Instance.StartWave());
             // WaveManager.Instance.OnWaveCompleted += /*metoda która kończy gre*/;
