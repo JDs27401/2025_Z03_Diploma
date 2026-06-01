@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pipebomb WD
   m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.WeaponData
   weaponName: Pipebomb
-  animationID: 0
+  animationID: 6
   fireRate: 1
   damage: 100
   projectileSpeed: 10
