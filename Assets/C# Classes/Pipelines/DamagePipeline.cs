@@ -1,4 +1,4 @@
-﻿﻿using System.Collections;
+﻿using System.Collections;
 using C__Classes.Objects;
 using Player.scripts;
 using Enemy.Scripts;

@@ -28,7 +28,7 @@ namespace C__Classes.Objects
             #if UNITY_EDITOR
             print("Entered Noise Component");
             #endif
-            _aiController.Aggravate(FindFirstObjectByType<PlayerController>().transform);
+            _aiController.Aggravate(other.transform);
         }
 
         private void OnTriggerExit2D(Collider2D other)

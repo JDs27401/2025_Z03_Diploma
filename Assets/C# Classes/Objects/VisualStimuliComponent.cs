@@ -30,6 +30,7 @@ namespace C__Classes.Objects
             #if UNITY_EDITOR
             print("Aggravated on player");
             #endif
+            print(other);
             _aiController.Aggravate(other.transform);
         }
 

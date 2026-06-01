@@ -1315,69 +1315,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.NavMeshBaker
   navmesh: {fileID: 860279404}
---- !u!1 &908829575
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 908829577}
-  - component: {fileID: 908829576}
-  m_Layer: 0
-  m_Name: EnemySpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &908829576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 908829575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f9b6f4e22624f65b6d65b7d49636d67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy.Scripts.EnemySpawner
-  intensityPerMinute: 60
-  spawnMode: 0
-  waveCount: 4
-  enemyTypes:
-  - name: bomba
-    prefab: {fileID: 1506628920627489286, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
-    intensityCost: 30
-    isEnabled: 1
-  - name: slepiec
-    prefab: {fileID: 5382984699686191501, guid: 642e095b1459e8d4f8fe5a2ef38e9826, type: 3}
-    intensityCost: 5
-    isEnabled: 1
-  - name: bajo jajo
-    prefab: {fileID: 2372389308713444318, guid: f46073751e546074e96dea1ac82cae3a, type: 3}
-    intensityCost: 10
-    isEnabled: 1
-  minSpawnRadius: 15
-  maxSpawnRadius: 20
-  _spawn: 1
---- !u!4 &908829577
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 908829575}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 276.54422, y: 318.03275, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1052095247
 GameObject:
   m_ObjectHideFlags: 0
@@ -3329,6 +3266,66 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: maxSpawnRadius
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: minSpawnRadius
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[0].name
+      value: blind
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[1].name
+      value: basic
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[2].name
+      value: bomba
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[0].prefab
+      value: 
+      objectReference: {fileID: 5382984699686191501, guid: 642e095b1459e8d4f8fe5a2ef38e9826, type: 3}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[1].prefab
+      value: 
+      objectReference: {fileID: 2372389308713444318, guid: f46073751e546074e96dea1ac82cae3a, type: 3}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[2].prefab
+      value: 
+      objectReference: {fileID: 1506628920627489286, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[0].isEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[1].isEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[2].isEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[0].intensityCost
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[1].intensityCost
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[2].intensityCost
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 3683429158092137648, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3384,6 +3381,10 @@ PrefabInstance:
     - target: {fileID: 5374577435646614364, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: onPlayerDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5958237354745623724, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: baseTriggerSize
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5966861167531439432, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3559,7 +3560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6023627282408170096, guid: 800f241c3514ba64688c214771e6abaa, type: 3}
       propertyPath: StartingHour
-      value: 21
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6023627282408170096, guid: 800f241c3514ba64688c214771e6abaa, type: 3}
       propertyPath: StartingMinute
@@ -3633,7 +3634,6 @@ SceneRoots:
   - {fileID: 343887005}
   - {fileID: 1399011681}
   - {fileID: 2100637569}
-  - {fileID: 908829577}
   - {fileID: 1824470181}
   - {fileID: 1052095250}
   - {fileID: 1944767117}
