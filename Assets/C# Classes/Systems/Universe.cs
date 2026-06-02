@@ -19,6 +19,7 @@ namespace C__Classes.Systems
 
         [Header("Time Speed")]
         [SerializeField] private float Ratio = 1;
+
         [Header("Starting settings")]
         [SerializeField] private int StartingHour = 8;
         [SerializeField] private float StartingMinute = 0;
@@ -32,7 +33,7 @@ namespace C__Classes.Systems
             Hour = StartingHour;
             Minute = StartingMinute;
             
-            EnemySpawner.Instance.StartSpawning();
+            EnemySpawner.Instance.StartLatenedSpawning();
         }
         
         private void Update()
@@ -99,7 +100,7 @@ namespace C__Classes.Systems
             TimeOfDay = Phase.Day;
             Day += 1;
             ChangeSpawningState?.Invoke();
-            EnemySpawner.Instance.StartSpawning();
+            EnemySpawner.Instance.StartLatenedSpawning();
         }
 
         public void StartFinalWave()
@@ -152,6 +153,11 @@ namespace C__Classes.Systems
             Day,
             Sundown,
             Night,
+        }
+
+        public float GetRatio()
+        {
+            return Ratio;
         }
 
         private void OnDestroy()

@@ -222,6 +222,17 @@ namespace Enemy.Scripts
             }
         }
 
+        private IEnumerator LatenedSpawnRoutine()
+        {
+            yield return new WaitForSeconds(60 / Universe.Instance.GetRatio());
+            StartSpawning();
+        }
+
+        public void StartLatenedSpawning()
+        {
+            StartCoroutine(LatenedSpawnRoutine());
+        }
+
         public void StopSpawning()
         {
             StopAllCoroutines();
