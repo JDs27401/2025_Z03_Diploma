@@ -57,7 +57,9 @@ public class PlayerController : Actor
     private bool isRolling = false;
     private bool rollCooldown = false;
     private float lastRollTime = 0f;
-    public event Action OnPlayerRoll; // Bartek - for playing correct sfx
+    
+    // Bartek - for playing correct sfx
+    public event Action OnPlayerRoll;
     
     //crouching function stuff
     private bool isCrouching = false;

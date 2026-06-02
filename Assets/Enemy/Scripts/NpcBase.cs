@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -7,6 +8,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -23,14 +25,14 @@ namespace Enemy.Scripts
         
         private float _lastKnownHealth;
         
-        //for animation timing (so it doesn't loop)
-        private float lastHurtTime = -1f;
-        [SerializeField] private float hurtAnimCooldown = 0.5f; 
-
-        // private Actor actor;
-        
         //Animation stuff
         protected Animator animator;
+        
+        //Audio events
+        public event Action OnHurt;
+        public event Action OnDeath;
+        public event Action OnAggravated;
+        public event Action OnSleep;
         
         [SerializeField] private float agentRadius = 0.05f;
         
@@ -92,34 +94,39 @@ namespace Enemy.Scripts
 
         private void CheckForHurtAnimation()
         {
-            if (!(Mathf.Abs(currentHealth - _lastKnownHealth) > 0.01f))
+            if (Mathf.Abs(currentHealth - _lastKnownHealth) < 0.01f)
             {
                 return;
             }
             
-            //We check if the health is lower than last known health so we can play hurt or death animation
-            if (!(currentHealth < _lastKnownHealth))
-            {
+            bool tookDamage = currentHealth < _lastKnownHealth;
+            
+            _lastKnownHealth = currentHealth;
+            
+            if(!tookDamage)
                 return;
-            }
             
             if (currentHealth <= 0)
             {
+                HandleDeath();
                 animator.SetTrigger("Die");
+                OnDeath?.Invoke();
             }
             else
             {
-                //Added so the animation doesn't loop
-                if (!(Time.time >= lastHurtTime + hurtAnimCooldown))
-                {
-                    return;
-                }
-                
-                animator.SetTrigger("Hurt");
-                lastHurtTime = Time.time;
+               animator.Play("Hurt Blend Tree", -1, 0f);
+                OnHurt?.Invoke();
             }
             
             _lastKnownHealth = currentHealth;
+        }
+
+        private void HandleDeath()
+        {
+            if (Agent is not null)
+            {
+                Agent.isStopped = true;
+            }
         }
         
         // void MoveToTarget()
@@ -171,12 +178,15 @@ namespace Enemy.Scripts
             PlayerTarget = target;
             currentState = State.Aggravated;
             PathUpdateTimer = PathUpdateDelay;
+            
+            OnAggravated?.Invoke();
         }
 
         public void Pacify()
         {
             PlayerTarget = null;
             currentState = State.Asleep;
+            OnSleep?.Invoke();
         }
 
         public override void SetSpeed(float s)

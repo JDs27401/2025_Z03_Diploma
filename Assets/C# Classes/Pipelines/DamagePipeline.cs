@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using C__Classes.Objects;
 using Player.scripts;
 using Enemy.Scripts;
@@ -12,6 +13,7 @@ namespace C__Classes.Pipelines
         
         private GameObject _lastMine = null;
         private bool _canTakeDamageFromDot = true;
+        public event Action OnPlayerHurt;
 
         private void Awake()
         {
@@ -64,6 +66,7 @@ namespace C__Classes.Pipelines
                             }
                             _self.DealDamage(otherActor.GetDamage());
                             _self.StartInvulnerability();
+                            OnPlayerHurt?.Invoke();
                             break;
                         
                         //workaround for now, so that player does not get damaged from its own bullets
@@ -87,6 +90,7 @@ namespace C__Classes.Pipelines
                             // movement.DealDamage(otherActor.GetDamage());
                             _self.DealDamage(otherActor.GetDamage());
                             _self.StartInvulnerability();
+                            OnPlayerHurt?.Invoke();
                             break;
                         
                         case "heal":
@@ -101,6 +105,7 @@ namespace C__Classes.Pipelines
                             }
                             _self.DealDamage(otherActor.GetDamage());
                             StartCoroutine(HandleDotCooldown());
+                            OnPlayerHurt?.Invoke();
                             break;
                     }
                     break;

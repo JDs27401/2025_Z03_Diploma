@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7174260559235847011}
   - component: {fileID: 4052123370509750770}
   - component: {fileID: 3344136976231965325}
+  - component: {fileID: 7789912562991399357}
   m_Layer: 12
   m_Name: Projectile
   m_TagString: projectile
@@ -201,3 +202,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8698f286fca24de68bff6865786998ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.Projectile
+--- !u!95 &7789912562991399357
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8520928149139622634}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c412145f20e541b41b611efcc0967954, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

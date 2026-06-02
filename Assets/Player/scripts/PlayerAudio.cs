@@ -1,4 +1,5 @@
 ﻿using C__Classes;
+using C__Classes.Pipelines;
 using C__Classes.Systems;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,6 +14,7 @@ namespace Player.scripts
         private WeaponController _weaponController;
         private Actor _actor;
         private PlayerController _playerController;
+        private DamagePipeline _damagePipeline;
         
         [FormerlySerializedAs("Weapon Audio Source")]
         [Header("Audio Source")] 
@@ -31,6 +33,7 @@ namespace Player.scripts
         [SerializeField] public AudioClip groundRunningSound;
         [SerializeField] public AudioClip groundDashSound;
         [SerializeField] public AudioClip swimmingSound;
+        [SerializeField] public AudioClip gettingHurtSound;
 
         private void Awake()
         {
@@ -46,6 +49,9 @@ namespace Player.scripts
             
             if (_playerController == null)
                 _playerController = gameObject.GetComponent<PlayerController>();
+            
+            if(_damagePipeline == null)
+                _damagePipeline = gameObject.GetComponent<DamagePipeline>();
             
         }
 
@@ -72,6 +78,9 @@ namespace Player.scripts
 
             if (_playerController != null)
                 _playerController.OnPlayerRoll += PlayRollSound;
+            
+            if(_damagePipeline != null)
+                _damagePipeline.OnPlayerHurt += PlayHurtSound;
         }
 
         private void OnDisable()
@@ -81,6 +90,9 @@ namespace Player.scripts
             
             if (_playerController != null)
                 _playerController.OnPlayerRoll -= PlayRollSound;
+            
+            if(_damagePipeline != null)
+                _damagePipeline.OnPlayerHurt -= PlayHurtSound;
         }
 
 
@@ -148,6 +160,15 @@ namespace Player.scripts
             {
                 weaponAudioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
                 weaponAudioSource.PlayOneShot(groundDashSound);
+            }
+        }
+
+        private void PlayHurtSound()
+        {
+            if (weaponAudioSource != null && gettingHurtSound != null)
+            {
+                weaponAudioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+                weaponAudioSource.PlayOneShot(gettingHurtSound);
             }
         }
 

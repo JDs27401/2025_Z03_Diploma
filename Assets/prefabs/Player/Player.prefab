@@ -563,9 +563,21 @@ MonoBehaviour:
   intensityPerMinute: 60
   spawnMode: 0
   waveCount: 4
-  enemyTypes: []
-  minSpawnRadius: 10
-  maxSpawnRadius: 15
+  enemyTypes:
+  - name: blind
+    prefab: {fileID: 5382984699686191501, guid: 642e095b1459e8d4f8fe5a2ef38e9826, type: 3}
+    intensityCost: 10
+    isEnabled: 0
+  - name: basic
+    prefab: {fileID: 2372389308713444318, guid: f46073751e546074e96dea1ac82cae3a, type: 3}
+    intensityCost: 15
+    isEnabled: 0
+  - name: bomba
+    prefab: {fileID: 1506628920627489286, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
+    intensityCost: 30
+    isEnabled: 0
+  minSpawnRadius: 15
+  maxSpawnRadius: 30
   _spawn: 1
 --- !u!50 &-6635051583733629585
 Rigidbody2D:
@@ -711,6 +723,7 @@ MonoBehaviour:
   groundRunningSound: {fileID: 8300000, guid: 05e2fbdbab2ca41438d0e4c2d334c548, type: 3}
   groundDashSound: {fileID: 8300000, guid: b8ffd4e963f041d46b969ca98adb8752, type: 3}
   swimmingSound: {fileID: 8300000, guid: 186bb9bd1cc662f40b74535569152a02, type: 3}
+  gettingHurtSound: {fileID: 8300000, guid: 2131deab9b8f1bb4481cc9f8b6a739d5, type: 3}
 --- !u!82 &5658197413973723080
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1004,6 +1017,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Systems.PlayerNoiseSystem
   noiseTrigger: {fileID: 6107925661954772408}
-  baseTriggerSize: 5
+  baseTriggerSize: 3
   sprintMultiplier: 1.5
   weightNoiseMultiplier: 0.01
