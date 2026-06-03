@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using C__Classes.Systems; 
+using C__Classes.Systems;
+using Random = UnityEngine.Random;
 
 public class LockerInteractable : MonoBehaviour
 {
@@ -23,6 +25,10 @@ public class LockerInteractable : MonoBehaviour
     private bool isUIOpen = false; 
     
     private PlayerInteractionUI playerUI;
+    
+    //SFX
+    public event Action OnChestOpen;
+    public event Action OnChestClosed;
 
     private void Start()
     {
@@ -63,12 +69,16 @@ public class LockerInteractable : MonoBehaviour
                 if (LockerUIManager.Instance != null) LockerUIManager.Instance.CloseUI();
                 isUIOpen = false;
                 
+                OnChestClosed?.Invoke();
+                
                 if (playerUI != null) playerUI.AddInteractable(gameObject);
             }
             else
             {
                 LockerUIManager.Instance.OpenLockerUI(this);
                 isUIOpen = true;
+                
+                OnChestOpen?.Invoke();
                 
                 if (playerUI != null) playerUI.RemoveInteractable(gameObject);
             }
@@ -100,6 +110,7 @@ public class LockerInteractable : MonoBehaviour
             {
                 if (LockerUIManager.Instance != null) LockerUIManager.Instance.CloseUI();
                 isUIOpen = false;
+                OnChestClosed?.Invoke();
             }
             
             if (playerUI != null)

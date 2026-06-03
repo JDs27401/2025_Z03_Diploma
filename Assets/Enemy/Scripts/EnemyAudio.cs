@@ -54,7 +54,7 @@ namespace Enemy.Scripts
             if (AreAudioSourcesFilled())
             {
                 _audioSource.pitch = Random.Range(0.9f, 1.1f);
-                _audioSource.volume = 0.05f;
+                _audioSource.volume = 0.02f;
                 _audioSource.clip = _basicGrowlSound;
                 _audioSource.loop = true;
                 _audioSource.Play();
@@ -89,7 +89,7 @@ namespace Enemy.Scripts
             
             _audioSource.pitch = Random.Range(0.9f, 1.1f);
             _audioSource.loop = false;
-            _audioSource.volume = 0.7f;
+            _audioSource.volume = 0.5f;
             _audioSource.PlayOneShot(_gettingHurtSound);
             
             _resumeGrowlSoundCoroutine = StartCoroutine(ResumeGrowlRoutine(_gettingHurtSound.length));
@@ -120,13 +120,13 @@ namespace Enemy.Scripts
         private void PlayExplosionDeathSound()
         {
             StopGrowlSound();
-            PlayDeathSound(_deathSoundExplosion, 0.2f, 1.5f);
+            PlayDeathSound(_deathSoundExplosion, 0.1f, 1.5f);
         }
 
         private void PlayNormalDeathSound()
         {
             StopGrowlSound();
-            PlayDeathSound(_deathSound, 0.5f);
+            PlayDeathSound(_deathSound, 0.3f);
         }
 
         private bool AreAudioSourcesFilled()

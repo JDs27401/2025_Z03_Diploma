@@ -60,6 +60,8 @@ public class PlayerController : Actor
     
     // Bartek - for playing correct sfx
     public event Action OnPlayerRoll;
+    public event Action OnPlayerHurt;
+    public event Action OnPlayerDeathAudio;
     
     //crouching function stuff
     private bool isCrouching = false;
@@ -211,6 +213,7 @@ public class PlayerController : Actor
                 else
                 {
                     _animator.SetTrigger("Hurt");
+                    OnPlayerHurt?.Invoke();
                 }
             }
             
@@ -593,6 +596,7 @@ public class PlayerController : Actor
     {
         base.Kill();
         onPlayerDeath?.Invoke();
+        OnPlayerDeathAudio?.Invoke();
     }
 
     // Provide damage multiplier to base Actor (consumable-based)
