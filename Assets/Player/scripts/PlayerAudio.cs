@@ -14,7 +14,6 @@ namespace Player.scripts
         private WeaponController _weaponController;
         private Actor _actor;
         private PlayerController _playerController;
-        private DamagePipeline _damagePipeline;
         
         [FormerlySerializedAs("Weapon Audio Source")]
         [Header("Audio Source")] 
@@ -34,6 +33,7 @@ namespace Player.scripts
         [SerializeField] public AudioClip groundDashSound;
         [SerializeField] public AudioClip swimmingSound;
         [SerializeField] public AudioClip gettingHurtSound;
+        [SerializeField] public AudioClip deathSound;
 
         private void Awake()
         {
@@ -49,10 +49,6 @@ namespace Player.scripts
             
             if (_playerController == null)
                 _playerController = gameObject.GetComponent<PlayerController>();
-            
-            if(_damagePipeline == null)
-                _damagePipeline = gameObject.GetComponent<DamagePipeline>();
-            
         }
 
         private void Update()
@@ -77,22 +73,24 @@ namespace Player.scripts
                 _weaponController.OnWeaponFired += PlayWeaponSound;
 
             if (_playerController != null)
+            {
                 _playerController.OnPlayerRoll += PlayRollSound;
-            
-            if(_damagePipeline != null)
-                _damagePipeline.OnPlayerHurt += PlayHurtSound;
+                _playerController.OnPlayerHurt += PlayHurtSound;
+                _playerController.OnPlayerDeathAudio += PlayDeathSound;
+            }
         }
 
         private void OnDisable()
         {
             if (_weaponController != null)
                 _weaponController.OnWeaponFired -= PlayWeaponSound;
-            
+
             if (_playerController != null)
+            {
                 _playerController.OnPlayerRoll -= PlayRollSound;
-            
-            if(_damagePipeline != null)
-                _damagePipeline.OnPlayerHurt -= PlayHurtSound;
+                _playerController.OnPlayerHurt -= PlayHurtSound;
+                _playerController.OnPlayerDeathAudio -= PlayDeathSound;
+            }
         }
 
 
@@ -170,6 +168,24 @@ namespace Player.scripts
                 weaponAudioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
                 weaponAudioSource.PlayOneShot(gettingHurtSound);
             }
+        }
+
+        private void PlayDeathSound()
+        {
+            Debug.Log("Umieram");
+            
+            GameObject audioObject = new GameObject("player_death_sound_temp");
+            audioObject.transform.position = transform.position;
+            
+            AudioSource tempSource = audioObject.AddComponent<AudioSource>();
+            
+            tempSource.clip = deathSound;
+            tempSource.pitch = Random.Range(0.9f, 1.1f);
+            tempSource.volume = 0.5f;
+            
+                tempSource.Play();
+            
+            Destroy(audioObject, tempSource.clip.length);
         }
 
         private bool AreAudioWeaClipsFilledWeapons()
