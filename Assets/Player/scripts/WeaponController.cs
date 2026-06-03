@@ -95,6 +95,12 @@ namespace Player.scripts
                     {
                         toggleLightsAction.performed += OnToggleLights;
                     }
+
+                    var reloadAction = playerMap.FindAction("Reload");
+                    if (reloadAction != null)
+                    {
+                        reloadAction.performed += OnReload;
+                    }
                 }
             }
         }
@@ -120,12 +126,25 @@ namespace Player.scripts
                     EnsureCurrentStateInitialized();
                     if (_currentWeaponState != null && stats != null)
                     {
-                        _currentWeaponState.currentMagazineAmmo = stats.magazineSize;
+                        int loadedAmmo = TryReloadFromInventory(stats);
+                        _currentWeaponState.currentMagazineAmmo = loadedAmmo;
+
+                        if (_weaponDebug)
+                        {
+                            if (loadedAmmo > 0)
+                            {
+                                Debug.Log($"Przeładowano {stats.weaponName}! Załadowano {loadedAmmo}/{stats.magazineSize} pocisków.");
+                            }
+                            else
+                            {
+                                Debug.Log($"Przeładowanie {stats.weaponName} anulowane - brak amunicji w UI.");
+                            }
+                        }
                     }
-                    if(_weaponDebug && stats != null) Debug.Log($"Przeładowano {stats.weaponName}! (Magazynek powraca do {stats.magazineSize})");
                 }
             }
         }
+
 
         public void EquipWeapon(WeaponData newWeapon)
         {
@@ -269,14 +288,85 @@ namespace Player.scripts
         private void StartReload()
         {
             WeaponRuntimeStats stats = CurrentWeaponStats;
-            if (stats == null)
+            if (stats == null || _currentWeaponState == null)
             {
+                return;
+            }
+
+            if (!HasAmmoForReload(stats))
+            {
+                _isReloading = false;
+                _reloadTimer = 0f;
+                _currentWeaponState.currentMagazineAmmo = 0;
+                if (_weaponDebug) Debug.Log($"Nie można przeładować {stats.weaponName} - brak amunicji w UI.");
                 return;
             }
 
             _isReloading = true;
             _reloadTimer = stats.reloadTime;
             if(_weaponDebug) Debug.Log($"reloading ({stats.reloadTime})");
+        }
+
+        private ItemType? ResolveAmmoType(WeaponRuntimeStats stats)
+        {
+            if (stats == null || stats.isExplosive || stats.isMolotov)
+            {
+                return null;
+            }
+
+            string weaponName = stats.weaponName != null ? stats.weaponName.ToLowerInvariant() : string.Empty;
+
+            if (stats.projectilesPerShot > 1 || weaponName.Contains("shotgun") || weaponName.Contains("12 gauge") || weaponName.Contains("12g"))
+            {
+                return ItemType.Ammo12Gauge;
+            }
+
+            if (weaponName.Contains("pistol") || weaponName.Contains("9mm") || weaponName.Contains("smg") || weaponName.Contains("machine"))
+            {
+                return ItemType.Ammo9mm;
+            }
+
+            return ItemType.Ammo9mm;
+        }
+
+        private bool HasAmmoForReload(WeaponRuntimeStats stats)
+        {
+            ItemType? ammoType = ResolveAmmoType(stats);
+            if (!ammoType.HasValue)
+            {
+                return false;
+            }
+
+            C__Classes.Managers.InventoryManager inventoryManager = C__Classes.Managers.InventoryManager.Instance;
+            if (inventoryManager == null)
+            {
+                return false;
+            }
+
+            return inventoryManager.GetTotalItemCount(ammoType.Value) > 0;
+        }
+
+        private int TryReloadFromInventory(WeaponRuntimeStats stats)
+        {
+            if (stats == null || _currentWeaponState == null)
+            {
+                return 0;
+            }
+
+            ItemType? ammoType = ResolveAmmoType(stats);
+            if (!ammoType.HasValue)
+            {
+                return 0;
+            }
+
+            C__Classes.Managers.InventoryManager inventoryManager = C__Classes.Managers.InventoryManager.Instance;
+            if (inventoryManager == null)
+            {
+                return 0;
+            }
+
+            inventoryManager.ConsumeItemCount(ammoType.Value, 1);
+            return stats.magazineSize;
         }
 
         public void OnToggleLights(InputAction.CallbackContext context)
@@ -315,6 +405,30 @@ namespace Player.scripts
                     if (_weaponDebug) Debug.Log($"Laser: {(laser.isActive ? "WŁĄCZONY" : "WYŁĄCZONY")}");
                 }
             }
+        }
+
+        public void OnReload(InputAction.CallbackContext context)
+        {
+            WeaponRuntimeStats stats = CurrentWeaponStats;
+            if (stats == null || currentWeapon == null || _currentWeaponState == null)
+            {
+                if (_weaponDebug) Debug.Log("Nie można przeładować - nie wyposażono w broń.");
+                return;
+            }
+
+            if (_currentWeaponState.currentMagazineAmmo >= stats.magazineSize)
+            {
+                if (_weaponDebug) Debug.Log($"Nie można przeładować {stats.weaponName} - magazynek jest już pełny ({_currentWeaponState.currentMagazineAmmo}/{stats.magazineSize}).");
+                return;
+            }
+
+            if (_isReloading)
+            {
+                if (_weaponDebug) Debug.Log($"Trwa już przeładowanie {stats.weaponName}.");
+                return;
+            }
+
+            StartReload();
         }
 
         private void ConfigureProjectile(GameObject bullet, WeaponRuntimeStats weaponSettings)
@@ -512,6 +626,12 @@ namespace Player.scripts
                     if (toggleLightsAction != null)
                     {
                         toggleLightsAction.performed -= OnToggleLights;
+                    }
+
+                    var reloadAction = playerMap.FindAction("Reload");
+                    if (reloadAction != null)
+                    {
+                        reloadAction.performed -= OnReload;
                     }
                 }
             }

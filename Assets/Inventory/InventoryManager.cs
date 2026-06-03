@@ -115,6 +115,73 @@ namespace C__Classes.Managers
             return true;
         }
 
+        public int GetTotalItemCount(ItemType itemType)
+        {
+            if (inventorySlots == null)
+            {
+                return 0;
+            }
+
+            int totalCount = 0;
+            foreach (InventorySlot inventorySlot in inventorySlots)
+            {
+                if (inventorySlot == null || inventorySlot.currentItem == null || inventorySlot.currentItem.itemType != itemType || inventorySlot.currentCount <= 0)
+                {
+                    continue;
+                }
+
+                totalCount += inventorySlot.currentCount;
+            }
+
+            return totalCount;
+        }
+
+        public int ConsumeItemCount(ItemType itemType, int amount)
+        {
+            if (amount <= 0 || inventorySlots == null)
+            {
+                return 0;
+            }
+
+            int remaining = amount;
+
+            foreach (InventorySlot inventorySlot in inventorySlots)
+            {
+                if (inventorySlot == null || inventorySlot.currentItem == null || inventorySlot.currentItem.itemType != itemType || inventorySlot.currentCount <= 0)
+                {
+                    continue;
+                }
+
+                int consumedFromSlot = Mathf.Min(remaining, inventorySlot.currentCount);
+                inventorySlot.currentCount -= consumedFromSlot;
+                remaining -= consumedFromSlot;
+
+                if (inventorySlot.currentCount <= 0)
+                {
+                    if (inventorySlot.lockContent)
+                    {
+                        inventorySlot.currentCount = 0;
+                        inventorySlot.UpdateUI();
+                    }
+                    else
+                    {
+                        inventorySlot.ClearSlot();
+                    }
+                }
+                else
+                {
+                    inventorySlot.UpdateUI();
+                }
+
+                if (remaining <= 0)
+                {
+                    break;
+                }
+            }
+
+            return amount - remaining;
+        }
+
         private void SpawnNewItemInSlot(InventorySlot slot, ItemData item, int amount, WeaponInstanceState weaponState = null, MeleeWeaponInstanceState meleeState = null)
         {
             GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
