@@ -3385,6 +3385,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -7.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5616243552862040549, guid: 5d67edf936bde60419c26c9f587917b7, type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: 1944767130}
     - target: {fileID: 5620344809095976403, guid: 5d67edf936bde60419c26c9f587917b7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -4370,15 +4374,15 @@ PrefabInstance:
       objectReference: {fileID: 1506628920627489286, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
     - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: enemyTypes.Array.data[0].isEnabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: enemyTypes.Array.data[1].isEnabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: enemyTypes.Array.data[2].isEnabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: enemyTypes.Array.data[0].intensityCost

@@ -1,7 +1,8 @@
 using C__Classes.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using DG.Tweening; // Wymagane namespace dla DOTween
+using DG.Tweening;
+using UnityEngine.InputSystem; // Wymagane namespace dla DOTween
 
 public class DeathScreenManager : MonoBehaviour
 {
@@ -11,7 +12,10 @@ public class DeathScreenManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float fadeDuration = 2f;
     [SerializeField] private string mainMenuSceneName = "MainMenu";
-
+    [SerializeField] private PlayerInput playerInput;
+    
+    private InputActionMap _playerMap;
+    
     private void Start()
     {
         if (deathScreenGroup != null)
@@ -21,6 +25,7 @@ public class DeathScreenManager : MonoBehaviour
             deathScreenGroup.interactable = false;
             deathScreenGroup.blocksRaycasts = false;
         }
+        _playerMap = playerInput.actions.FindActionMap("Player", true);
     }
 
     public void ShowDeathScreen()
@@ -36,7 +41,8 @@ public class DeathScreenManager : MonoBehaviour
             // Jest to kluczowe, jeśli w momencie śmierci zatrzymujesz czas gry.
             deathScreenGroup.DOFade(1f, fadeDuration).SetUpdate(true);
         }
-        PauseManager.Instance.PauseGame();
+        _playerMap?.Disable();
+        Time.timeScale = 0f;
     }
 
     public void GoToMainMenu()
