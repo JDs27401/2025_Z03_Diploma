@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Katana
   icon: {fileID: 21300000, guid: e9b58d70ba8df96498e786c4e102bb7d, type: 3}
   rarity: 3
-  itemType: 6
+  itemType: 9
   description: Ancient blade
   isStackable: 0
   maxStackSize: 0

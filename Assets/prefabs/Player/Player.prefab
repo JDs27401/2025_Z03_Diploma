@@ -412,6 +412,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0b8e2b75-7e24-4f0c-8d4f-0d2a6f4a9c11
     m_ActionName: 'Player/UseConsumable[/Keyboard/f]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 64ba5520-99ed-4a1c-bb4f-202368767655
+    m_ActionName: 'Player/Reload[/Keyboard/r]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -567,15 +571,15 @@ MonoBehaviour:
   - name: blind
     prefab: {fileID: 5382984699686191501, guid: 642e095b1459e8d4f8fe5a2ef38e9826, type: 3}
     intensityCost: 10
-    isEnabled: 0
+    isEnabled: 1
   - name: basic
     prefab: {fileID: 2372389308713444318, guid: f46073751e546074e96dea1ac82cae3a, type: 3}
     intensityCost: 15
-    isEnabled: 0
+    isEnabled: 1
   - name: bomba
     prefab: {fileID: 1506628920627489286, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
     intensityCost: 30
-    isEnabled: 0
+    isEnabled: 1
   minSpawnRadius: 15
   maxSpawnRadius: 30
   _spawn: 1
@@ -724,6 +728,7 @@ MonoBehaviour:
   groundDashSound: {fileID: 8300000, guid: b8ffd4e963f041d46b969ca98adb8752, type: 3}
   swimmingSound: {fileID: 8300000, guid: 186bb9bd1cc662f40b74535569152a02, type: 3}
   gettingHurtSound: {fileID: 8300000, guid: 2131deab9b8f1bb4481cc9f8b6a739d5, type: 3}
+  deathSound: {fileID: 8300000, guid: 53723fd868413f24a8e9e2e13d6bcd16, type: 3}
 --- !u!82 &5658197413973723080
 AudioSource:
   m_ObjectHideFlags: 0

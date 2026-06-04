@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Club MWD
   m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.MeleeWeaponData
   weaponName: Improvised club
-  animationID: 0
+  animationID: 7
   attackRate: 1.5
   damage: 20
   range: 3
