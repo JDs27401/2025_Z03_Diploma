@@ -16,7 +16,7 @@ MonoBehaviour:
   animationID: 6
   fireRate: 1
   damage: 100
-  projectileSpeed: 10
+  projectileSpeed: 9
   spread: 10
   projectilesPerShot: 1
   isAutomatic: 0
@@ -32,5 +32,5 @@ MonoBehaviour:
   dotInterval: 1
   dotAreaLifetime: 5
   weaponModelPrefab: {fileID: 1165157680205881631, guid: 4d07a9c19956cb342b138f3064377d73, type: 3}
-  projectilePrefab: {fileID: 8520928149139622634, guid: 1e452a46a4ebe694d93ae933e12d45e0, type: 3}
+  projectilePrefab: {fileID: 8520928149139622634, guid: 8290a01e916c8f1439baee509b8dd5a4, type: 3}
   weight: 1

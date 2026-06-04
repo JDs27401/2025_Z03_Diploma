@@ -54,7 +54,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         InventorySlot oldSlot = oldSlotTransform.GetComponent<InventorySlot>();
         CraftingSlot oldCraftingSlot = oldSlotTransform.GetComponent<CraftingSlot>(); 
 
-        if (currentItem is WeaponItemData && droppedItemScript.itemData is WeaponModItemData modItemData)
+        if (currentItem is WeaponItemData && droppedItemScript.itemData is WeaponModItemData modItemData && !currentItem.isStackable)
         {
             DraggableItem weaponItemScript = GetMainDraggableItem();
             if (weaponItemScript == null || weaponItemScript.weaponInstanceState == null || modItemData.weaponModData == null)

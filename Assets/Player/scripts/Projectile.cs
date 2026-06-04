@@ -16,6 +16,9 @@ namespace Player.scripts
         private float dotInterval;
         private float dotAreaLifetime;
         private bool _hasCollided;
+        private Vector3 currentSpeed;
+        private float angularSpeed = 0;
+        private Rigidbody2D rb;
 
         public void Setup(WeaponRuntimeStats settings)
         {
@@ -35,6 +38,21 @@ namespace Player.scripts
             dotDuration = weaponSettings.dotDuration;
             dotInterval = weaponSettings.dotInterval;
             dotAreaLifetime = weaponSettings.dotAreaLifetime;
+            rb = GetComponent<Rigidbody2D>();
+            if (settings.ammoType == AmmoType.Consumable)
+            {
+                angularSpeed = 360;
+            }
+            else
+            {
+                angularSpeed = 0;
+            }
+            
+            if (rb)
+            {
+                rb.linearVelocity = transform.right * _speed;
+                rb.angularVelocity = angularSpeed;
+            }
             
             Destroy(gameObject, 5f);
         }
@@ -45,8 +63,6 @@ namespace Player.scripts
             {
                 return;
             }
-            
-            transform.Translate(Vector3.right * Time.deltaTime * _speed);
         }
 
         private void StopProjectile()
@@ -101,6 +117,7 @@ namespace Player.scripts
         {
             GameObject dotArea = new GameObject("MolotovDotArea");
             dotArea.transform.position = position;
+            dotArea.layer = LayerMask.NameToLayer("Attacks");
             
             Rigidbody2D rb = dotArea.AddComponent<Rigidbody2D>();
             rb.gravityScale = 0;

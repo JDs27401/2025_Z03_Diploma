@@ -122,6 +122,7 @@ MonoBehaviour:
       spread: 0
       projectilesPerShot: 1
       isAutomatic: 0
+      ammoType: 0
       magazineSize: 10
       reloadTime: 2
       isExplosive: 0
@@ -173,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DraggableItem
   image: {fileID: 0}
   amountText: {fileID: 0}
-  itemData: {fileID: 11400000, guid: 37280ef4e16a17d46afbfda4c2978afe, type: 2}
+  itemData: {fileID: 11400000, guid: a91b6431ae81ed24391017fdcaff51c4, type: 2}
   count: 1
   weaponInstanceState:
     currentMagazineAmmo: 0
@@ -187,6 +188,7 @@ MonoBehaviour:
       spread: 0
       projectilesPerShot: 1
       isAutomatic: 0
+      ammoType: 0
       magazineSize: 10
       reloadTime: 2
       isExplosive: 0
