@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using C__Classes.Singletons;
 using Player.scripts;
+using Unity.VisualScripting;
 
 
 namespace C__Classes.Managers
@@ -136,11 +137,11 @@ namespace C__Classes.Managers
             return totalCount;
         }
 
-        public int ConsumeItemCount(ItemType itemType, int amount)
+        public void ConsumeItemCount(ItemType itemType, int amount)
         {
             if (amount <= 0 || inventorySlots == null)
             {
-                return 0;
+                return;
             }
 
             int remaining = amount;
@@ -165,7 +166,17 @@ namespace C__Classes.Managers
                     }
                     else
                     {
-                        inventorySlot.ClearSlot();
+                        if (TooltipManager.Instance != null)
+                        {
+                            TooltipManager.Instance.HideTooltip();
+                        }
+
+                        if (inventorySlot != null)
+                        {
+                            inventorySlot.ClearSlot();
+                        }
+                        
+                        Object.Destroy(inventorySlot.GetComponentInChildren<DraggableItem>().gameObject);
                     }
                 }
                 else
@@ -178,8 +189,6 @@ namespace C__Classes.Managers
                     break;
                 }
             }
-
-            return amount - remaining;
         }
 
         private void SpawnNewItemInSlot(InventorySlot slot, ItemData item, int amount, WeaponInstanceState weaponState = null, MeleeWeaponInstanceState meleeState = null)

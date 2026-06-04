@@ -17,7 +17,8 @@
 
         [Header("Mechanics")]
         public bool isAutomatic = false; // Czy można trzymać przycisk, aby strzelać ciągiem
-
+        public AmmoType ammoType;
+        
         [Header("Ammo & Reloading")]
         public int magazineSize = 10; // Ilość nabojów w magazynku
         public float reloadTime = 2f; // Czas przeładowania w sekundach

@@ -20,8 +20,9 @@ MonoBehaviour:
   spread: 10
   projectilesPerShot: 1
   isAutomatic: 0
-  magazineSize: 1
-  reloadTime: 5
+  ammoType: 0
+  magazineSize: 0
+  reloadTime: 0
   isExplosive: 1
   explosionRadius: 3
   isMolotov: 0

@@ -13,15 +13,24 @@ MonoBehaviour:
   m_Name: pistol WD
   m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.WeaponData
   weaponName: pistol
+  animationID: 1
   fireRate: 4
   damage: 20
   projectileSpeed: 15
   spread: 0
   projectilesPerShot: 1
   isAutomatic: 0
+  ammoType: 1
   magazineSize: 10
   reloadTime: 2
   isExplosive: 0
   explosionRadius: 3
+  isMolotov: 0
+  dotAreaRadius: 2.5
+  dotDamage: 4
+  dotDuration: 4
+  dotInterval: 1
+  dotAreaLifetime: 5
   weaponModelPrefab: {fileID: 1165157680205881631, guid: f5391b75c3b0e4b4c9f73d661c8ab29c, type: 3}
   projectilePrefab: {fileID: 8520928149139622634, guid: 1e452a46a4ebe694d93ae933e12d45e0, type: 3}
+  weight: 1

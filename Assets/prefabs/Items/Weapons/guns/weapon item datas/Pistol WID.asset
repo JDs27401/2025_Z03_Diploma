@@ -16,11 +16,11 @@ MonoBehaviour:
   itemName: Pistol
   icon: {fileID: 21300000, guid: 7ce079df1ee10f24599511ec640b7ce2, type: 3}
   rarity: 0
-  itemType: 0
+  itemType: 5
   description: piu piu thingy
   isStackable: 0
   maxStackSize: 1
   dropPrefab: {fileID: 4733928515101151917, guid: 1e60df13bdc7b8d43b6ebde120765a68, type: 3}
   fullSizeImage: {fileID: 21300000, guid: 7ce079df1ee10f24599511ec640b7ce2, type: 3}
   weight: 1
-  weaponData: {fileID: 11400000, guid: 59c943aa43c5ee042b43395484eb6180, type: 2}
+  weaponData: {fileID: 11400000, guid: e4cadd2d9facb5d4b859f8635f90b4d0, type: 2}

@@ -15,6 +15,7 @@
         public int projectilesPerShot = 1;
 
         public bool isAutomatic = false;
+        public AmmoType ammoType;
 
         public int magazineSize = 10;
         public float reloadTime = 2f;
@@ -44,6 +45,7 @@
                 spread = spread,
                 projectilesPerShot = projectilesPerShot,
                 isAutomatic = isAutomatic,
+                ammoType = ammoType,
                 magazineSize = magazineSize,
                 reloadTime = reloadTime,
                 isExplosive = isExplosive,
@@ -73,6 +75,7 @@
             spread = weaponData.spread;
             projectilesPerShot = weaponData.projectilesPerShot;
             isAutomatic = weaponData.isAutomatic;
+            ammoType = weaponData.ammoType;
             magazineSize = weaponData.magazineSize;
             reloadTime = weaponData.reloadTime;
             isExplosive = weaponData.isExplosive;

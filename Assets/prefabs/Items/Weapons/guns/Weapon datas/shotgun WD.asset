@@ -13,15 +13,24 @@ MonoBehaviour:
   m_Name: shotgun WD
   m_EditorClassIdentifier: Assembly-CSharp::Player.scripts.WeaponData
   weaponName: shotgun
+  animationID: 2
   fireRate: 4
   damage: 10
   projectileSpeed: 15
   spread: 35
   projectilesPerShot: 6
   isAutomatic: 0
+  ammoType: 2
   magazineSize: 6
   reloadTime: 2
   isExplosive: 0
   explosionRadius: 3
+  isMolotov: 0
+  dotAreaRadius: 2.5
+  dotDamage: 4
+  dotDuration: 4
+  dotInterval: 1
+  dotAreaLifetime: 5
   weaponModelPrefab: {fileID: 1165157680205881631, guid: 51718ad86aaa52f45ac4a1ef0e960cb7, type: 3}
   projectilePrefab: {fileID: 8520928149139622634, guid: 1e452a46a4ebe694d93ae933e12d45e0, type: 3}
+  weight: 1

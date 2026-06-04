@@ -2,6 +2,8 @@
 using C__Classes;
 using UnityEngine.InputSystem;
 using System;
+using C__Classes.Managers;
+using UnityEngine.EventSystems;
 
 namespace Player.scripts
 {
@@ -126,7 +128,7 @@ namespace Player.scripts
                     EnsureCurrentStateInitialized();
                     if (_currentWeaponState != null && stats != null)
                     {
-                        int loadedAmmo = TryReloadFromInventory(stats);
+                        int loadedAmmo = stats.magazineSize;
                         _currentWeaponState.currentMagazineAmmo = loadedAmmo;
 
                         if (_weaponDebug)
@@ -305,37 +307,29 @@ namespace Player.scripts
             _isReloading = true;
             _reloadTimer = stats.reloadTime;
             if(_weaponDebug) Debug.Log($"reloading ({stats.reloadTime})");
+            C__Classes.Managers.InventoryManager inventoryManager = C__Classes.Managers.InventoryManager.Instance;
+            if (inventoryManager == null)
+            {
+                return;
+            }
+            
+            switch (stats.ammoType)
+            {
+                case AmmoType.Pistol:
+                    inventoryManager.ConsumeItemCount(ItemType.Ammo9mm, 1);
+                    return;
+                case AmmoType.Shotgun:
+                    inventoryManager.ConsumeItemCount(ItemType.Ammo12Gauge, 1);
+                    return;
+                default:
+                    return;
+            }
+
         }
 
-        private ItemType? ResolveAmmoType(WeaponRuntimeStats stats)
-        {
-            if (stats == null || stats.isExplosive || stats.isMolotov)
-            {
-                return null;
-            }
-
-            string weaponName = stats.weaponName != null ? stats.weaponName.ToLowerInvariant() : string.Empty;
-
-            if (stats.projectilesPerShot > 1 || weaponName.Contains("shotgun") || weaponName.Contains("12 gauge") || weaponName.Contains("12g"))
-            {
-                return ItemType.Ammo12Gauge;
-            }
-
-            if (weaponName.Contains("pistol") || weaponName.Contains("9mm") || weaponName.Contains("smg") || weaponName.Contains("machine"))
-            {
-                return ItemType.Ammo9mm;
-            }
-
-            return ItemType.Ammo9mm;
-        }
 
         private bool HasAmmoForReload(WeaponRuntimeStats stats)
         {
-            ItemType? ammoType = ResolveAmmoType(stats);
-            if (!ammoType.HasValue)
-            {
-                return false;
-            }
 
             C__Classes.Managers.InventoryManager inventoryManager = C__Classes.Managers.InventoryManager.Instance;
             if (inventoryManager == null)
@@ -343,30 +337,44 @@ namespace Player.scripts
                 return false;
             }
 
-            return inventoryManager.GetTotalItemCount(ammoType.Value) > 0;
+            switch (stats.ammoType)
+            {
+                case AmmoType.Pistol:
+                    return inventoryManager.GetTotalItemCount(ItemType.Ammo9mm) > 0;
+                    break;
+                case AmmoType.Shotgun:
+                    return inventoryManager.GetTotalItemCount(ItemType.Ammo12Gauge) > 0;
+                    break;
+                default:
+                    return false;
+            }
         }
 
-        private int TryReloadFromInventory(WeaponRuntimeStats stats)
+        private void TryReloadFromInventory(WeaponRuntimeStats stats)
         {
             if (stats == null || _currentWeaponState == null)
             {
-                return 0;
-            }
-
-            ItemType? ammoType = ResolveAmmoType(stats);
-            if (!ammoType.HasValue)
-            {
-                return 0;
+                return;
             }
 
             C__Classes.Managers.InventoryManager inventoryManager = C__Classes.Managers.InventoryManager.Instance;
             if (inventoryManager == null)
             {
-                return 0;
+                return;
             }
-
-            inventoryManager.ConsumeItemCount(ammoType.Value, 1);
-            return stats.magazineSize;
+            
+            switch (stats.ammoType)
+            {
+                case AmmoType.Pistol:
+                    inventoryManager.ConsumeItemCount(ItemType.Ammo9mm, 1);
+                    return;
+                case AmmoType.Shotgun:
+                    inventoryManager.ConsumeItemCount(ItemType.Ammo12Gauge, 1);
+                    return;
+                default:
+                    return;
+            }
+            
         }
 
         public void OnToggleLights(InputAction.CallbackContext context)
@@ -413,6 +421,11 @@ namespace Player.scripts
             if (stats == null || currentWeapon == null || _currentWeaponState == null)
             {
                 if (_weaponDebug) Debug.Log("Nie można przeładować - nie wyposażono w broń.");
+                return;
+            }
+            if(stats.ammoType == AmmoType.Consumable)
+            {
+                if (_weaponDebug) Debug.Log($"Nie można przeładować {stats.weaponName} - broń nie używa amunicji.");
                 return;
             }
 
@@ -484,6 +497,9 @@ namespace Player.scripts
 
         public void TryShoot(Vector2 targetDirection)
         {
+            if (EventSystem.current != null &&
+                EventSystem.current.IsPointerOverGameObject())
+                return;
             if (firePoint == null) return;
 
             EnsureCurrentStateInitialized();
@@ -501,7 +517,7 @@ namespace Player.scripts
             WeaponRuntimeStats weaponStats = CurrentWeaponStats;
             if (weaponStats == null) return;
             if (_isReloading) return;
-            if (_currentWeaponState.currentMagazineAmmo <= 0)
+            if (_currentWeaponState.currentMagazineAmmo <= 0 && currentWeapon.ammoType != AmmoType.Consumable)
             {
                 StartReload();
                 return;
@@ -511,10 +527,18 @@ namespace Player.scripts
 
             _nextFireTime = Time.time + (1f / weaponStats.fireRate);
 
-            _currentWeaponState.currentMagazineAmmo--;
+            if (currentWeapon.ammoType == AmmoType.Consumable)
+            {
+                InventoryManager inventoryManager = InventoryManager.Instance;
+                inventoryManager.ConsumeItemCount(inventoryManager.GetActiveItem().itemType, 1);
+            }
+            else
+            {
+                _currentWeaponState.currentMagazineAmmo--;
+            }
             if(_weaponDebug) Debug.Log($"Ammo: {_currentWeaponState.currentMagazineAmmo}");
 
-            if (_currentWeaponState.currentMagazineAmmo == 0)
+            if (_currentWeaponState.currentMagazineAmmo == 0 && currentWeapon.ammoType != AmmoType.Consumable)
             {
                 StartReload();
             }

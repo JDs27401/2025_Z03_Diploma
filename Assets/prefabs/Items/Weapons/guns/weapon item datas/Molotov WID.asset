@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Molotov
   icon: {fileID: 21300000, guid: 9057f017a958d3340aea04caa8d7fea4, type: 3}
   rarity: 0
-  itemType: 0
+  itemType: 3
   description: 
   isStackable: 1
   maxStackSize: 100

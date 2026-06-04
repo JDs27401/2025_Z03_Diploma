@@ -16,11 +16,11 @@ MonoBehaviour:
   itemName: Shotgun
   icon: {fileID: 21300000, guid: aa41c7a077a7f9244b598b06845e3377, type: 3}
   rarity: 0
-  itemType: 0
+  itemType: 5
   description: so ya like lead?
   isStackable: 0
   maxStackSize: 1
   dropPrefab: {fileID: 4733928515101151917, guid: 9b08a6b4db93c9d4caedb0cba25d433b, type: 3}
   fullSizeImage: {fileID: 5693247247877351285, guid: 598cf6d4f30333f4b9608938966806fb, type: 3}
   weight: 8
-  weaponData: {fileID: 11400000, guid: 094e5292fad49a3449efbca429a872b3, type: 2}
+  weaponData: {fileID: 11400000, guid: eeca26c8648deac4e9351e111ca2cc81, type: 2}

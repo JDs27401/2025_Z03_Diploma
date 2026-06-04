@@ -13,11 +13,20 @@ public enum ItemType
     General,    
     Ammo9mm,    
     Ammo12Gauge,
+    Molotov,
+    Pipebomb,
+    Weapon,
     Collectible,
     Consumable,
     WeaponMod,
     MeleeWeapon,
     MeleeWeaponMod
+}
+public enum AmmoType
+{
+    Consumable,
+    Pistol,
+    Shotgun
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item")]
