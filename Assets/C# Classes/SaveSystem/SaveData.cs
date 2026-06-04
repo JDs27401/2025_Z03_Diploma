@@ -14,6 +14,7 @@ namespace C__Classes.SaveSystem
         public PlayerSaveData player = new PlayerSaveData();
         public int selectedInventorySlotIndex;
         public List<InventorySlotSaveData> inventory = new List<InventorySlotSaveData>();
+        public UniverseData universe = new UniverseData();
     }
 
     [Serializable]
@@ -76,5 +77,13 @@ namespace C__Classes.SaveSystem
     {
         public MeleeWeaponRuntimeStats runtimeStats;
         public List<string> installedModItemIds = new List<string>();
+    }
+
+    [Serializable]
+    public class UniverseData
+    {
+        public int day;
+        public int hour;
+        public int minute;
     }
 }

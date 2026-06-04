@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using C__Classes.Managers;
 using C__Classes.Systems;
@@ -49,7 +50,8 @@ namespace C__Classes.SaveSystem
                 world = CaptureWorldSaveData(),
                 player = player.CaptureSaveData(),
                 selectedInventorySlotIndex = inventoryManager.selectedSlotIndex,
-                inventory = inventoryManager.CaptureInventorySaveData()
+                inventory = inventoryManager.CaptureInventorySaveData(),
+                universe = CaptureUniverseState()
             };
 
             string json = JsonUtility.ToJson(saveData, true);
@@ -156,6 +158,7 @@ namespace C__Classes.SaveSystem
             player.RestoreSaveData(saveData.player);
             inventoryManager.selectedSlotIndex = saveData.selectedInventorySlotIndex;
             inventoryManager.RestoreInventoryFromSaveData(saveData.inventory, itemDatabase);
+            RestoreUniverseState(saveData.universe);
 
             Debug.Log($"Game loaded from {SavePath}");
         }
@@ -228,6 +231,33 @@ namespace C__Classes.SaveSystem
             }
 
             return MainMenuManager.Instance != null ? MainMenuManager.Instance.Seed : string.Empty;
+        }
+
+        private UniverseData CaptureUniverseState()
+        {
+            UniverseData universeData = new UniverseData
+            {
+                day = Universe.GetDay(),
+                hour = 8,
+                minute = 0
+            };
+            return universeData;
+        }
+
+        private void RestoreUniverseState(UniverseData universeData)
+        {
+            if (universeData == null)
+            {
+                return;
+            }
+
+            if (Universe.Instance == null)
+            {
+                return;
+            }
+            Universe.SetDay(universeData.day);
+            Universe.SetHour(universeData.hour);
+            Universe.SetMinute(universeData.minute);
         }
     }
 }

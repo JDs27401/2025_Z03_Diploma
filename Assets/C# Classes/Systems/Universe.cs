@@ -164,5 +164,20 @@ namespace C__Classes.Systems
         {
             WaveManager.Instance.OnWaveCompleted -= HandleWaveCompletion;
         }
+
+        public static void SetDay(int day)
+        {
+            Day = day;
+        }
+
+        public static void SetHour(int hour)
+        {
+            Hour = hour;
+        }
+
+        public static void SetMinute(int minute)
+        {
+            Minute = minute;
+        }
     }
 }
