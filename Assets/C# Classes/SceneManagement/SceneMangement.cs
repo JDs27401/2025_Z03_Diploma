@@ -30,8 +30,16 @@ namespace C__Classes.SceneManagement
 
         private void Awake()
         {
-            //We generate unique ID
-            myUniqueID = Guid.NewGuid().ToString();
+            if (string.IsNullOrWhiteSpace(myUniqueID))
+            {
+                myUniqueID = BuildStableDoorId();
+            }
+        }
+
+        private string BuildStableDoorId()
+        {
+            Vector3 pos = transform.position;
+            return $"{gameObject.scene.name}_{gameObject.name}_{Mathf.RoundToInt(pos.x)}_{Mathf.RoundToInt(pos.y)}";
         }
         
         private void Update()

@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using C__Classes.SaveSystem;
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : Actor
@@ -622,4 +623,37 @@ public class PlayerController : Actor
         onStaminaChanged?.Invoke(staminaPercent);
     }
     public float GetStamina() => stamina;
+
+    public PlayerSaveData CaptureSaveData()
+    {
+        return new PlayerSaveData
+        {
+            position = transform.position,
+            currentHealth = currentHealth,
+            currentStamina = stamina
+        };
+    }
+
+    public void RestoreSaveData(PlayerSaveData saveData)
+    {
+        if (saveData == null)
+        {
+            return;
+        }
+
+        transform.position = saveData.position;
+        currentHealth = Mathf.Clamp(saveData.currentHealth, 0f, GetEffectiveMaxHealth());
+        stamina = Mathf.Clamp(saveData.currentStamina, 0f, GetEffectiveMaxStamina());
+        staminaFloat = stamina;
+        isDead = currentHealth <= 0f;
+
+        _lastKnownHealth = currentHealth;
+        _lastKnownStamina = stamina;
+        onHealthChanged?.Invoke(GetCurrentHealthPercent());
+
+        float effectiveMaxStamina = GetEffectiveMaxStamina();
+        onStaminaChanged?.Invoke(effectiveMaxStamina > 0f ? stamina / effectiveMaxStamina : 0f);
+
+        ClearInputState();
+    }
 }

@@ -268,6 +268,11 @@ namespace C__Classes.Systems
             return tileProperties[x, y];    
         }
 
+        public string GetSeed()
+        {
+            return hash;
+        }
+
         public struct TileProperties
         {
             public int x;

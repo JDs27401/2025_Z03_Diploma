@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using C__Classes.SaveSystem;
 using C__Classes.Singletons;
 using Player.scripts;
 using Unity.VisualScripting;
@@ -116,6 +117,112 @@ namespace C__Classes.Managers
             return true;
         }
 
+        public List<InventorySlotSaveData> CaptureInventorySaveData()
+        {
+            List<InventorySlotSaveData> result = new List<InventorySlotSaveData>();
+            if (inventorySlots == null)
+            {
+                return result;
+            }
+
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                InventorySlot slot = inventorySlots[i];
+                if (slot == null || slot.currentItem == null || slot.currentCount <= 0)
+                {
+                    continue;
+                }
+
+                DraggableItem draggableItem = slot.GetMainDraggableItem();
+                InventorySlotSaveData slotSaveData = new InventorySlotSaveData
+                {
+                    slotIndex = i,
+                    itemId = slot.currentItem.id,
+                    count = slot.currentCount
+                };
+
+                if (draggableItem != null && draggableItem.weaponInstanceState != null)
+                {
+                    slotSaveData.weaponState = SaveStateMapper.CaptureWeaponState(draggableItem.weaponInstanceState);
+                }
+
+                if (draggableItem != null && draggableItem.meleeInstanceState != null)
+                {
+                    slotSaveData.meleeWeaponState = SaveStateMapper.CaptureMeleeWeaponState(draggableItem.meleeInstanceState);
+                }
+
+                result.Add(slotSaveData);
+            }
+
+            return result;
+        }
+
+        public void RestoreInventoryFromSaveData(IReadOnlyList<InventorySlotSaveData> saveSlots, ItemDatabase itemDatabase)
+        {
+            if (inventorySlots == null || itemDatabase == null)
+            {
+                return;
+            }
+
+            ClearInventoryForLoad();
+
+            if (saveSlots == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < saveSlots.Count; i++)
+            {
+                InventorySlotSaveData slotSaveData = saveSlots[i];
+                if (slotSaveData == null || slotSaveData.slotIndex < 0 || slotSaveData.slotIndex >= inventorySlots.Length)
+                {
+                    continue;
+                }
+
+                ItemData item = itemDatabase.GetItemById(slotSaveData.itemId);
+                if (item == null)
+                {
+                    Debug.LogWarning($"Could not load inventory item with id '{slotSaveData.itemId}'.");
+                    continue;
+                }
+
+                WeaponInstanceState weaponState = SaveStateMapper.RestoreWeaponState(slotSaveData.weaponState, item, itemDatabase);
+                MeleeWeaponInstanceState meleeState = SaveStateMapper.RestoreMeleeWeaponState(slotSaveData.meleeWeaponState, item, itemDatabase);
+                SpawnNewItemInSlot(inventorySlots[slotSaveData.slotIndex], item, slotSaveData.count, weaponState, meleeState);
+            }
+
+            selectedSlotIndex = Mathf.Clamp(selectedSlotIndex, 0, Mathf.Min(hotbarSlotsCount - 1, inventorySlots.Length - 1));
+            SelectSlot(selectedSlotIndex);
+
+            if (C__Classes.Systems.PlayerNoiseSystem.Instance != null)
+            {
+                C__Classes.Systems.PlayerNoiseSystem.Instance.UpdateNoiseRadius();
+            }
+        }
+
+        private void ClearInventoryForLoad()
+        {
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                InventorySlot slot = inventorySlots[i];
+                if (slot == null)
+                {
+                    continue;
+                }
+
+                DraggableItem[] childItems = slot.GetComponentsInChildren<DraggableItem>(true);
+                for (int childIndex = 0; childIndex < childItems.Length; childIndex++)
+                {
+                    if (childItems[childIndex] != null)
+                    {
+                        Destroy(childItems[childIndex].gameObject);
+                    }
+                }
+
+                slot.ClearSlot();
+            }
+        }
+
         public int GetTotalItemCount(ItemType itemType)
         {
             if (inventorySlots == null)
@@ -215,6 +322,20 @@ namespace C__Classes.Managers
                 dragItem.weaponInstanceState = weaponState != null ? weaponState.Clone() : null;
                 dragItem.meleeInstanceState = meleeState != null ? meleeState.Clone() : null;
                 dragItem.EnsureWeaponStateInitialized();
+
+                if (weaponState != null)
+                {
+                    dragItem.weaponInstanceState = weaponState.Clone();
+                    dragItem.meleeInstanceState = null;
+                }
+
+                if (meleeState != null)
+                {
+                    dragItem.weaponInstanceState = null;
+                    dragItem.meleeInstanceState = meleeState.Clone();
+                }
+
+                dragItem.RefreshWeaponModVisuals();
             }
 
             Image image = newItemGo.GetComponent<Image>();

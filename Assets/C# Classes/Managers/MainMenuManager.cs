@@ -106,6 +106,11 @@ namespace C__Classes.Managers
             _isStartingGame = true;
             SwitchPanel(howToPlayPanel);
         }
+
+        public void SetSeed(string seed)
+        {
+            Seed = seed;
+        }
         
         public void OnBackFromSeedClicked() 
         {
