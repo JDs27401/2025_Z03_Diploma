@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d916860bb6641b49f3911fd50c36f11, type: 3}
   m_Name: adrenaline
   m_EditorClassIdentifier: Assembly-CSharp::ConsumableItemData
-  id: 201
+  id: adrenaline
   itemName: Steroids
   icon: {fileID: 21300000, guid: 47bbdaad9f1ff9441814ee1f4099bf4c, type: 3}
   rarity: 2

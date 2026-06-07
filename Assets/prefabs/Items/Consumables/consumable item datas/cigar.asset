@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d916860bb6641b49f3911fd50c36f11, type: 3}
   m_Name: cigar
   m_EditorClassIdentifier: Assembly-CSharp::ConsumableItemData
-  id: 201
+  id: cigar
   itemName: Cigar
   icon: {fileID: 21300000, guid: 2e58e7150e899604d99d34b57e0facb6, type: 3}
   rarity: 1

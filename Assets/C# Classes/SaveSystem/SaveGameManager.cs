@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using C__Classes.Managers;
+using C__Classes.Singletons;
 using C__Classes.Systems;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace C__Classes.SaveSystem
 {
-    public class SaveGameManager : MonoBehaviour
+    public class SaveGameManager : SingletonPersistant<SaveGameManager>
     {
         public static ItemDatabase ActiveItemDatabase { get; private set; }
 
@@ -21,8 +22,9 @@ namespace C__Classes.SaveSystem
 
         public string SavePath => Path.Combine(Application.persistentDataPath, fileName);
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             ResolveItemDatabase();
             ActiveItemDatabase = itemDatabase;
 
@@ -63,10 +65,7 @@ namespace C__Classes.SaveSystem
 
         public bool LoadGame()
         {
-            if (!TryGetDependencies())
-            {
-                return false;
-            }
+            ResolveItemDatabase();
 
             if (!File.Exists(SavePath))
             {
@@ -82,8 +81,19 @@ namespace C__Classes.SaveSystem
                 return false;
             }
 
+            if (itemDatabase == null)
+            {
+                Debug.LogWarning("[SaveGameManager] Missing item database.");
+                return false;
+            }
+
             StartCoroutine(LoadGameRoutine(saveData));
             return true;
+        }
+
+        public void LoadGameFromButton()
+        {
+            LoadGame();
         }
 
         public void DeleteSave()
@@ -137,6 +147,20 @@ namespace C__Classes.SaveSystem
         {
             RestoreWorldPersistence(saveData.world);
 
+            string activeSceneName = SceneManager.GetActiveScene().name;
+            string savedMainSceneName = saveData.world != null ? saveData.world.currentSceneName : string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(savedMainSceneName) && activeSceneName != savedMainSceneName)
+            {
+                AsyncOperation mainSceneLoad = SceneManager.LoadSceneAsync(savedMainSceneName, LoadSceneMode.Single);
+                while (mainSceneLoad != null && !mainSceneLoad.isDone)
+                {
+                    yield return null;
+                }
+
+                yield return null;
+            }
+
             if (saveData.world != null && saveData.world.loadedAdditiveScenes != null)
             {
                 for (int i = 0; i < saveData.world.loadedAdditiveScenes.Count; i++)
@@ -153,6 +177,17 @@ namespace C__Classes.SaveSystem
                         yield return null;
                     }
                 }
+            }
+
+            yield return null;
+
+            player = FindFirstObjectByType<PlayerController>();
+            inventoryManager = InventoryManager.Instance;
+
+            if (player == null || inventoryManager == null)
+            {
+                Debug.LogWarning("[SaveGameManager] Could not finish load because player or inventory manager was not found after scene load.");
+                yield break;
             }
 
             player.RestoreSaveData(saveData.player);

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using C__Classes.SaveSystem;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace C__Classes.Managers
@@ -45,6 +46,7 @@ namespace C__Classes.Managers
         public void OnSaveClicked()
         {
             // TODO: implement save
+            SaveGameManager.Instance.SaveGame();
         }
 
         public void OnLoadClicked()

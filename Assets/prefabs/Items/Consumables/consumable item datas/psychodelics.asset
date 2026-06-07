@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d916860bb6641b49f3911fd50c36f11, type: 3}
   m_Name: psychodelics
   m_EditorClassIdentifier: Assembly-CSharp::ConsumableItemData
-  id: 201
+  id: psychodelics
   itemName: Psychodelics
   icon: {fileID: 21300000, guid: 8b5c67dc9ccc9f14a969ca8565fa54b9, type: 3}
   rarity: 0
