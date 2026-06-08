@@ -216,12 +216,12 @@ namespace C__Classes.Systems
                     int x = Mathf.RoundToInt(center.x + Mathf.Cos(angleRad) * currentRadius);
                     int y = Mathf.RoundToInt(center.y + Mathf.Sin(angleRad) * currentRadius);
 
-                    int prefabIndex = GetDeterministicPrefabIndex(x, y, j, prefabs);
-
                     if (tileProperties[x,y].type == TileType.Water && removeIfOnWater)
                     {
                         break;
                     }
+                    
+                    int prefabIndex = GetDeterministicPrefabIndex(x, y, j, prefabs);
 
                     GameObject tempObj =
                         Instantiate(
