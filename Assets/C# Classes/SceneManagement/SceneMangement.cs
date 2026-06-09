@@ -63,6 +63,12 @@ namespace C__Classes.SceneManagement
             
             //we can also leave Scene To Load field empty for spawn points in interior, as right now
             //when leaving Unity will close the interior scene
+            
+            if (C__Classes.Systems.StoryLootValidator.Instance != null && !string.IsNullOrEmpty(sceneToLoad))
+            {
+                C__Classes.Systems.StoryLootValidator.Instance.RegisterDoorEntry(sceneToLoad, myUniqueID);
+            }
+            
             if (!string.IsNullOrEmpty(targetSpawnID))
             {
                 SceneTransport.TargetSpawnID = targetSpawnID;

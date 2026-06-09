@@ -172,8 +172,6 @@ namespace Player.scripts
 
         private void PlayDeathSound()
         {
-            Debug.Log("Umieram");
-            
             GameObject audioObject = new GameObject("player_death_sound_temp");
             audioObject.transform.position = transform.position;
             

@@ -149,7 +149,7 @@ public class LockerInteractable : MonoBehaviour
 
         slotStates[slotIndex] = slotSaveData ?? CreateEmptySlotState(slotIndex);
         slotStates[slotIndex].slotIndex = slotIndex;
-        slotItems[slotIndex] = null;
+        // slotItems[slotIndex] = null;
     }
 
     public ContainerSaveData CaptureSaveData()
@@ -241,6 +241,23 @@ public class LockerInteractable : MonoBehaviour
 
     private GameObject SpawnLootBasedOnRarity()
     {
+        if (StoryLootValidator.Instance != null)
+        {
+            GameObject forcedLoot = null;
+            
+            if (StoryLootValidator.Instance.forcePharmacyUnique) forcedLoot = GetPrefabByName(StoryLootValidator.Instance.pharmacyUnique);
+            else if (StoryLootValidator.Instance.forceHardwareUnique) forcedLoot = GetPrefabByName(StoryLootValidator.Instance.hardwareUnique);
+            else if (StoryLootValidator.Instance.forceGunShopUnique) forcedLoot = GetPrefabByName(StoryLootValidator.Instance.gunShopUnique);
+            else if (StoryLootValidator.Instance.forceGeneralStoreUnique) forcedLoot = GetPrefabByName(StoryLootValidator.Instance.generalStoreUnique);
+        
+            if (forcedLoot != null)
+            {
+                PickableItem p = forcedLoot.GetComponent<PickableItem>();
+                if (p != null) StoryLootValidator.Instance.MarkUniqueAsSpawned(p.itemData.id);
+                return forcedLoot;
+            }
+        }
+        
         string selectedRarity = GetRandomRarity();
         List<GameObject> matchingLoot = new List<GameObject>();
 
@@ -260,6 +277,25 @@ public class LockerInteractable : MonoBehaviour
             return matchingLoot[randomIndex];
         }
 
+        return null;
+    }
+    
+    private GameObject GetPrefabByName(string itemID)
+    {
+        if (string.IsNullOrEmpty(itemID)) return null;
+    
+        foreach (GameObject prefab in possibleLootPrefabs)
+        {
+            PickableItem pickable = prefab.GetComponent<PickableItem>();
+            if (pickable != null && pickable.itemData != null && !string.IsNullOrEmpty(pickable.itemData.id))
+            {
+                if (pickable.itemData.id.Equals(itemID, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    return prefab;
+                }
+            }
+        }
+        Debug.LogWarning($"[Locker] Brak prefaba o ID {itemID} w possibleLootPrefabs tej szafki!");
         return null;
     }
 
