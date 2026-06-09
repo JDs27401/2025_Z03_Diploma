@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Enemy.Scripts;
 using Player.scripts;
 using Unity.VisualScripting;
@@ -22,6 +23,9 @@ namespace C__Classes.Objects
         private bool _triggered = false;
         
         private Animator _animator;
+        
+        //sfx
+        public event Action OnExplosion;
         
         private void Start()
         {
@@ -78,6 +82,7 @@ namespace C__Classes.Objects
             //print("end");
             #endif
             _animator.SetTrigger("Explode");
+            OnExplosion?.Invoke();
             
             tag = "trap";
             damageTrigger.enabled = true;
