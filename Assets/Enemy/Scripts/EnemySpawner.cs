@@ -215,11 +215,12 @@ namespace Enemy.Scripts
 
         public void StartSpawning()
         {
-            if (_spawn)
+            if (!_spawn)
             {
-                StartCoroutine(SpawnRoutine());
-                print(_spawn + "Spawning started");
+                return;
             }
+            StartCoroutine(SpawnRoutine());
+            print(_spawn + "Spawning started");
         }
 
         private IEnumerator LatenedSpawnRoutine()
@@ -230,6 +231,10 @@ namespace Enemy.Scripts
 
         public void StartLatenedSpawning()
         {
+            if (Universe.Instance.GetRatio() <= 0)
+            {
+                return;
+            }
             StartCoroutine(LatenedSpawnRoutine());
         }
 
