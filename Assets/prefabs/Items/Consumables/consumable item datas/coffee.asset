@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d916860bb6641b49f3911fd50c36f11, type: 3}
   m_Name: coffee
   m_EditorClassIdentifier: Assembly-CSharp::ConsumableItemData
-  id: 201
+  id: coffee
   itemName: sped
   icon: {fileID: 21300000, guid: bf3a20704d1136145a54055b78529ad5, type: 3}
   rarity: 1

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d916860bb6641b49f3911fd50c36f11, type: 3}
   m_Name: morphine
   m_EditorClassIdentifier: Assembly-CSharp::ConsumableItemData
-  id: 201
+  id: morphine
   itemName: Morphine
   icon: {fileID: 21300000, guid: ecfed37a6ba4e0f428d3c90bf3dacdf2, type: 3}
   rarity: 2

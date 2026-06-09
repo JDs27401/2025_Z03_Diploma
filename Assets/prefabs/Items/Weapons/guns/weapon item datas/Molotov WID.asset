@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c7e450ecd644c0d876c696a9a50a231, type: 3}
   m_Name: Molotov WID
   m_EditorClassIdentifier: Assembly-CSharp::WeaponItemData
-  id: 
+  id: molotov
   itemName: Molotov
   icon: {fileID: 21300000, guid: 9057f017a958d3340aea04caa8d7fea4, type: 3}
   rarity: 0
