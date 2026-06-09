@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Note 3
   icon: {fileID: 21300000, guid: 6422338287f1a364897548d4f03fda41, type: 3}
   rarity: 0
-  itemType: 3
+  itemType: 6
   description: The local clinic is a graveyard. There's no one here, just ash, ruin,
     and the dead wandering around. I looked for your name on the torn scraps of patient
     lists. Someone said a few uninfected hid in the old warehouses nearby. I hope

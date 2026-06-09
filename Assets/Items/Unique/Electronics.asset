@@ -17,7 +17,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: f365ff5342a5ca44dafa50d7f8cadd13, type: 3}
   rarity: 3
   itemType: 0
-  description: 
+  description: A collection of useful circuitry and wires required to construct a
+    functioning emergency radio
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 901444e708ac0d24f88d15a6597eff27, type: 3}

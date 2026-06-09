@@ -16,10 +16,14 @@ MonoBehaviour:
   itemName: Note 5
   icon: {fileID: 21300000, guid: 941c867f9e11d5c4f8935187745bb9f5, type: 3}
   rarity: 0
-  itemType: 3
-  description: Description for a note
+  itemType: 6
+  description: It's getting worse every day. I coughed up blood this morning. One
+    of them got me. It's just a bite, and I know I won't die for now. But the infection
+    is spreading, and the fever is burning me up. Sometimes at night, I think I hear
+    your voice over the groans of the dead outside. I can't give up, but I have so
+    little strength left.
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 7679ec6aa6dcc0c4d82eb6ed57e7919d, type: 3}
-  fullSizeImage: {fileID: 21300000, guid: 5d693d5128d6efd40b9393ebaa93c841, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: a152304c364e9ef45b282e41dfb9bbf2, type: 3}
   weight: 0

@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Note 4
   icon: {fileID: 21300000, guid: eca731a7d8dc8774f9d3996664b0a74b, type: 3}
   rarity: 0
-  itemType: 3
+  itemType: 6
   description: "I killed a man today. He tried to take my backpack with the last
     of my food. He wasn't even infected, he didn't even have a real weapon\u2026
     I used to be the kind of guy who would help him, but today I just did it without

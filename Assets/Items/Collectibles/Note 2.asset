@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Note 2
   icon: {fileID: 21300000, guid: d85a131d5336743429a09a6c534db7c8, type: 3}
   rarity: 0
-  itemType: 3
+  itemType: 6
   description: They barricaded the district. The military is shooting at anyone trying
     to cross the perimeter. They are terrified of the infected. That damn vaccine
     was supposed to keep us safe, but it just turned everyone who took it into those

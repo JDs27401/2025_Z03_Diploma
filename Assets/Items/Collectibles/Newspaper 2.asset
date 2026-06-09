@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Newspaper 2
   icon: {fileID: 21300000, guid: 56425ae234e5e1f43b907b48f58638db, type: 3}
   rarity: 0
-  itemType: 3
+  itemType: 6
   description: '<b>AN ATOMIC CHRISTMAS: THE FIRST EMPTY HOLIDAY TABLES</b>
 
     For

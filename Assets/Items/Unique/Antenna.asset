@@ -17,7 +17,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: f75b597b073810f4090391ca7f3e8cf9, type: 3}
   rarity: 3
   itemType: 0
-  description: 
+  description: A metal antenna that serves as one of the essential components needed
+    to craft an emergency radio
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: cfc9969a15fb1b54383ae59584fa5602, type: 3}

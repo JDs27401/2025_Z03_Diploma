@@ -17,7 +17,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 9057f017a958d3340aea04caa8d7fea4, type: 3}
   rarity: 1
   itemType: 0
-  description: 
+  description: An improvised incendiary weapon that creates a deadly pool of fire
+    upon impact
   isStackable: 1
   maxStackSize: 5
   dropPrefab: {fileID: 4733928515101151917, guid: 8760a6133a8694147af5979c3e931a84, type: 3}

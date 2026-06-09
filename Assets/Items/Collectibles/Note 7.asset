@@ -16,10 +16,13 @@ MonoBehaviour:
   itemName: Note 7
   icon: {fileID: 21300000, guid: a100751845331b841899deff5e96e609, type: 3}
   rarity: 0
-  itemType: 3
-  description: Description for a note
+  itemType: 6
+  description: They are everywhere. The vaccinated. There are no safe places. I saw
+    you yesterday in the fog between the buildings, but you ran away. Why are you
+    running? I'm searching every street for you. The cold doesn't hurt anymore. Nothing
+    hurts anymore.
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 5b6b0b105a3fedd4f9e7de2dffb40210, type: 3}
-  fullSizeImage: {fileID: 21300000, guid: 5d693d5128d6efd40b9393ebaa93c841, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: 0d706dd0a2999374cad6e7cabff93ee5, type: 3}
   weight: 0

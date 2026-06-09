@@ -17,7 +17,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 7ce079df1ee10f24599511ec640b7ce2, type: 3}
   rarity: 1
   itemType: 0
-  description: 
+  description: A reliable sidearm offering decent accuracy and fire rate at close
+    ranges
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 1e60df13bdc7b8d43b6ebde120765a68, type: 3}

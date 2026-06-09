@@ -17,7 +17,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 0a54829cead9d7b4980919bc7b7a39db, type: 3}
   rarity: 2
   itemType: 2
-  description: 
+  description: Heavy-duty shotgun shells designed to inflict massive damage at close
+    quarters
   isStackable: 1
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}

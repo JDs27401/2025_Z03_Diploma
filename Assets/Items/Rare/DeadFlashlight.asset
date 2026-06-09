@@ -17,7 +17,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 282461c3922785d4c8e9199139c38b90, type: 3}
   rarity: 1
   itemType: 0
-  description: 
+  description: A depleted flashlight that requires finding new batteries to function
+    again
   isStackable: 1
   maxStackSize: 20
   dropPrefab: {fileID: 4733928515101151917, guid: 3dfe35424dff9c741bb5d179d67173ce, type: 3}

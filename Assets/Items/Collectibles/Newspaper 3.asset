@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Newspaper 3
   icon: {fileID: 21300000, guid: bb7c856f8ab932b45898693b4b72f006, type: 3}
   rarity: 0
-  itemType: 3
+  itemType: 6
   description: '<b>THE ATOMIC RELAPSE VACCINATED CITIZENS TURN VIOLENT AS RAVENOUS
     HUNGER RETURNS</b>
 

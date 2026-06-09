@@ -17,7 +17,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 047a3950edc3c324d9d045743e6807c3, type: 3}
   rarity: 1
   itemType: 1
-  description: 
+  description: Standard 9mm caliber ammunition, essential for reloading pistols and
+    light firearms
   isStackable: 1
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 28ccddd0c274e4c4b9667a3f1e413480, type: 3}

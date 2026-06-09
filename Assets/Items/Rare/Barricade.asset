@@ -17,7 +17,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 12f9de9298b01d34b8db0b7bdbf00446, type: 3}
   rarity: 1
   itemType: 0
-  description: 
+  description: A makeshift cover used to block passages and slow down advancing enemies
   isStackable: 0
   maxStackSize: 5
   dropPrefab: {fileID: 4733928515101151917, guid: 9cde75dc897b5864d96d082384358be5, type: 3}

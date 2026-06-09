@@ -16,10 +16,14 @@ MonoBehaviour:
   itemName: Note 6
   icon: {fileID: 21300000, guid: adc16149ffa9d21408a14a4e20304085, type: 3}
   rarity: 0
-  itemType: 3
-  description: Description for a note
+  itemType: 6
+  description: Barely got away from them. Not the dead, but other survivors. They
+    kept me locked up in the basement of the old school, took almost everything.
+    Their boss laughed when I asked about you. He said he saw a woman matching your
+    description, but she's been dead for days. He was lying. I know he was lying.
+    I need to lay low in these alleys for a bit and rest.
   isStackable: 0
   maxStackSize: 100
   dropPrefab: {fileID: 4733928515101151917, guid: 210eab5012babc140a02d9f5837659c5, type: 3}
-  fullSizeImage: {fileID: 21300000, guid: 5d693d5128d6efd40b9393ebaa93c841, type: 3}
+  fullSizeImage: {fileID: 21300000, guid: edd0c250788685e43b5052fc4d8ae066, type: 3}
   weight: 0

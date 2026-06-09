@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Newspaper 1
   icon: {fileID: 21300000, guid: 67d38cb932249a949bcffea63e951ee4, type: 3}
   rarity: 0
-  itemType: 3
+  itemType: 6
   description: '<b>JFK AND FDA GREENLIGHT CONTROVERSIAL URANIUM VACCINE</b>
 
     WASHINGTON
