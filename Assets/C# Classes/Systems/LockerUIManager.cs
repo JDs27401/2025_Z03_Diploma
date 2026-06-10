@@ -33,22 +33,32 @@ public class LockerUIManager : MonoBehaviour
     {
         if (currentLocker != null)
         {
-            for (int i = 0; i < lockerSlots.Length; i++)
-            {
-                currentLocker.SetSlotState(i, CaptureLockerUiSlot(i));
-
-                if (lockerSlots[i].currentItem == null && LootManager.Instance != null)
-                {
-                    LootManager.Instance.MarkAsLooted(currentLocker.GetSlotID(i));
-                }
-            }
-
-            currentLocker.SaveCurrentState();
+            FlushCurrentLockerState();
             ClearLockerUiSlots();
         }
 
         lockerUIPanel.SetActive(false);
         currentLocker = null;
+    }
+
+    public void FlushCurrentLockerState()
+    {
+        if (currentLocker == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < lockerSlots.Length; i++)
+        {
+            currentLocker.SetSlotState(i, CaptureLockerUiSlot(i));
+
+            if (lockerSlots[i].currentItem == null && LootManager.Instance != null)
+            {
+                LootManager.Instance.MarkAsLooted(currentLocker.GetSlotID(i));
+            }
+        }
+
+        currentLocker.SaveCurrentState();
     }
 
     private void RefreshUI()
@@ -63,12 +73,15 @@ public class LockerUIManager : MonoBehaviour
             Player.scripts.WeaponInstanceState weaponState = null;
             Player.scripts.MeleeWeaponInstanceState meleeState = null;
 
-            if (slotState != null && !string.IsNullOrWhiteSpace(slotState.itemId) && SaveGameManager.ActiveItemDatabase != null)
+            if (slotState != null)
             {
-                itemData = SaveGameManager.ActiveItemDatabase.GetItemById(slotState.itemId);
-                count = slotState.count;
-                weaponState = SaveStateMapper.RestoreWeaponState(slotState.weaponState, itemData, SaveGameManager.ActiveItemDatabase);
-                meleeState = SaveStateMapper.RestoreMeleeWeaponState(slotState.meleeWeaponState, itemData, SaveGameManager.ActiveItemDatabase);
+                if (!string.IsNullOrWhiteSpace(slotState.itemId) && SaveGameManager.ActiveItemDatabase != null)
+                {
+                    itemData = SaveGameManager.ActiveItemDatabase.GetItemById(slotState.itemId);
+                    count = slotState.count;
+                    weaponState = SaveStateMapper.RestoreWeaponState(slotState.weaponState, itemData, SaveGameManager.ActiveItemDatabase);
+                    meleeState = SaveStateMapper.RestoreMeleeWeaponState(slotState.meleeWeaponState, itemData, SaveGameManager.ActiveItemDatabase);
+                }
             }
             else if (i < currentLocker.slotItems.Length && currentLocker.slotItems[i] != null)
             {

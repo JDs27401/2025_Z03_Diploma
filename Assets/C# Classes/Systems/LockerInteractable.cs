@@ -149,7 +149,6 @@ public class LockerInteractable : MonoBehaviour
 
         slotStates[slotIndex] = slotSaveData ?? CreateEmptySlotState(slotIndex);
         slotStates[slotIndex].slotIndex = slotIndex;
-        // slotItems[slotIndex] = null;
     }
 
     public ContainerSaveData CaptureSaveData()
@@ -172,6 +171,19 @@ public class LockerInteractable : MonoBehaviour
         if (LootManager.Instance != null)
         {
             LootManager.Instance.SaveContainerState(CaptureSaveData());
+        }
+    }
+
+    public void ApplySavedStateIfAvailable()
+    {
+        if (string.IsNullOrWhiteSpace(lockerUniqueID))
+        {
+            lockerUniqueID = BuildContainerId();
+        }
+
+        if (LootManager.Instance != null && LootManager.Instance.TryGetContainerState(lockerUniqueID, out ContainerSaveData savedContainer))
+        {
+            RestoreFromSaveData(savedContainer);
         }
     }
 
