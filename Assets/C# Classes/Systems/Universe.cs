@@ -80,11 +80,14 @@ namespace C__Classes.Systems
                     return;
                 }
                 TimeOfDay = Phase.Night;
-                // if (GameObject.FindGameObjectWithTag("player").GetComponent<PlayerController>().IsInside)
-                // {
-                //     SceneManagment.Instance.MovePlayerToReturnPoint();
-                // }
-                if (WaveManager.Instance.AlreadyStarted) return;
+                if (GameObject.FindGameObjectWithTag("player").GetComponent<PlayerController>().IsInside)
+                {
+                    SceneManagment.KickPlayerOut();
+                }
+                if (WaveManager.Instance.AlreadyStarted)
+                {
+                    return;
+                }
                 EnemySpawner.Instance.StopSpawning();
                 StartCoroutine(WaveManager.Instance.StartWave());
                 WaveManager.Instance.OnWaveCompleted += HandleWaveCompletion;

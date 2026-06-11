@@ -246,7 +246,7 @@ namespace Enemy.Scripts
 
         private void OnDestroy()
         {
-            Universe.ChangeSpawningState -= ChangeSpawningState;
+            // Universe.ChangeSpawningState -= ChangeSpawningState;
             SceneManagment.OnInteriorEnter -= ChangeSpawningState;
             SceneManagment.OnInteriorExit -= ChangeSpawningState;
         }

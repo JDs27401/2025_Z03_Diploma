@@ -4,6 +4,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using C__Classes.Managers;
 using C__Classes.Singletons;
+using C__Classes.Systems;
 using UnityEngine.SceneManagement;
 
 namespace C__Classes.SceneManagement
@@ -110,6 +111,7 @@ namespace C__Classes.SceneManagement
                     TeleportPlayerWithCamera(door.transform.position);
                     spawnFound = true;
                     OnInteriorEnter?.Invoke();
+                    GameObject.FindGameObjectWithTag("player").GetComponent<PlayerController>().IsInside = true;
                     break;
                 }
             }
@@ -127,6 +129,7 @@ namespace C__Classes.SceneManagement
                 {
                     TeleportPlayerWithCamera(door.transform.position);
                     OnInteriorExit?.Invoke();
+                    GameObject.FindGameObjectWithTag("player").GetComponent<PlayerController>().IsInside = false;
                     break;
                 }
             }
@@ -152,7 +155,7 @@ namespace C__Classes.SceneManagement
         public void ForceExit()
         {
             SceneTransport.TargetSpawnID = SceneTransport.ReturnSpawnID;
-            MovePlayerToInteriorScene();
+            MovePlayerToReturnPoint();
             SceneManager.UnloadSceneAsync(gameObject.scene);
         }
 
@@ -172,6 +175,10 @@ namespace C__Classes.SceneManagement
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            if (Universe.GetTimeOfDay() == Universe.Phase.Night)
+            {
+                return;
+            }
             if (collision.CompareTag("player"))
             {
                 isPlayerInRange = true;
