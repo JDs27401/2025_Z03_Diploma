@@ -145,7 +145,7 @@ namespace C__Classes.SaveSystem
 
         private IEnumerator LoadGameRoutine(SaveData saveData)
         {
-            RestoreWorldPersistence(saveData.world);
+            RestoreWorldLoadContext(saveData.world);
 
             string activeSceneName = SceneManager.GetActiveScene().name;
             string savedMainSceneName = saveData.world != null ? saveData.world.currentSceneName : string.Empty;
@@ -160,6 +160,9 @@ namespace C__Classes.SaveSystem
 
                 yield return null;
             }
+
+            RestoreLootPersistence(saveData.world);
+            ApplyRestoredContainerStatesToLoadedLockers();
 
             if (saveData.world != null && saveData.world.loadedAdditiveScenes != null)
             {
@@ -178,6 +181,8 @@ namespace C__Classes.SaveSystem
                     }
                 }
             }
+
+            ApplyRestoredContainerStatesToLoadedLockers();
 
             yield return null;
 
@@ -219,6 +224,11 @@ namespace C__Classes.SaveSystem
 
             if (LootManager.Instance != null)
             {
+                if (LockerUIManager.Instance != null)
+                {
+                    LockerUIManager.Instance.FlushCurrentLockerState();
+                }
+
                 LockerInteractable[] lockers = FindObjectsOfType<LockerInteractable>();
                 for (int i = 0; i < lockers.Length; i++)
                 {
@@ -235,7 +245,7 @@ namespace C__Classes.SaveSystem
             return worldSaveData;
         }
 
-        private void RestoreWorldPersistence(WorldSaveData worldSaveData)
+        private void RestoreWorldLoadContext(WorldSaveData worldSaveData)
         {
             if (worldSaveData == null)
             {
@@ -249,11 +259,35 @@ namespace C__Classes.SaveSystem
             {
                 MainMenuManager.Instance.SetSeed(worldSaveData.mapSeed);
             }
+        }
 
+        private void RestoreLootPersistence(WorldSaveData worldSaveData)
+        {
+            if (worldSaveData == null)
+            {
+                return;
+            }
+            
             if (LootManager.Instance != null)
             {
                 LootManager.Instance.RestoreLootedIds(worldSaveData.lootedIds);
                 LootManager.Instance.RestoreContainerStates(worldSaveData.containers);
+            }
+            else
+            {
+                Debug.LogWarning("[SaveGameManager] LootManager was not found before additive scenes loaded; container states could not be restored.");
+            }
+        }
+
+        private void ApplyRestoredContainerStatesToLoadedLockers()
+        {
+            LockerInteractable[] lockers = FindObjectsOfType<LockerInteractable>();
+            for (int i = 0; i < lockers.Length; i++)
+            {
+                if (lockers[i] != null)
+                {
+                    lockers[i].ApplySavedStateIfAvailable();
+                }
             }
         }
 
