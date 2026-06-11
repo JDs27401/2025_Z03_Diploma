@@ -101,6 +101,9 @@ public class PlayerController : Actor
     {
         get => _isMoving;
     }
+    
+    //scenes
+    public bool IsInside{ get; set; }
 
     // Physics
     private Rigidbody2D rb;

@@ -1,5 +1,6 @@
 ﻿using System;
 using C__Classes.Managers;
+using C__Classes.SceneManagement;
 using C__Classes.Singletons;
 using Enemy.Scripts;
 using UnityEngine;
@@ -74,8 +75,16 @@ namespace C__Classes.Systems
         {
             if (Hour >= NightThreshold || Hour < DayThreshold)
             {
-                if (WaveManager.Instance.AlreadyStarted) return;
+                if (TimeOfDay == Phase.Night)
+                {
+                    return;
+                }
                 TimeOfDay = Phase.Night;
+                // if (GameObject.FindGameObjectWithTag("player").GetComponent<PlayerController>().IsInside)
+                // {
+                //     SceneManagment.Instance.MovePlayerToReturnPoint();
+                // }
+                if (WaveManager.Instance.AlreadyStarted) return;
                 EnemySpawner.Instance.StopSpawning();
                 StartCoroutine(WaveManager.Instance.StartWave());
                 WaveManager.Instance.OnWaveCompleted += HandleWaveCompletion;
