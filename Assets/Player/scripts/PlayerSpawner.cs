@@ -1,4 +1,5 @@
 using C__Classes.SceneManagement;
+using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -16,7 +17,7 @@ public class PlayerSpawner : MonoBehaviour
         
         if (targetObject == null)
         {
-            SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
+            SceneManagment[] allDoors = FindObjectsOfType<SceneManagment>();
             foreach (var door in allDoors)
             {
                 if (door.myUniqueID == targetScene)

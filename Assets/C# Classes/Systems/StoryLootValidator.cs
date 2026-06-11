@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using C__Classes.SceneManagement;
 using UnityEngine;
 
 namespace C__Classes.Systems
@@ -47,7 +48,7 @@ namespace C__Classes.Systems
         }
         private void Start()
         {
-            SceneManagement.SceneManagement[] allDoors = FindObjectsOfType<SceneManagement.SceneManagement>();
+            SceneManagment[] allDoors = FindObjectsOfType<SceneManagment>();
 
             foreach (var door in allDoors)
             {

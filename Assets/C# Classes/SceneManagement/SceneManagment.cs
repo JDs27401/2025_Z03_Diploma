@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace C__Classes.SceneManagement
 {
-    public class SceneManagement : MonoBehaviour
+    public class SceneManagment : MonoBehaviour
     {
         // public static event Action OnSceneChange;
         public static event Action OnInteriorEnter;
@@ -98,7 +98,7 @@ namespace C__Classes.SceneManagement
 
         private void MovePlayerToInteriorScene()
         {
-            SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
+            SceneManagment[] allDoors = FindObjectsOfType<SceneManagment>();
             bool spawnFound = false;
             
             foreach (var door in allDoors)
@@ -120,7 +120,7 @@ namespace C__Classes.SceneManagement
 
         private void MovePlayerToReturnPoint()
         {
-            SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
+            SceneManagment[] allDoors = FindObjectsOfType<SceneManagment>();
             foreach (var door in allDoors)
             {
                 if (door.myUniqueID == SceneTransport.ReturnSpawnID)
@@ -158,7 +158,7 @@ namespace C__Classes.SceneManagement
 
         public static void KickPlayerOut()
         {
-            SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
+            SceneManagment[] allDoors = FindObjectsOfType<SceneManagment>();
 
             foreach (var door in allDoors)
             {

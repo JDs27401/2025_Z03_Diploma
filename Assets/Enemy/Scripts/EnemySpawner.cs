@@ -65,8 +65,8 @@ namespace Enemy.Scripts
                 Debug.LogWarning("EnemySpawner: Nie znaleziono gracza z tagiem 'Player'. Spawnowanie będzie wokół punktu (0,0,0).");
             }
             
-            SceneManagement.OnInteriorEnter += StopSpawning;
-            SceneManagement.OnInteriorExit += StartSpawning;
+            SceneManagment.OnInteriorEnter += StopSpawning;
+            SceneManagment.OnInteriorExit += StartSpawning;
             
             // SceneManagement.OnSceneChange += ChangeSpawningState;
             // _spawnCoroutine = StartCoroutine(SpawnRoutine());
@@ -247,8 +247,8 @@ namespace Enemy.Scripts
         private void OnDestroy()
         {
             Universe.ChangeSpawningState -= ChangeSpawningState;
-            SceneManagement.OnInteriorEnter -= ChangeSpawningState;
-            SceneManagement.OnInteriorExit -= ChangeSpawningState;
+            SceneManagment.OnInteriorEnter -= ChangeSpawningState;
+            SceneManagment.OnInteriorExit -= ChangeSpawningState;
         }
     }
 }
