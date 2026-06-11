@@ -147,7 +147,27 @@ namespace C__Classes.SceneManagement
                     cinemachine.OnTargetObjectWarped(player.transform, positionDelta);
                 }
             }
-            // OnSceneChange?.Invoke();
+        }
+
+        public void ForceExit()
+        {
+            SceneTransport.TargetSpawnID = SceneTransport.ReturnSpawnID;
+            MovePlayerToInteriorScene();
+            SceneManager.UnloadSceneAsync(gameObject.scene);
+        }
+
+        public static void KickPlayerOut()
+        {
+            SceneManagement[] allDoors = FindObjectsOfType<SceneManagement>();
+
+            foreach (var door in allDoors)
+            {
+                if (string.IsNullOrEmpty(door.targetSpawnID) && door.gameObject.scene != SceneManager.GetActiveScene())
+                {
+                    door.ForceExit();
+                    return;
+                }
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
