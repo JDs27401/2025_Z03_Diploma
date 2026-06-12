@@ -12,6 +12,10 @@ using C__Classes.SaveSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : Actor
 {
+    private const float MinimumStaminaToConsume = 30f;
+    private const float SprintStaminaDrainPerTick = 1f;
+    private const float BaseStaminaRegenPerTick = 0.5f;
+
     public UnityEvent onPlayerDeath;
     
     // Lukasz, health bar event
@@ -144,16 +148,17 @@ public class PlayerController : Actor
         friction = 1-friction;
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        staminaFloat = Mathf.Clamp(stamina, 0f, GetEffectiveMaxStamina());
+        SyncStaminaFromFloat();
+
         _lastKnownHealth = currentHealth;
         float healthPercent = GetCurrentHealthPercent();
         onHealthChanged?.Invoke(healthPercent);
 
         _lastKnownStamina = stamina;
-        float staminaPercent = (maxStamina > 0) ? (float)stamina / maxStamina : 0;
+        float staminaPercent = GetCurrentStaminaPercent();
         onStaminaChanged?.Invoke(staminaPercent);
 
-        // Initialize stamina mirror and subscribe to consumable changes
-        staminaFloat = stamina;
         if (InventoryManager.Instance != null)
         {
             InventoryManager.Instance.OnConsumableEffectsChanged += RecalculateConsumableCaches;
@@ -178,8 +183,8 @@ public class PlayerController : Actor
 
          ApplyConsumableEffects();
          CheckForHurtAnimation();
-         ManageStamina();
          ManageSprint();
+          ManageStamina();
          ManageCrouch();
          ManageRoll();
          UpdateSprintBlend();
@@ -193,14 +198,10 @@ public class PlayerController : Actor
 
     private void ManageStamina()
     {
-        float effectiveMaxStamina = GetEffectiveMaxStamina();
-        if (stamina != _lastKnownStamina)
+        if (Mathf.Abs(stamina - _lastKnownStamina) > 0.01f)
         {
             _lastKnownStamina = stamina;
-            
-            float staminaPercent = (effectiveMaxStamina > 0) ? (float)stamina / effectiveMaxStamina : 0;
-            
-            onStaminaChanged?.Invoke(staminaPercent);
+            onStaminaChanged?.Invoke(GetCurrentStaminaPercent());
         }
     }
 
@@ -234,7 +235,7 @@ public class PlayerController : Actor
              return;
          }
          
-         if(sprintAction.triggered && stamina > 30)
+         if (sprintAction.triggered && CanSpendStamina(SprintStaminaDrainPerTick) && !sprintRequiresRelease)
          {
              isSprinting = true;
          }
@@ -249,7 +250,7 @@ public class PlayerController : Actor
          }
 
          // Set target sprint blend based on input, stamina and the release lock.
-         if (sprintAction.IsPressed() && stamina > 0 && !sprintRequiresRelease)
+         if (sprintAction.IsPressed() && CanSpendStamina(SprintStaminaDrainPerTick) && !sprintRequiresRelease)
          {
              targetSprintBlend = 1f;
          }
@@ -294,7 +295,8 @@ public class PlayerController : Actor
     {
         if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
         if (rollCooldown || isRolling) return;
-        stamina -= rollStaminaCost;
+        if (!TrySpendStamina(rollStaminaCost)) return;
+
         isRolling = true;
         rollCooldown = true;
         lastRollTime = Time.time;
@@ -417,23 +419,27 @@ public class PlayerController : Actor
      {
          if (isSprinting)
          {
-             if (stamina <= 0)
+              if (!CanSpendStamina(SprintStaminaDrainPerTick))
              {
                  targetSprintBlend = 0f;
                  isSprinting = false;
-                 sprintRequiresRelease = true;
+                  if (sprintAction != null && sprintAction.IsPressed())
+                  {
+                      sprintRequiresRelease = true;
+                  }
+
+                  return;
              }
 
-                stamina = Mathf.Max(0, stamina - 1);
-                staminaFloat = stamina;
+                TrySpendStamina(SprintStaminaDrainPerTick);
          }
          else
          {
                 float effMaxStamina = GetEffectiveMaxStamina();
-                if (stamina < effMaxStamina)
+                if (staminaFloat < effMaxStamina)
                 {
-                    stamina = Mathf.Min((int)Mathf.Floor(effMaxStamina), stamina + 0.5f);
-                    staminaFloat = stamina;
+                    staminaFloat = Mathf.Min(effMaxStamina, staminaFloat + BaseStaminaRegenPerTick);
+                    SyncStaminaFromFloat();
                 }
          }
      }
@@ -471,24 +477,27 @@ public class PlayerController : Actor
 
         // Stamina: clamp to effective max and apply consumable stamina per second
         float effectiveMaxStamina = GetEffectiveMaxStamina();
-        if (staminaFloat > effectiveMaxStamina)
-        {
-            staminaFloat = effectiveMaxStamina;
-            stamina = Mathf.FloorToInt(staminaFloat);
-        }
+        staminaFloat = Mathf.Min(staminaFloat, effectiveMaxStamina);
 
         float staminaPerSecond = GetConsumableStaminaPerSecond();
         if (staminaPerSecond > 0f)
         {
             staminaFloat = Mathf.Min(effectiveMaxStamina, staminaFloat + (staminaPerSecond * Time.fixedDeltaTime));
-            stamina = Mathf.Clamp(Mathf.FloorToInt(staminaFloat), 0, Mathf.FloorToInt(effectiveMaxStamina));
         }
+
+        SyncStaminaFromFloat();
     }
 
     private float GetCurrentHealthPercent()
     {
         float effectiveMaxHealth = Mathf.Max(0.01f, GetEffectiveMaxHealth());
         return currentHealth / effectiveMaxHealth;
+    }
+
+    private float GetCurrentStaminaPercent()
+    {
+        float effectiveMaxStamina = Mathf.Max(0.01f, GetEffectiveMaxStamina());
+        return stamina / effectiveMaxStamina;
     }
 
     private float GetEffectiveMaxHealth()
@@ -521,9 +530,39 @@ public class PlayerController : Actor
         return Mathf.Max(0f, cachedStaminaPerSecond);
     }
 
+    private void SyncStaminaFromFloat()
+    {
+        float effectiveMaxStamina = GetEffectiveMaxStamina();
+        staminaFloat = Mathf.Clamp(staminaFloat, 0f, effectiveMaxStamina);
+        stamina = Mathf.Clamp(staminaFloat, 0f, effectiveMaxStamina);
+    }
+
+    public bool CanSpendStamina(float amount)
+    {
+        amount = Mathf.Max(0f, amount);
+        return staminaFloat >= MinimumStaminaToConsume && staminaFloat >= amount;
+    }
+
+    private bool TrySpendStamina(float amount)
+    {
+        if (!CanSpendStamina(amount))
+        {
+            return false;
+        }
+
+        staminaFloat -= amount;
+        SyncStaminaFromFloat();
+        return true;
+    }
+
     // Recalculate cached consumable modifiers (called when consumable effects change)
     private void RecalculateConsumableCaches()
     {
+        float previousEffectiveMaxHealth = GetEffectiveMaxHealth();
+        float previousEffectiveMaxStamina = GetEffectiveMaxStamina();
+        float previousHealth = currentHealth;
+        float previousStamina = stamina;
+
         if (InventoryManager.Instance != null)
         {
             cachedSpeedMultiplier = InventoryManager.Instance.GetConsumableSpeedMultiplier();
@@ -554,17 +593,24 @@ public class PlayerController : Actor
         if (currentHealth > effMaxHealth)
         {
             currentHealth = effMaxHealth;
-            float healthPercent = GetCurrentHealthPercent();
-            onHealthChanged?.Invoke(healthPercent);
+        }
+
+        if (!Mathf.Approximately(previousEffectiveMaxHealth, effMaxHealth) || !Mathf.Approximately(previousHealth, currentHealth))
+        {
+            onHealthChanged?.Invoke(GetCurrentHealthPercent());
         }
 
         float effMaxStamina = GetEffectiveMaxStamina();
         if (staminaFloat > effMaxStamina)
         {
             staminaFloat = effMaxStamina;
-            stamina = Mathf.FloorToInt(staminaFloat);
-            float staminaPercent = (effMaxStamina > 0) ? (float)stamina / effMaxStamina : 0f;
-            onStaminaChanged?.Invoke(staminaPercent);
+        }
+
+        SyncStaminaFromFloat();
+        if (!Mathf.Approximately(previousEffectiveMaxStamina, effMaxStamina) || !Mathf.Approximately(previousStamina, stamina))
+        {
+            _lastKnownStamina = stamina;
+            onStaminaChanged?.Invoke(GetCurrentStaminaPercent());
         }
     }
 
@@ -617,13 +663,13 @@ public class PlayerController : Actor
     {
         if (amount <= 0) return;
 
-        float effectiveMaxStamina = GetEffectiveMaxStamina();
+        if (!TrySpendStamina(amount))
+        {
+            return;
+        }
 
-        stamina = Mathf.Max(0, stamina - amount);
-        staminaFloat = stamina;
-
-        float staminaPercent = (effectiveMaxStamina > 0) ? (float)stamina / effectiveMaxStamina : 0f;
-        onStaminaChanged?.Invoke(staminaPercent);
+        _lastKnownStamina = stamina;
+        onStaminaChanged?.Invoke(GetCurrentStaminaPercent());
     }
     public float GetStamina() => stamina;
 
@@ -646,16 +692,15 @@ public class PlayerController : Actor
 
         transform.position = saveData.position;
         currentHealth = Mathf.Clamp(saveData.currentHealth, 0f, GetEffectiveMaxHealth());
-        stamina = Mathf.Clamp(saveData.currentStamina, 0f, GetEffectiveMaxStamina());
-        staminaFloat = stamina;
+        staminaFloat = Mathf.Clamp(saveData.currentStamina, 0f, GetEffectiveMaxStamina());
+        SyncStaminaFromFloat();
         isDead = currentHealth <= 0f;
 
         _lastKnownHealth = currentHealth;
         _lastKnownStamina = stamina;
         onHealthChanged?.Invoke(GetCurrentHealthPercent());
 
-        float effectiveMaxStamina = GetEffectiveMaxStamina();
-        onStaminaChanged?.Invoke(effectiveMaxStamina > 0f ? stamina / effectiveMaxStamina : 0f);
+        onStaminaChanged?.Invoke(GetCurrentStaminaPercent());
 
         ClearInputState();
     }

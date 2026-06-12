@@ -585,7 +585,7 @@ namespace Player.scripts
             if (meleeStats == null) return;
 
             if (Time.time < _nextMeleeTime) return;
-            if (!_playerController || _playerController.GetStamina() < 30 || _playerController.GetStamina() < meleeStats.staminaCost)
+            if (!_playerController || !_playerController.CanSpendStamina(meleeStats.staminaCost))
             {
                 return;
             }
