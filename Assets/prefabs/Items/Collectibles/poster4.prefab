@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 1d4e75b07f086a44f96c581548b7b1fe, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3fa05c8d8f6ca444292a04adacfd3e1f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -122,6 +122,7 @@ MonoBehaviour:
       spread: 0
       projectilesPerShot: 1
       isAutomatic: 0
+      ammoType: 0
       magazineSize: 10
       reloadTime: 2
       isExplosive: 0
@@ -133,6 +134,26 @@ MonoBehaviour:
       dotInterval: 1
       dotAreaLifetime: 5
       weight: 1
+    installedMods: []
+  droppedMeleeState:
+    sourceMeleeData: {fileID: 0}
+    runtimeStats:
+      weaponName: New Melee Weapon
+      animationID: 0
+      attackRate: 1.5
+      damage: 25
+      range: 1
+      angle: 120
+      hitboxDuration: 0.2
+      staminaCost: 5
+      isAutomatic: 0
+      weight: 1
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
     installedMods: []
   enableShadow: 1
   shadowOffset: {x: 0.05, y: -0.05, z: 0}
@@ -167,6 +188,7 @@ MonoBehaviour:
       spread: 0
       projectilesPerShot: 1
       isAutomatic: 0
+      ammoType: 0
       magazineSize: 10
       reloadTime: 2
       isExplosive: 0
@@ -192,13 +214,24 @@ MonoBehaviour:
       staminaCost: 5
       isAutomatic: 0
       weight: 1
+      isMolotov: 0
+      dotAreaRadius: 2.5
+      dotDamage: 4
+      dotDuration: 4
+      dotInterval: 1
+      dotAreaLifetime: 5
+    installedMods: []
   isWeaponModAttachment: 0
   weaponModInstanceState:
+    itemData: {fileID: 0}
+    isActive: 0
+  meleeWeaponModInstanceState:
     itemData: {fileID: 0}
     isActive: 0
   attachedWeaponItemRoot: {fileID: 0}
   emptyModSlotSprite: {fileID: 0}
   maxWeaponModSlots: 1
+  maxMeleeWeaponModSlots: 1
   parentAfterDrag: {fileID: 0}
   isSplitDrag: 0
 --- !u!61 &4544097837935957270
