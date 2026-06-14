@@ -1,5 +1,6 @@
 ﻿using System;
 using C__Classes.Managers;
+using C__Classes.SaveSystem;
 using C__Classes.SceneManagement;
 using C__Classes.Singletons;
 using Enemy.Scripts;
@@ -29,12 +30,27 @@ namespace C__Classes.Systems
         [SerializeField] private int SundownThreshold = 18;
         [SerializeField] private int NightThreshold = 21;
 
+        private GameObject _bed;
+        private GameObject _player;
+
         private void Start()
         {
             Hour = StartingHour;
             Minute = StartingMinute;
+
+            _bed = GameObject.FindGameObjectWithTag("bed");
+            if (_bed == null)
+            {
+                throw new Exception("Bed not found");
+            }
+            _player = GameObject.FindGameObjectWithTag("player");
+            if (_player == null)
+            {
+                throw new Exception("Player not found");
+            }
             
             EnemySpawner.Instance.StartLatenedSpawning();
+            WaveManager.Instance.OnWaveCompleted += HandleWaveCompletion;
         }
         
         private void Update()
@@ -48,7 +64,6 @@ namespace C__Classes.Systems
             {
                 return;
             }
-            //@todo jakoś zaimplementować to że podczas nocy czas nie leciał -- można pewnie całe SetDayPhase wyjebać
             var increment = Time.deltaTime * Ratio;
             Minute += increment;
 
@@ -89,15 +104,22 @@ namespace C__Classes.Systems
                     return;
                 }
                 EnemySpawner.Instance.StopSpawning();
-                StartCoroutine(WaveManager.Instance.StartWave());
-                WaveManager.Instance.OnWaveCompleted += HandleWaveCompletion;
+                WaveManager.Instance.StartWaveCoroutine();
             } 
             else if (Hour >= SundownThreshold)
             {
+                if (TimeOfDay == Phase.Sundown)
+                {
+                    return;
+                }
                 TimeOfDay = Phase.Sundown;
             } 
             else if (Hour >= DayThreshold)
             {
+                if (TimeOfDay == Phase.Day)
+                {
+                    return;
+                }
                 TimeOfDay = Phase.Day;
             } 
         }
@@ -113,6 +135,8 @@ namespace C__Classes.Systems
             Day += 1;
             ChangeSpawningState?.Invoke();
             EnemySpawner.Instance.StartLatenedSpawning();
+            MovePlayerToBed();
+            SaveGameManager.Instance.SaveGame();
         }
 
         public void StartFinalWave()
@@ -125,9 +149,15 @@ namespace C__Classes.Systems
             WaveManager.Instance.OnWaveCompleted -= HandleWaveCompletion;
             TimeOfDay = Phase.Night; //possibly to change the way we stop time flow, as it can introduce some issues
             EnemySpawner.Instance.StopSpawning();
-            StartCoroutine(WaveManager.Instance.StartWave());
+            WaveManager.Instance.StartWaveCoroutine();
             // WaveManager.Instance.OnWaveCompleted += /*metoda która kończy gre*/;
             //@todo design a game end screen and method to invoke it, subscribe it to this event
+        }
+
+        private void MovePlayerToBed()
+        {
+            Vector3 newPlayerPos = new Vector3(_bed.transform.position.x, _bed.transform.position.y - 1, _bed.transform.position.z);
+            _player.transform.position = newPlayerPos;
         }
         
         private static void PrintTime() //just a debug method

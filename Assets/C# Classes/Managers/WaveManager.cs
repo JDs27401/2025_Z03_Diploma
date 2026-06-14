@@ -29,7 +29,7 @@ namespace C__Classes.Managers
         [Header("Enemy Prefab List")]
         [SerializeField] private GameObject[] enemies;
 
-        public IEnumerator StartWave()
+        private IEnumerator StartWave()
         {
             #if UNITY_EDITOR
             print("Wave started");
@@ -48,6 +48,16 @@ namespace C__Classes.Managers
                 yield return new WaitForSeconds(spawnDelta);
             }
             // waveSize = (int) (waveSize * waveSizeMultiplier);
+        }
+
+        public void StartWaveCoroutine()
+        {
+            if (!(enemies.Length <= 0))
+            {
+                WaveCompleted();
+                return;
+            }
+            StartCoroutine(StartWave());
         }
         
         private void HandleEnemyDeath(GameObject go)
