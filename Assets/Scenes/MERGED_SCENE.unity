@@ -4771,6 +4771,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bed
       objectReference: {fileID: 0}
+    - target: {fileID: 3577213692790191576, guid: 94797e6bbaf214c87a8d0de0cb5f8054, type: 3}
+      propertyPath: m_TagString
+      value: bed
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
