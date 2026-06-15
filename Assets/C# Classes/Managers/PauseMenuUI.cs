@@ -18,8 +18,6 @@ namespace C__Classes.Managers
             if (panel != null) panel.SetActive(false);
             if (resumeButton != null) resumeButton.onClick.AddListener(OnResumeClicked);
             if (settingsButton != null) settingsButton.onClick.AddListener(OnSettingsClicked);
-            if (saveButton != null) saveButton.onClick.AddListener(OnSaveClicked);
-            if (loadButton != null) loadButton.onClick.AddListener(OnLoadClicked);
             if (exitButton != null) exitButton.onClick.AddListener(OnExitClicked);
         }
 
@@ -41,17 +39,6 @@ namespace C__Classes.Managers
         public void OnSettingsClicked()
         {
             // TODO: implement settings
-        }
-
-        public void OnSaveClicked()
-        {
-            // TODO: implement save
-            SaveGameManager.Instance.SaveGame();
-        }
-
-        public void OnLoadClicked()
-        {
-            // TODO: implement load
         }
 
         public void OnExitClicked()
