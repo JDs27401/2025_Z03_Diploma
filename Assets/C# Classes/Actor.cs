@@ -170,7 +170,6 @@ namespace C__Classes
 
         public virtual void SetSpeed(float multiplier)
         {
-            print(multiplier);
             speed = baseSpeed * multiplier;
         }
     }

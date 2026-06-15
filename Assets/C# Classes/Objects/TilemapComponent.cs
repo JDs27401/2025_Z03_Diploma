@@ -30,7 +30,7 @@ namespace C__Classes.Objects
             _ownTag = tag;
         }
 
-        private void OnTriggerStay2D(Collider2D other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("projectile"))
             {
@@ -61,7 +61,7 @@ namespace C__Classes.Objects
                     actor.SetSpeed(roadMult);
                     break;
             }
-            print(actor.TileType);
+            print(actor.TileType + " " + actor);
         }
 
         private void OnTriggerExit2D(Collider2D other)

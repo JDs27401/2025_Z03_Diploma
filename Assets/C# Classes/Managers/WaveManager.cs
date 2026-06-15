@@ -52,7 +52,7 @@ namespace C__Classes.Managers
 
         public void StartWaveCoroutine()
         {
-            if (!(enemies.Length <= 0))
+            if (enemies.Length <= 0)
             {
                 WaveCompleted();
                 return;
