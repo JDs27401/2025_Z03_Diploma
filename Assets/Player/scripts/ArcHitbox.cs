@@ -142,6 +142,7 @@ public class ArcHitbox : MonoBehaviour
     {
         GameObject dotArea = new GameObject("MolotovDotArea");
         dotArea.transform.position = position;
+        dotArea.layer = LayerMask.NameToLayer("Attacks");
             
         Rigidbody2D rb = dotArea.AddComponent<Rigidbody2D>();
         rb.gravityScale = 0;

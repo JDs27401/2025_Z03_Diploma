@@ -1,4 +1,6 @@
-﻿namespace Player.scripts
+﻿using Unity.VisualScripting.FullSerializer;
+
+namespace Player.scripts
 {
     using UnityEngine;
 
@@ -91,7 +93,6 @@
             {
                 isAutomatic = modData.isAutomaticValue;
             }
-
             if (modData.overrideIsMolotov)
             {
                 isMolotov = modData.isMolotovValue;

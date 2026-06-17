@@ -30,7 +30,7 @@ MonoBehaviour:
   dotDamage: 5
   dotDuration: 10
   dotInterval: 1
-  dotAreaLifetime: 5
+  dotAreaLifetime: 0.1
   weaponModelPrefab: {fileID: 1165157680205881631, guid: 09a60c7e71b4f284f9ac859b68da6da2, type: 3}
   projectilePrefab: {fileID: 8520928149139622634, guid: 934c6d057271aa64bb9045b82c786f0b, type: 3}
   weight: 1
