@@ -255,22 +255,42 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public void UpdateUI()
     {
+        print("refresh");
         DraggableItem itemScript = GetMainDraggableItem();
 
         if (itemScript != null)
         {
+            print("itemscript not null");
             itemScript.count = currentCount;
             itemScript.UpdateTextPosition();
 
             TextMeshProUGUI textOnItem = itemScript.amountText;
             if (textOnItem != null)
             {
+                print("textOnItem not null");
                 bool showText = false;
                 if (currentItem != null)
                 {
-                    if (currentItem.itemType != ItemType.General && currentItem.itemType != ItemType.WeaponMod && currentItem.itemType != ItemType.MeleeWeaponMod) showText = true;
-                    else if (currentItem.itemType == ItemType.WeaponMod || currentItem.itemType == ItemType.MeleeWeaponMod) showText = false;
-                    else if (currentCount > 1) showText = true;
+                    print("currentItem not null");
+                    print("itemtype:");
+                    switch (currentItem.itemType)
+                    {
+                        case ItemType.MeleeWeapon:
+                        case ItemType.MeleeWeaponMod:
+                        case ItemType.Weapon:
+                        case ItemType.WeaponMod:
+                            print("weapon");
+                            break;
+                        case ItemType.Ammo9mm: 
+                        case ItemType.Ammo12Gauge:
+                            print("ammo");
+                            showText = true;
+                            break;
+                        default:
+                            print("default");
+                            if (currentCount > 1) showText = true;
+                            break;
+                    }
                 }
 
                 textOnItem.text = currentCount.ToString();

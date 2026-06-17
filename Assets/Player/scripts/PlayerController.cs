@@ -13,7 +13,7 @@ using C__Classes.SaveSystem;
 public class PlayerController : Actor
 {
     private const float MinimumStaminaToConsume = 30f;
-    private const float SprintStaminaDrainPerTick = 1f;
+    private const float SprintStaminaDrainPerTick = 0.5f;
     private const float BaseStaminaRegenPerTick = 0.5f;
 
     public UnityEvent onPlayerDeath;
@@ -250,7 +250,9 @@ public class PlayerController : Actor
          }
 
          // Set target sprint blend based on input, stamina and the release lock.
-         if (sprintAction.IsPressed() && CanSpendStamina(SprintStaminaDrainPerTick) && !sprintRequiresRelease)
+         if (sprintAction.IsPressed() 
+             && isSprinting 
+             && !sprintRequiresRelease)
          {
              targetSprintBlend = 1f;
          }
@@ -295,6 +297,7 @@ public class PlayerController : Actor
     {
         if (PauseManager.Instance != null && PauseManager.Instance.IsPaused) return;
         if (rollCooldown || isRolling) return;
+        if (!CanSpendStamina(rollStaminaCost)) return;
         if (!TrySpendStamina(rollStaminaCost)) return;
 
         isRolling = true;
@@ -419,7 +422,7 @@ public class PlayerController : Actor
      {
          if (isSprinting)
          {
-              if (!CanSpendStamina(SprintStaminaDrainPerTick))
+              if (!TrySpendStamina(SprintStaminaDrainPerTick))
              {
                  targetSprintBlend = 0f;
                  isSprinting = false;
@@ -427,11 +430,7 @@ public class PlayerController : Actor
                   {
                       sprintRequiresRelease = true;
                   }
-
-                  return;
              }
-
-                TrySpendStamina(SprintStaminaDrainPerTick);
          }
          else
          {
@@ -545,7 +544,8 @@ public class PlayerController : Actor
 
     private bool TrySpendStamina(float amount)
     {
-        if (!CanSpendStamina(amount))
+        amount = Mathf.Max(0f, amount);
+        if (staminaFloat <= amount)
         {
             return false;
         }
@@ -661,8 +661,14 @@ public class PlayerController : Actor
     // Reduce player's stamina by given integer amount (clamped to 0) and invoke UI update
     public void ReduceStamina(int amount)
     {
-        if (amount <= 0) return;
-
+        if (amount <= 0)
+        {
+            return;
+        }
+        if(!CanSpendStamina(amount))
+        {
+            return;
+        }
         if (!TrySpendStamina(amount))
         {
             return;

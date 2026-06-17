@@ -134,6 +134,10 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         bool isRangedWeapon = itemData is WeaponItemData && weaponInstanceState != null;
         bool isMeleeWeapon = itemData is MeleeWeaponItemData && meleeInstanceState != null;
+        if (itemData.itemType.Equals(ItemType.Molotov) || itemData.itemType.Equals(ItemType.Pipebomb))
+        {
+            return;
+        }
         if (!isRangedWeapon && !isMeleeWeapon)
         {
             return;
@@ -547,6 +551,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void RefreshCount(int newCount)
     {
+        print("refresh");
         count = newCount;
         EnsureWeaponStateInitialized();
         if (amountText != null)
@@ -556,17 +561,25 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
             if (itemData != null)
             {
-                if (itemData.itemType == ItemType.WeaponMod || itemData.itemType == ItemType.MeleeWeaponMod)
+                switch(itemData.itemType)
                 {
-                    showText = false;
-                }
-                else if (itemData.itemType != ItemType.General)
-                {
-                    showText = true;
-                }
-                else if (count > 1)
-                {
-                    showText = true;
+                    case ItemType.WeaponMod:
+                    case ItemType.MeleeWeaponMod:
+                        break;
+                    case ItemType.Ammo9mm: 
+                    case ItemType.Ammo12Gauge:
+                        showText = true;
+                        break;
+                    default:
+                        if (itemData.itemType != ItemType.General)
+                        {
+                            showText = true;
+                        }
+                        if (count > 1)
+                        {
+                            showText = true;
+                        }
+                        break;
                 }
             }
             amountText.gameObject.SetActive(showText);
