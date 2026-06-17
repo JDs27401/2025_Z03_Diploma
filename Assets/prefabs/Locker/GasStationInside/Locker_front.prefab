@@ -113,9 +113,7 @@ MonoBehaviour:
   - {fileID: 4733928515101151917, guid: 441b7c1f65d8de74bb963ed9798ecafc, type: 3}
   - {fileID: 4733928515101151917, guid: 504526564e698c54db3cb498c5efec6b, type: 3}
   - {fileID: 4733928515101151917, guid: 7f08999b5d2158c459aef92a20a9f76c, type: 3}
-  - {fileID: 4733928515101151917, guid: 28ccddd0c274e4c4b9667a3f1e413480, type: 3}
   - {fileID: 4733928515101151917, guid: 1e60df13bdc7b8d43b6ebde120765a68, type: 3}
-  - {fileID: 4733928515101151917, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
   - {fileID: 4733928515101151917, guid: 9b08a6b4db93c9d4caedb0cba25d433b, type: 3}
   - {fileID: 4733928515101151917, guid: cfc9969a15fb1b54383ae59584fa5602, type: 3}
   spawnChance: 0.8

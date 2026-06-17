@@ -8198,6 +8198,63 @@ MonoBehaviour:
   - {x: -0.29741287, y: 1.3164062, z: 0}
   - {x: -0.2798767, y: 3.2041016, z: 0}
   - {x: -5.485155, y: 3.9794922, z: 0}
+--- !u!1001 &1825064215
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 644901847102692021, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.46546
+      objectReference: {fileID: 0}
+    - target: {fileID: 644901847102692021, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10000.739
+      objectReference: {fileID: 0}
+    - target: {fileID: 644901847102692021, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 644901847102692021, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 644901847102692021, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 644901847102692021, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 644901847102692021, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 644901847102692021, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 644901847102692021, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 644901847102692021, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4733928515101151917, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
+      propertyPath: m_Name
+      value: 12 gauge ammo
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5d4ff3692e09f7b41b9b3d6ff26e02e3, type: 3}
 --- !u!1 &1863002376
 GameObject:
   m_ObjectHideFlags: 0
@@ -8394,3 +8451,4 @@ SceneRoots:
   - {fileID: 713230314}
   - {fileID: 1733327948}
   - {fileID: 1804746249}
+  - {fileID: 1825064215}
