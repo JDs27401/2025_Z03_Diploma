@@ -3,8 +3,10 @@ using C__Classes.Managers;
 using C__Classes.SaveSystem;
 using C__Classes.SceneManagement;
 using C__Classes.Singletons;
+using DG.Tweening;
 using Enemy.Scripts;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace C__Classes.Systems
 {
@@ -32,6 +34,9 @@ namespace C__Classes.Systems
 
         private GameObject _bed;
         private GameObject _player;
+
+        [Header("Game End")]
+        [SerializeField] private GameObject gameEndScreenPrefab;
 
         private void Start()
         {
@@ -126,17 +131,42 @@ namespace C__Classes.Systems
 
         private void HandleWaveCompletion()
         {
-            //@todo implement switching back to day
-            #if UNITY_EDITOR
-            print("Wave ended, starting day");
-            #endif
             Hour = DayThreshold;
             TimeOfDay = Phase.Day;
             Day += 1;
-            ChangeSpawningState?.Invoke();
-            EnemySpawner.Instance.StartLatenedSpawning();
-            MovePlayerToBed();
-            SaveGameManager.Instance.SaveGame();
+
+            GameObject fadeGO = new GameObject("FadeOverlay", typeof(Canvas), typeof(CanvasScaler));
+            Canvas canvas = fadeGO.GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 200;
+
+            GameObject blackImg = new GameObject("Black");
+            blackImg.transform.SetParent(fadeGO.transform, false);
+            Image img = blackImg.AddComponent<Image>();
+            img.color = Color.black;
+            RectTransform rt = blackImg.GetComponent<RectTransform>();
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+
+            CanvasGroup cg = fadeGO.AddComponent<CanvasGroup>();
+            cg.alpha = 0f;
+
+            Sequence seq = DOTween.Sequence();
+            seq.Append(cg.DOFade(1f, 1f));
+            seq.AppendCallback(() =>
+            {
+                ChangeSpawningState?.Invoke();
+                EnemySpawner.Instance.StartLatenedSpawning();
+                MovePlayerToBed();
+            });
+            seq.Append(cg.DOFade(0f, 1f));
+            seq.OnComplete(() =>
+            {
+                Destroy(fadeGO);
+                SaveGameManager.Instance.SaveGame();
+            });
         }
 
         public void StartFinalWave()
@@ -147,11 +177,21 @@ namespace C__Classes.Systems
             }
 
             WaveManager.Instance.OnWaveCompleted -= HandleWaveCompletion;
-            TimeOfDay = Phase.Night; //possibly to change the way we stop time flow, as it can introduce some issues
+            WaveManager.Instance.OnWaveCompleted += HandleFinalWaveCompletion;
+            TimeOfDay = Phase.Night;
             EnemySpawner.Instance.StopSpawning();
             WaveManager.Instance.StartWaveCoroutine();
-            // WaveManager.Instance.OnWaveCompleted += /*metoda która kończy gre*/;
-            //@todo design a game end screen and method to invoke it, subscribe it to this event
+        }
+
+        private void HandleFinalWaveCompletion()
+        {
+            WaveManager.Instance.OnWaveCompleted -= HandleFinalWaveCompletion;
+
+            if (gameEndScreenPrefab != null)
+            {
+                GameObject endScreenGO = Instantiate(gameEndScreenPrefab);
+                endScreenGO.GetComponent<GameEndScreenManager>().Show();
+            }
         }
 
         private void MovePlayerToBed()

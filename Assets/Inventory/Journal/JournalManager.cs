@@ -196,12 +196,16 @@ namespace C__Classes.Managers
 
         public void ShowNotification(string itemName)
         {
+            ShowMessage($"New Journal entry: {itemName}");
+        }
+
+        public void ShowMessage(string message)
+        {
             if (notificationPanel == null || notificationText == null || notificationCanvasGroup == null) return;
 
-            notificationText.text = $"New Journal entry: {itemName}";
+            notificationText.text = message;
 
             notificationCanvasGroup.DOKill();
-            
             notificationCanvasGroup.alpha = 1f;
             notificationPanel.SetActive(true);
 
