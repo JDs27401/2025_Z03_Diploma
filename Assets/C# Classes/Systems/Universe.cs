@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace C__Classes.Systems
 {
-    public class Universe : SingletonPersistant<Universe>
+    public class Universe : SingletonNonPersistant<Universe>
     {
         public static event Action ChangeSpawningState;
         
@@ -245,6 +245,7 @@ namespace C__Classes.Systems
         private void OnDestroy()
         {
             WaveManager.Instance.OnWaveCompleted -= HandleWaveCompletion;
+            WaveManager.Instance.OnWaveCompleted -= HandleFinalWaveCompletion;
         }
 
         public static void SetDay(int day)
