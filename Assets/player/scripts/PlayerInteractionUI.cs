@@ -11,6 +11,7 @@ public class PlayerInteractionUI : MonoBehaviour
 
     private HashSet<GameObject> interactablesInRange = new HashSet<GameObject>();
     private bool radioUsed;
+    private ItemData _lastFrameActiveItem;
 
     private void Start()
     {
@@ -18,21 +19,25 @@ public class PlayerInteractionUI : MonoBehaviour
         {
             interactionPrompt.SetActive(false);
         }
+        if (InventoryManager.Instance != null)
+        {
+            _lastFrameActiveItem = InventoryManager.Instance.GetActiveItem();
+        }
     }
 
     private void Update()
     {
         interactablesInRange.RemoveWhere(item => item == null);
 
-        bool holdingRadio = !radioUsed && InventoryManager.Instance != null
-            && InventoryManager.Instance.GetActiveItem()?.id == radioItemId;
+        ItemData activeItem = InventoryManager.Instance != null ? InventoryManager.Instance.GetActiveItem() : null;
+        bool holdingRadio = !radioUsed && activeItem?.id == radioItemId;
 
         if (interactionPrompt != null)
         {
             interactionPrompt.SetActive(interactablesInRange.Count > 0 || holdingRadio);
         }
 
-        if (holdingRadio && Input.GetKeyDown(KeyCode.E))
+        if (holdingRadio && activeItem == _lastFrameActiveItem && Input.GetKeyDown(KeyCode.E))
         {
             radioUsed = true;
             if (JournalManager.Instance != null)
@@ -44,6 +49,8 @@ public class PlayerInteractionUI : MonoBehaviour
                 Universe.Instance.StartFinalWave();
             }
         }
+
+        _lastFrameActiveItem = activeItem;
     }
 
     public void AddInteractable(GameObject interactable)

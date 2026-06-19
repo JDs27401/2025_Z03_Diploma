@@ -6,7 +6,7 @@ using DG.Tweening; // WYMAGANE: Dodanie przestrzeni nazw DOTween
 
 namespace C__Classes.Managers
 {
-    public class MainMenuManager : SingletonPersistant<MainMenuManager>
+    public class MainMenuManager : SingletonNonPersistant<MainMenuManager>
     {
         public string Seed { get; private set; }
         
