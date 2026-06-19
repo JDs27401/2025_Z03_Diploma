@@ -621,7 +621,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 664, y: -424.1}
+  m_AnchoredPosition: {x: 960, y: -666.65}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &209800229
@@ -1112,7 +1112,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 664, y: -245.8}
+  m_AnchoredPosition: {x: 960, y: -326.65}
   m_SizeDelta: {x: 767.15, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &341391599
@@ -1781,8 +1781,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 256.505, y: -306.005}
-  m_SizeDelta: {x: 513.01, y: 0}
+  m_AnchoredPosition: {x: 357.755, y: -342.005}
+  m_SizeDelta: {x: 715.51, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &861600959
 MonoBehaviour:
@@ -1818,37 +1818,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<b>Title:</b>
-
-    A Lone Survivor
-
-
-
-
-
-
-
-
-    <b>Authors:</b>
-
-    Dominik
-    Juchniewicz s27401
-
-    Bartosz Kowalski s27016
-
-    Lukasz Soczewka s27027
-
-    Wiktor
-    Golba s25011
-
-
-    <b>Supervisor:</b>
-
-    Msc Eng Rafal Maslyk
-
-
-
-'
+  m_text: "<b>Title:</b>\nA Lone Survivor\n\n\n<b>Authors:</b>\nDominik Juchniewicz
+    s27401\nBartosz Kowalski s27016\nLukasz Soczewka s27027\nWiktor Golba s25011\n\n<b>Supervisor:</b>\nMsc
+    Eng Rafal Maslyk\n\n\n<b>Asset credits: </b>\nZombie Apocalypse Tileset by \nIttai
+    Manero\nExplosion Animations Pack by ansimuz\nSounds taken from pixabay"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e466cdbacb50ba7469272ca414edfa3e, type: 2}
   m_sharedMaterial: {fileID: -1957677881843891223, guid: e466cdbacb50ba7469272ca414edfa3e, type: 2}
@@ -3859,7 +3832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 664, y: -496.505}
+  m_AnchoredPosition: {x: 960, y: -556.3725}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1544073798
@@ -4258,7 +4231,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1170.51, y: -312.505}
+  m_AnchoredPosition: {x: 1373.01, y: -312.505}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1716866113
@@ -4469,7 +4442,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 664, y: -827.015}
+  m_AnchoredPosition: {x: 960, y: -936.6275}
   m_SizeDelta: {x: 375.66, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1800025510
