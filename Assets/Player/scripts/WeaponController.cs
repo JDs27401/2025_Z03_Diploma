@@ -459,10 +459,10 @@ namespace Player.scripts
             actorScript.SetDamage(weaponSettings.isMolotov ? 0f : weaponSettings.damage);
 
             bullet.tag = "projectile";
-            
+
             if (weaponSettings.isExplosive)
             {
-                
+
                 CircleCollider2D trapTrigger = bullet.AddComponent<CircleCollider2D>();
                 trapTrigger.isTrigger = true;
                 trapTrigger.radius = 0.1f;
@@ -475,22 +475,22 @@ namespace Player.scripts
                 if (explodingComp == null) explodingComp = bullet.AddComponent<C__Classes.Objects.ExplodingComponent>();
 
                 System.Type type = explodingComp.GetType();
-                
+
                 type.GetField("trapTrigger", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                     ?.SetValue(explodingComp, trapTrigger);
-                    
+
                 type.GetField("damageTrigger", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                     ?.SetValue(explodingComp, damageTrigger);
-                
+
                 type.GetField("damageTriggerRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                     ?.SetValue(explodingComp, weaponSettings.explosionRadius);
-                
+
                 type.GetField("explodeAfter", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                     ?.SetValue(explodingComp, 0f); // Wymuszenie natychmiastowego wybuchu
-                
+
                 type.GetField("destroyTriggerAfter", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                     ?.SetValue(explodingComp, 0.25f);
-                
+
                 actorScript.SetWaitUntilDestroyed(0.25f);
             }
         }
