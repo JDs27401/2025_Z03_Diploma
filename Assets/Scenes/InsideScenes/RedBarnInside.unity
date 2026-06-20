@@ -4294,7 +4294,7 @@ PrefabInstance:
     - target: {fileID: 110853995813194217, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
       propertyPath: 'possibleLootPrefabs.Array.data[5]'
       value: 
-      objectReference: {fileID: 4733928515101151917, guid: a7264b396249e824e84b38610d520325, type: 3}
+      objectReference: {fileID: 1931424137214182956, guid: d9b05f9101452a64c94f8478d6c819a0, type: 3}
     - target: {fileID: 1933208212344589825, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
       propertyPath: m_Name
       value: LootSpawner
@@ -5916,6 +5916,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8882614182593652700, guid: 35ec26b889d9d6347930bfd5b270e929, type: 3}
+      propertyPath: 'possibleLootPrefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: 1931424137214182956, guid: d9b05f9101452a64c94f8478d6c819a0, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Locker_right)side (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3174786873062599524, guid: de40485234cb87f4ba2ca2fa2a669e7b, type: 3}
+      propertyPath: 'possibleLootPrefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: 1931424137214182956, guid: d9b05f9101452a64c94f8478d6c819a0, type: 3}
     - target: {fileID: 4108403773767376962, guid: de40485234cb87f4ba2ca2fa2a669e7b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 29.08
@@ -1809,6 +1813,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Locker_right)side
       objectReference: {fileID: 0}
+    - target: {fileID: 3174786873062599524, guid: de40485234cb87f4ba2ca2fa2a669e7b, type: 3}
+      propertyPath: 'possibleLootPrefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: 1931424137214182956, guid: d9b05f9101452a64c94f8478d6c819a0, type: 3}
     - target: {fileID: 4108403773767376962, guid: de40485234cb87f4ba2ca2fa2a669e7b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 29.08
@@ -5418,7 +5426,7 @@ PrefabInstance:
     - target: {fileID: 110853995813194217, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
       propertyPath: 'possibleLootPrefabs.Array.data[5]'
       value: 
-      objectReference: {fileID: 4733928515101151917, guid: a7264b396249e824e84b38610d520325, type: 3}
+      objectReference: {fileID: 1931424137214182956, guid: d9b05f9101452a64c94f8478d6c819a0, type: 3}
     - target: {fileID: 1933208212344589825, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
       propertyPath: m_Name
       value: LootSpawner
