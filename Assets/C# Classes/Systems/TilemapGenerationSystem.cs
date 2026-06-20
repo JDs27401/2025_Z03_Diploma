@@ -49,7 +49,8 @@ namespace C__Classes.Systems
         {
             if (MainMenuManager.Instance != null)
             {
-                hash = MainMenuManager.Instance.Seed;    
+                hash = MainMenuManager.Instance.Seed;
+                Destroy(MainMenuManager.Instance);
             }
             
             tileProperties = new TileProperties[mapSize, mapSize];
