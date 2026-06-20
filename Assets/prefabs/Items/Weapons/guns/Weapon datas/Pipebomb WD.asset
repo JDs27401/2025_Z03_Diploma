@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponName: Pipebomb
   animationID: 6
   fireRate: 1
-  damage: 100
+  damage: 500
   projectileSpeed: 9
   spread: 10
   projectilesPerShot: 1

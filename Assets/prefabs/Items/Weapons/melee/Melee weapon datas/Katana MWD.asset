@@ -16,7 +16,7 @@ MonoBehaviour:
   animationID: 3
   attackRate: 3
   damage: 25
-  range: 5
+  range: 2.2
   angle: 30
   hitboxDuration: 0.1
   staminaCost: 35

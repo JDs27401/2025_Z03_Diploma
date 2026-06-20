@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponName: pistol
   animationID: 1
   fireRate: 4
-  damage: 20
+  damage: 50
   projectileSpeed: 15
   spread: 0
   projectilesPerShot: 1

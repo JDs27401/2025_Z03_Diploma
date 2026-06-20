@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponName: shotgun
   animationID: 2
   fireRate: 4
-  damage: 10
+  damage: 40
   projectileSpeed: 15
   spread: 35
   projectilesPerShot: 6
