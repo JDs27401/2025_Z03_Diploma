@@ -67,9 +67,6 @@ namespace Enemy.Scripts
             
             SceneManagment.OnInteriorEnter += StopSpawning;
             SceneManagment.OnInteriorExit += StartSpawning;
-            
-            // SceneManagement.OnSceneChange += ChangeSpawningState;
-            // _spawnCoroutine = StartCoroutine(SpawnRoutine());
         }
 
         private IEnumerator SpawnRoutine()
@@ -246,7 +243,6 @@ namespace Enemy.Scripts
 
         private void OnDestroy()
         {
-            // Universe.ChangeSpawningState -= ChangeSpawningState;
             SceneManagment.OnInteriorEnter -= ChangeSpawningState;
             SceneManagment.OnInteriorExit -= ChangeSpawningState;
         }

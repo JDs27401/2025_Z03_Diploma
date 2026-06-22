@@ -127,32 +127,6 @@ namespace C__Classes.Systems
                 cropTilemap.SetTile(pos, GenerateRandomTile(cropTiles, x, y));
             }
         }
-        
-        /*private TileBase SelectTile(float value, int x, int y)
-        {
-            if (value < 0.15f)
-            {
-                tileProperties[x,y] = new TileProperties(x, y, TileType.Water);
-                return waterTile;
-            }
-            if (value < 0.45f)
-            {
-                tileProperties[x,y] = new TileProperties(x, y, TileType.Ground);
-                return GenerateRandomTile(groundTilesLight, x, y);
-            }
-            if (value < 0.75f)
-            {
-                tileProperties[x,y] = new TileProperties(x, y, TileType.Ground);
-                return GenerateRandomTile(groundTilesMed, x, y);
-            }
-            if (value < 0.95f)
-            {
-                tileProperties[x,y] = new TileProperties(x, y, TileType.Ground);
-                return GenerateRandomTile(groundTilesDark, x, y);
-            }
-            tileProperties[x,y] = new TileProperties(x, y, TileType.CropField);
-            return GenerateRandomTile(cropTiles, x, y);
-        }*/
 
         private TileBase GenerateRandomTile(TileBase[] tiles, int x, int y)
         {
@@ -161,39 +135,6 @@ namespace C__Classes.Systems
             Random.InitState(tileHash);
             return tiles[Random.Range(0, tiles.Length)];
         }
-
-        /*private void RunBuildingGeneration()
-        {
-            if (buildingPrefabs.Length == 0)
-                return;
-
-            Vector2Int center = new Vector2Int(mapSize / 2, mapSize / 2);
-
-            for (int i = 1; i <= numberOfCircles; i++)
-            {
-                float currentRadius = radius + i * radiusIncrease2;
-                float startDeg = GenerateBuildingAngle(center, currentRadius, i);
-
-                float stepDeg = 360f / i;
-                
-                for (int j = 0; j < i; j++)
-                {
-                    float angleDeg = startDeg + j * stepDeg;
-                    float angleRad = angleDeg * Mathf.Deg2Rad;
-
-                    int x = Mathf.RoundToInt(center.x + Mathf.Cos(angleRad) * currentRadius);
-                    int y = Mathf.RoundToInt(center.y + Mathf.Sin(angleRad) * currentRadius);
-
-                    int prefabIndex = GetDeterministicPrefabIndex(x, y, j, buildingPrefabs);
-
-                    Instantiate(
-                        buildingPrefabs[prefabIndex],
-                        new Vector3(x, y, 0),
-                        Quaternion.identity
-                    );    
-                }
-            }
-        }*/
         
         private void RunCircularGeneration(int radius, int radiusIncrease, int numberOfCircles, int offset, bool removeIfOnWater, GameObject[] prefabs, GameObject parent)
         {

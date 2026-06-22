@@ -47,7 +47,6 @@ namespace C__Classes.Managers
                 SpawnEnemy();
                 yield return new WaitForSeconds(spawnDelta);
             }
-            // waveSize = (int) (waveSize * waveSizeMultiplier);
         }
 
         public void StartWaveCoroutine()

@@ -55,9 +55,6 @@ namespace Enemy.Scripts
             animator = GetComponent<Animator>();
             
             _lastKnownHealth = currentHealth;
-            
-            // PAMIĘTAJ: Jeśli w base.Start() masz jakieś dzielenie speed /= 50, 
-            // to AI będzie bardzo wolne. Przy delcie operujemy na czystych wartościach.
         }
         protected override void Update()
         {
@@ -128,18 +125,6 @@ namespace Enemy.Scripts
                 Agent.isStopped = true;
             }
         }
-        
-        // void MoveToTarget()
-        // {
-        //     if (!playerTarget) return;
-        //
-        //     pathUpdateTimer += Time.deltaTime;
-        //     if (pathUpdateTimer >= PATH_UPDATE_DELAY)
-        //     {
-        //         Agent.SetDestination(playerTarget.position);
-        //         pathUpdateTimer = 0f;
-        //     }
-        // }
 
         void FixZPosition()
         {
