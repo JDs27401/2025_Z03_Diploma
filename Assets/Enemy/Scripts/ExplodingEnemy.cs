@@ -14,8 +14,8 @@ namespace Enemy.Scripts
             {
                 return;
             }
-            Pacify();
-            Agent.SetDestination(transform.position);
+            Agent.isStopped = true;
+            Agent.velocity = Vector3.zero;
             animator.SetTrigger("AboutToExplode"); 
             OnExplode?.Invoke();
         }
