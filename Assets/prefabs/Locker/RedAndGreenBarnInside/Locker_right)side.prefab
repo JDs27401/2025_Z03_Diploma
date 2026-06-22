@@ -114,7 +114,9 @@ MonoBehaviour:
   - {fileID: 9044937074433035260, guid: 0aa242010b8aefd43afd2f2b7afbbf3f, type: 3}
   - {fileID: 4733928515101151917, guid: 7bc84dc52a743cc4a9ab91acf16af910, type: 3}
   - {fileID: 4733928515101151917, guid: 3dfe35424dff9c741bb5d179d67173ce, type: 3}
-  - {fileID: 4733928515101151917, guid: a7264b396249e824e84b38610d520325, type: 3}
+  - {fileID: 1931424137214182956, guid: d9b05f9101452a64c94f8478d6c819a0, type: 3}
+  - {fileID: 7620934599523319507, guid: 2fcc3338ea68e3e45b3f5bca90fa24a0, type: 3}
+  - {fileID: 7620934599523319507, guid: 08b2accd5e95d224d9bbaa77fa4a6b82, type: 3}
   spawnChance: 0.8
   slotItems:
   - {fileID: 0}
