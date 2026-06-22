@@ -17,7 +17,7 @@ MonoBehaviour:
   fireRate: 4
   damage: 40
   projectileSpeed: 15
-  spread: 35
+  spread: 20
   projectilesPerShot: 6
   isAutomatic: 0
   ammoType: 2

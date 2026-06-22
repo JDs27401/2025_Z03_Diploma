@@ -16,7 +16,7 @@ MonoBehaviour:
   animationID: 1
   fireRate: 4
   damage: 50
-  projectileSpeed: 15
+  projectileSpeed: 5
   spread: 0
   projectilesPerShot: 1
   isAutomatic: 0
