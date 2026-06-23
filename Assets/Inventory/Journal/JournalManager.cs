@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using C__Classes.SaveSystem;
 using C__Classes.Singletons;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,10 +39,13 @@ namespace C__Classes.Managers
         private List<JournalSlot> uiSlots = new List<JournalSlot>();
         private ItemData currentlyInspectedItem;
         private bool isDescriptionOpen = false;
+        private bool isInitialized = false;
 
         private void Start()
         {
             InitializeJournalUI();
+            isInitialized = true;
+            RefreshJournalUI();
             journalPanel.SetActive(false);
             if (inspectPanel != null) inspectPanel.SetActive(false);
             
@@ -93,6 +97,11 @@ namespace C__Classes.Managers
 
         public void UnlockCollectible(string itemID)
         {
+            if (string.IsNullOrWhiteSpace(itemID))
+            {
+                return;
+            }
+
             if (!unlockedCollectibleIDs.Contains(itemID))
             {
                 unlockedCollectibleIDs.Add(itemID);
@@ -100,11 +109,42 @@ namespace C__Classes.Managers
             }
         }
 
+        public JournalSaveData CaptureSaveData()
+        {
+            JournalSaveData saveData = new JournalSaveData();
+            saveData.unlockedCollectibleIds.AddRange(unlockedCollectibleIDs);
+            return saveData;
+        }
+
+        public void RestoreSaveData(JournalSaveData saveData)
+        {
+            unlockedCollectibleIDs.Clear();
+
+            if (saveData != null && saveData.unlockedCollectibleIds != null)
+            {
+                for (int i = 0; i < saveData.unlockedCollectibleIds.Count; i++)
+                {
+                    string collectibleId = saveData.unlockedCollectibleIds[i];
+                    if (!string.IsNullOrWhiteSpace(collectibleId))
+                    {
+                        unlockedCollectibleIDs.Add(collectibleId);
+                    }
+                }
+            }
+
+            RefreshJournalUI();
+        }
+
         private void RefreshJournalUI()
         {
+            if (!isInitialized || uiSlots.Count == 0)
+            {
+                return;
+            }
+
             for (int i = 0; i < allCollectibles.Length; i++)
             {
-                if (allCollectibles[i] != null)
+                if (allCollectibles[i] != null && i < uiSlots.Count && uiSlots[i] != null)
                 {
                     bool isUnlocked = unlockedCollectibleIDs.Contains(allCollectibles[i].id);
                     uiSlots[i].SetUnlocked(isUnlocked);

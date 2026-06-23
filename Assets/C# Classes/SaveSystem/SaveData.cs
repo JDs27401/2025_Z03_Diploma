@@ -14,6 +14,7 @@ namespace C__Classes.SaveSystem
         public PlayerSaveData player = new PlayerSaveData();
         public int selectedInventorySlotIndex;
         public List<InventorySlotSaveData> inventory = new List<InventorySlotSaveData>();
+        public JournalSaveData journal = new JournalSaveData();
         public UniverseData universe = new UniverseData();
     }
 
@@ -45,6 +46,12 @@ namespace C__Classes.SaveSystem
         public int count;
         public WeaponInstanceSaveData weaponState;
         public MeleeWeaponInstanceSaveData meleeWeaponState;
+    }
+
+    [Serializable]
+    public class JournalSaveData
+    {
+        public List<string> unlockedCollectibleIds = new List<string>();
     }
 
     [Serializable]

@@ -53,6 +53,7 @@ namespace C__Classes.SaveSystem
                 player = player.CaptureSaveData(),
                 selectedInventorySlotIndex = inventoryManager.selectedSlotIndex,
                 inventory = inventoryManager.CaptureInventorySaveData(),
+                journal = CaptureJournalState(),
                 universe = CaptureUniverseState()
             };
 
@@ -198,6 +199,7 @@ namespace C__Classes.SaveSystem
             player.RestoreSaveData(saveData.player);
             inventoryManager.selectedSlotIndex = saveData.selectedInventorySlotIndex;
             inventoryManager.RestoreInventoryFromSaveData(saveData.inventory, itemDatabase);
+            RestoreJournalState(saveData.journal);
             RestoreUniverseState(saveData.universe);
 
             Debug.Log($"Game loaded from {SavePath}");
@@ -311,6 +313,27 @@ namespace C__Classes.SaveSystem
                 minute = 0
             };
             return universeData;
+        }
+
+        private JournalSaveData CaptureJournalState()
+        {
+            if (JournalManager.Instance == null)
+            {
+                return new JournalSaveData();
+            }
+
+            return JournalManager.Instance.CaptureSaveData();
+        }
+
+        private void RestoreJournalState(JournalSaveData journalSaveData)
+        {
+            if (JournalManager.Instance == null)
+            {
+                Debug.LogWarning("[SaveGameManager] JournalManager was not found; journal state could not be restored.");
+                return;
+            }
+
+            JournalManager.Instance.RestoreSaveData(journalSaveData);
         }
 
         private void RestoreUniverseState(UniverseData universeData)
