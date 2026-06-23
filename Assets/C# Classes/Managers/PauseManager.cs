@@ -1,6 +1,6 @@
-﻿using System;
-using UnityEngine;
+using C__Classes.SceneManagement;
 using C__Classes.Singletons;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace C__Classes.Managers
@@ -11,27 +11,39 @@ namespace C__Classes.Managers
 
         [SerializeField] private GameObject pausePanel;
         [SerializeField] private PlayerInput playerInput;
-        //[SerializeField] private InputActionAsset inputActions;
-        
+        [SerializeField] private string mainMenuSceneName = MainMenuReturn.DefaultMainMenuSceneName;
+
         private InputActionMap _playerMap;
         private InputActionMap _uiMap;
         private InputAction _pauseAction;
-        
+
         private float previousTimeScale = 1f;
 
         private void Start()
         {
+            if (playerInput == null)
+            {
+                playerInput = FindFirstObjectByType<PlayerInput>();
+            }
+
+            if (playerInput == null || playerInput.actions == null)
+            {
+                Debug.LogWarning("[PauseManager] PlayerInput or InputActionAsset is missing.");
+                return;
+            }
+
             _playerMap = playerInput.actions.FindActionMap("Player", true);
             _uiMap = playerInput.actions.FindActionMap("UI", true);
             _pauseAction = _uiMap.FindAction("Pause", true);
 
-            _uiMap.Enable();                 // UI zawsze aktywne
+            _uiMap.Enable();
             _pauseAction.performed += TogglePause;
         }
 
         public void TogglePause(InputAction.CallbackContext context)
         {
-            if (IsPaused) ResumeGame(); else PauseGame();
+            if (IsPaused) ResumeGame();
+            else PauseGame();
         }
 
         public void PauseGame()
@@ -44,12 +56,16 @@ namespace C__Classes.Managers
             ApplyPauseState(false);
         }
 
+        public void ReturnToMainMenu()
+        {
+            ApplyPauseState(false);
+            MainMenuReturn.LoadMainMenu(mainMenuSceneName);
+        }
+
         private void ApplyPauseState(bool paused)
         {
             IsPaused = paused;
 
-            //var gameplay = inputActions?.FindActionMap("Player");
-            
             if (paused)
             {
                 previousTimeScale = Time.timeScale;
@@ -74,7 +90,13 @@ namespace C__Classes.Managers
                 Time.timeScale = 1f;
             }
         }
+
+        private void OnDestroy()
+        {
+            if (_pauseAction != null)
+            {
+                _pauseAction.performed -= TogglePause;
+            }
+        }
     }
 }
-
-

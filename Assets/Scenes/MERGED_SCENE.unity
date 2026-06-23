@@ -894,6 +894,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3505731852198448, guid: 5aa5d243c00ac8049ac87c51b5d72c0b, type: 3}
+      propertyPath: loadButton
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3505731852198448, guid: 5aa5d243c00ac8049ac87c51b5d72c0b, type: 3}
+      propertyPath: saveButton
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3505731852198448, guid: 5aa5d243c00ac8049ac87c51b5d72c0b, type: 3}
+      propertyPath: mainMenuButton
+      value: 
+      objectReference: {fileID: 550831314}
     - target: {fileID: 3039003799514974055, guid: 5aa5d243c00ac8049ac87c51b5d72c0b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1030,6 +1042,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924385398081415390, guid: 5aa5d243c00ac8049ac87c51b5d72c0b, type: 3}
+      propertyPath: m_text
+      value: Main Menu
+      objectReference: {fileID: 0}
     - target: {fileID: 6533207201353729899, guid: 5aa5d243c00ac8049ac87c51b5d72c0b, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1136,6 +1152,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 670076845}
   m_SourcePrefab: {fileID: 100100000, guid: 5aa5d243c00ac8049ac87c51b5d72c0b, type: 3}
+--- !u!114 &550831314 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6691578004664736200, guid: 5aa5d243c00ac8049ac87c51b5d72c0b, type: 3}
+  m_PrefabInstance: {fileID: 550831313}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &551592386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263,6 +1290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::C__Classes.Managers.PauseManager
   pausePanel: {fileID: 1427364974}
   playerInput: {fileID: 1944767130}
+  mainMenuSceneName: MainMenu
 --- !u!1 &768086203
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ namespace C__Classes.Managers
     {
         [SerializeField] private GameObject panel;
         [SerializeField] private Button resumeButton;
-        [SerializeField] private Button settingsButton;
+        [SerializeField] private Button mainMenuButton;
         [SerializeField] private Button saveButton;
         [SerializeField] private Button loadButton;
         [SerializeField] private Button exitButton;
@@ -17,7 +17,7 @@ namespace C__Classes.Managers
         {
             if (panel != null) panel.SetActive(false);
             if (resumeButton != null) resumeButton.onClick.AddListener(OnResumeClicked);
-            if (settingsButton != null) settingsButton.onClick.AddListener(OnSettingsClicked);
+            if (mainMenuButton != null) mainMenuButton.onClick.AddListener(OnMainMenuClicked);
             if (exitButton != null) exitButton.onClick.AddListener(OnExitClicked);
         }
 
@@ -36,9 +36,9 @@ namespace C__Classes.Managers
             PauseManager.Instance?.ResumeGame();
         }
 
-        public void OnSettingsClicked()
+        public void OnMainMenuClicked()
         {
-            // TODO: implement settings
+            PauseManager.Instance?.ReturnToMainMenu();
         }
 
         public void OnExitClicked()

@@ -1,7 +1,7 @@
 using DG.Tweening;
+using C__Classes.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 namespace C__Classes.Managers
 {
@@ -12,7 +12,7 @@ namespace C__Classes.Managers
 
         [Header("Settings")]
         [SerializeField] private float fadeDuration = 1f;
-        [SerializeField] private string mainMenuSceneName = "MainMenu";
+        [SerializeField] private string mainMenuSceneName = MainMenuReturn.DefaultMainMenuSceneName;
         [SerializeField] private PlayerInput playerInput;
 
         private InputActionMap playerMap;
@@ -52,13 +52,8 @@ namespace C__Classes.Managers
 
         public void GoToMainMenu()
         {
-            if (Time.timeScale < 1f)
-            {
-                Time.timeScale = 1f;
-            }
-
             DOTween.Kill(screenGroup);
-            SceneManager.LoadScene(mainMenuSceneName);
+            MainMenuReturn.LoadMainMenu(mainMenuSceneName);
         }
     }
 }

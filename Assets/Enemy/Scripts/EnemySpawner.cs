@@ -243,8 +243,8 @@ namespace Enemy.Scripts
 
         private void OnDestroy()
         {
-            SceneManagment.OnInteriorEnter -= ChangeSpawningState;
-            SceneManagment.OnInteriorExit -= ChangeSpawningState;
+            SceneManagment.OnInteriorEnter -= StopSpawning;
+            SceneManagment.OnInteriorExit -= StartSpawning;
         }
     }
 }
