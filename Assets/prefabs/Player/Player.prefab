@@ -552,6 +552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractionUI
   interactionPrompt: {fileID: 3864428109669403704}
+  radioItemId: emergency_radio
 --- !u!114 &3189503740374054454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -570,17 +571,17 @@ MonoBehaviour:
   enemyTypes:
   - name: blind
     prefab: {fileID: 5382984699686191501, guid: 642e095b1459e8d4f8fe5a2ef38e9826, type: 3}
-    intensityCost: 10
+    intensityCost: 8
     isEnabled: 1
   - name: basic
     prefab: {fileID: 2372389308713444318, guid: f46073751e546074e96dea1ac82cae3a, type: 3}
-    intensityCost: 15
+    intensityCost: 16
     isEnabled: 1
   - name: bomba
     prefab: {fileID: 1506628920627489286, guid: 01993dfc81d9791499b2ec46ca59e2a8, type: 3}
-    intensityCost: 30
+    intensityCost: 32
     isEnabled: 1
-  minSpawnRadius: 15
+  minSpawnRadius: 20
   maxSpawnRadius: 30
   _spawn: 1
 --- !u!50 &-6635051583733629585

@@ -3447,6 +3447,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: minSpawnRadius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[0].intensityCost
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[1].intensityCost
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189503740374054454, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
+      propertyPath: enemyTypes.Array.data[2].intensityCost
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 3683429158092137648, guid: 86a61d4f2deab174da2dea5d0116a268, type: 3}
       propertyPath: m_Name
       value: Player
