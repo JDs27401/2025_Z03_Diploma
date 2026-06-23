@@ -833,7 +833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 110853995813194217, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
       propertyPath: possibleLootPrefabs.Array.size
-      value: 8
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 110853995813194217, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
       propertyPath: 'possibleLootPrefabs.Array.data[0]'
@@ -863,6 +863,22 @@ PrefabInstance:
       propertyPath: 'possibleLootPrefabs.Array.data[7]'
       value: 
       objectReference: {fileID: 4733928515101151917, guid: 9b08a6b4db93c9d4caedb0cba25d433b, type: 3}
+    - target: {fileID: 110853995813194217, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
+      propertyPath: 'possibleLootPrefabs.Array.data[8]'
+      value: 
+      objectReference: {fileID: 4733928515101151917, guid: 51ecbbba57357fb4d82742b5416fb059, type: 3}
+    - target: {fileID: 110853995813194217, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
+      propertyPath: 'possibleLootPrefabs.Array.data[9]'
+      value: 
+      objectReference: {fileID: 4733928515101151917, guid: 71e2e71019021224f857b2ba20f137c5, type: 3}
+    - target: {fileID: 110853995813194217, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
+      propertyPath: 'possibleLootPrefabs.Array.data[10]'
+      value: 
+      objectReference: {fileID: 4733928515101151917, guid: d4712c6abcc594d40bfe31a9f7043259, type: 3}
+    - target: {fileID: 110853995813194217, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
+      propertyPath: 'possibleLootPrefabs.Array.data[11]'
+      value: 
+      objectReference: {fileID: 4733928515101151917, guid: 7df2c013b75ac474eb2a4e7fad9b1c5d, type: 3}
     - target: {fileID: 1933208212344589825, guid: 6debf3836bf46b44895d8b8df20eeb49, type: 3}
       propertyPath: m_Name
       value: LootSpawner
